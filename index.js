@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const mongoose = require("mongoose");
+const router = require('./routes')
 
 const mongoURI = 'mongodb+srv://new-user-1:qwer@kdev-shop.eufbp0j.mongodb.net/?retryWrites=true&w=majority'
 
@@ -20,23 +21,24 @@ const uri = "mongodb+srv://user:1234@kdev-shop.eufbp0j.mongodb.net/?retryWrites=
 
 //     client.close();
 // })
-try {
-    // Connect to the MongoDB cluster
-    mongoose.connect(
-        uri,
-        { useNewUrlParser: true, useUnifiedTopology: true },
-        () => console.log(" Mongoose is connected")
-    );
+// try {
+//     // Connect to the MongoDB cluster
+//     mongoose.connect(
+//         uri,
+//         { useNewUrlParser: true, useUnifiedTopology: true },
+//         () => console.log(" Mongoose is connected")
+//     );
 
-} catch (e) {
-    console.log("could not connect");
-}
+// } catch (e) {
+//     console.log("could not connect");
+// }
 
 
-const dbConnection = mongoose.connection;
-dbConnection.on("error", (err) => console.log(`Connection error ${err}`));
-dbConnection.once("open", () => console.log("Connected to DB!"));
+// const dbConnection = mongoose.connection;
+// dbConnection.on("error", (err) => console.log(`Connection error ${err}`));
+// dbConnection.once("open", () => console.log("Connected to DB!"));
 
+app.use('/', router)
 
 const port = process.env.PORT || 8000
 
