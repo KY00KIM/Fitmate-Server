@@ -15,7 +15,6 @@ router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs))
 router.use("/api/user", user)
 
 router.get("/", (req, res) => {
-    //Hello World 데이터 반환
     res.send("Hello World")
 })
 
