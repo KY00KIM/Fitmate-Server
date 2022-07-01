@@ -1,10 +1,9 @@
 /*
-package com.example.config;
+Link: https://www.npmjs.com/package/status-code-enum
+Example: res.statusCode = StatusCode.ClientErrorBadRequest
 
-import lombok.Getter;
-
-@Getter
 public enum BaseResponseStatus {
+
     SUCCESS(true,"요청 성공", "200"),
     REQUEST_ERROR(false,"입력값을 확인해주세요.", "401"),
     EMPTY_JWT(false,"JWT를 입력해주세요.", "401"),
@@ -39,3 +38,25 @@ public enum BaseResponseStatus {
     }
 }
 */
+
+const { StatusCode } = require('status-code-enum')
+const STATUS_CODE = {
+    
+    // SUCCESS 200
+    SUCCESS_OK: StatusCode.SuccessOK,
+
+
+    // USER 
+    INVALID_USER_IDX: StatusCode.ClientErrorNotFound,
+    INVALID_USER: StatusCode.ClientErrorUnauthorized,
+    EMPTY_JWT: StatusCode.ClientErrorUnauthorized,
+    INVALID_JWT:  StatusCode.ClientErrorUnauthorized,
+
+    // FITNESS CENTER
+    INVALID_FITNESS_CENTER: StatusCode.ClientErrorNotFound,
+
+    // SERVER ERROR
+    INTERNEL_SERVER_ERROR: StatusCode.ServerErrorInternal
+}
+
+module.exports = STATUS_CODE;

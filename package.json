@@ -17,7 +17,8 @@
     "http-status-codes": "^2.2.0",
     "mongodb": "^4.7.0",
     "mongoose": "^6.4.0",
-    "nodemon": "^2.0.18"
+    "nodemon": "^2.0.18",
+    "status-code-enum": "^1.0.0"
   },
   "devDependencies": {
     "swagger-jsdoc": "^6.2.1",
