@@ -6,7 +6,10 @@ const { Types: { ObjectId, Double } } = mongoose.Schema;
 const userSchema = mongoose.Schema({
 
   user_name: String,
-  user_pwd: String,
+  user_pwd: {
+    type: String,
+    select: false
+  },
   user_email: String,
   user_address: String,
   user_nickname: {
@@ -14,7 +17,9 @@ const userSchema = mongoose.Schema({
     required: true
   },
   user_profile_img: String,
-  user_background_img: String,
+  user_background_img: [{
+    type: String
+  }],
   user_introduce: String,
   user_fitness_part: [{
     type: ObjectId,
@@ -53,6 +58,6 @@ const userSchema = mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = { User }
+module.exports = { User };
 
 

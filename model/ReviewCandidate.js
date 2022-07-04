@@ -12,6 +12,6 @@ const reviewCandidateSchema = mongoose.Schema({
 });
 
 
-const User = mongoose.model('ReviewCandidate', reviewCandidateSchema);
+const ReviewCandidate = mongoose.model('ReviewCandidate', reviewCandidateSchema);
 
 module.exports = { ReviewCandidate }

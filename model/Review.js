@@ -21,9 +21,9 @@ const reviewSchema = mongoose.Schema({
   versionKey: false,
   timestamps: true,
   toJSON: { virtuals: true }
-})
+});
 
 
-const User = mongoose.model('Review', reviewSchema);
+const Review = mongoose.model('Review', reviewSchema);
 
-module.exports = { Review }
+module.exports = { Review };
