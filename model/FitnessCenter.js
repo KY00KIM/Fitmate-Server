@@ -8,7 +8,9 @@ const fitnessCenterSchema = mongoose.Schema({
     required: true
   },
   center_address: String,
-  center_img: String,
+  center_img: [{
+    type:String,
+  }],
   center_location: {
     type: ObjectId,
     ref: 'Location',

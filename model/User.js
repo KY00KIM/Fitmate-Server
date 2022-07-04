@@ -14,7 +14,9 @@ const userSchema = mongoose.Schema({
     required: true
   },
   user_profile_img: String,
-  user_background_img: String,
+  user_background_img: [{
+    type: String
+  }],
   user_introduce: String,
   user_fitness_part: [{
     type: ObjectId,
