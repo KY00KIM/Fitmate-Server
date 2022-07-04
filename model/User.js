@@ -1,79 +1,55 @@
 const mongoose = require('mongoose');
+require('mongoose-double')(mongoose);
+const { Types: { ObjectId, Double } } = mongoose.Schema;
 
 
 const userSchema = mongoose.Schema({
-  U_ID: {
+
+  user_name: String,
+  user_pwd: String,
+  user_email: String,
+  user_address: String,
+  user_nickname: {
+    type: String,
+    required: true
+  },
+  user_profile_img: String,
+  user_background_img: String,
+  user_introduce: String,
+  user_fitness_part: [{
+    type: ObjectId,
+    ref: 'FitnessPart'
+  }],
+  user_age: {
     type: Number,
-    min: -2147483648,
-    max: 2147483647,
-    unique: true,
-    primary: true,
-    required: true
+    min: 1,
+    max: 200
   },
-  U_NAME: {
-    type: String,
-    maxlength: 200,
-    required: true
-  },
-  U_PWD: {
-    type: String,
-    maxlength: 200,
-    required: true
-  },
-  U_EMAIL: {
-    type: String,
-    maxlength: 200,
-    required: true
-  },
-  U_LOC: {
-    type: Number,
-    min: -2147483648,
-    max: 2147483647,
-    ref: 'Location',
-    required: true,
-    reference: {
-      ref: 'Location',
-      localField: 'U_LOC',
-      foreignField: 'L_ID'
-    }
-  },
-  U_ADDR: {
-    type: String,
-    maxlength: 200,
-    required: true
-  },
-  U_NICKNAME: {
-    type: String,
-    maxlength: 200,
-    required: true
-  },
-  U_PROFILE_IMG: {
-    type: String,
-    maxlength: 200,
-    required: true
-  },
-  U_INTRODUCE: {
-    type: String,
-    maxlength: 200,
-    required: true
-  },
-  U_AGE: {
-    type: Number,
-    min: -2147483648,
-    max: 2147483647,
-    required: true
-  },
-  U_GENDER: {
+  user_gender: {
     type: Boolean,
     required: true
   },
-  U_LBOUND: {
-    type: Number,
-    min: -2147483648,
-    max: 2147483647,
-    required: true
+  user_loc_bound: Number,
+  fitness_center_id: {
+    type: ObjectId,
+    ref: 'FitnessCenter'
+  },
+  user_longitude: Double,
+  user_latitude: Double,
+  location_id: {
+    type: ObjectId,
+    ref: 'Location'
+  },
+  social: {
+    user_token: String,
+    user_token_exp: Number,
+    token_provider: String,
   }
-})
+}, {
+  versionKey: false,
+  timestamps: true,
+  toJSON: { virtuals: true }
+});
 
 const User = mongoose.model('User', userSchema);
 

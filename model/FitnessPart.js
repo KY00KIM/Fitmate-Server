@@ -1,23 +1,15 @@
 const mongoose = require('mongoose');
 
-
-
-const fitnessPartSchema = mongoose.Schema(
-  {
-    W_ID: {
-      type: Number,
-      min: -2147483648,
-      max: 2147483647,
-      unique: true,
-      primary: true,
-      required: true
-    },
-    W_NAME: {
-      type: String,
-      maxlength: 200,
-      required: true
-    }
-  })
+const fitnessPartSchema = mongoose.Schema({
+  fitness_name: {
+    type: String,
+    required: true
+  }
+}, {
+  versionKey: false,
+  timestamps: true,
+  toJSON: { virtuals: true }
+});
 
 
 const FitnessPart = mongoose.model('FitnessPart', fitnessPartSchema);
