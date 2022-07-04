@@ -14,4 +14,4 @@ const fitnessPartSchema = mongoose.Schema({
 
 const FitnessPart = mongoose.model('FitnessPart', fitnessPartSchema);
 
-module.exports = { FitnessPart }
+module.exports = { FitnessPart };

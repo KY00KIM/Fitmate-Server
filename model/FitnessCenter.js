@@ -29,8 +29,6 @@ const fitnessCenterSchema = mongoose.Schema({
 });
 
 
-
-
 const FitnessCenter = mongoose.model('FitnessCenter', fitnessCenterSchema);
 
-module.exports = { FitnessCenter }
+module.exports = { FitnessCenter };
