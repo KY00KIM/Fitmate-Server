@@ -42,21 +42,23 @@ public enum BaseResponseStatus {
 const { StatusCode } = require('status-code-enum')
 const STATUS_CODE = {
     
-    // SUCCESS 200
-    SUCCESS_OK: StatusCode.SuccessOK,
+    // SUCCESS
+    SUCCESS_OK: StatusCode.SuccessOK,                           // 200
+    SUCCESS_CREATED: StatusCode.SuccessCreated,                 // 201
+    SUCCESS_NO_CONTENT: StatusCode.SuccessNoContent,            // 204
+    CONNECTED: StatusCode.SuccessNoContent,                     // 204
 
-
-    // USER 
-    INVALID_USER_IDX: StatusCode.ClientErrorNotFound,
-    INVALID_USER: StatusCode.ClientErrorUnauthorized,
-    EMPTY_JWT: StatusCode.ClientErrorUnauthorized,
-    INVALID_JWT:  StatusCode.ClientErrorUnauthorized,
-
-    // FITNESS CENTER
-    INVALID_FITNESS_CENTER: StatusCode.ClientErrorNotFound,
+    // USER, FITNESS CENTER
+    INVALID_USER: StatusCode.ClientErrorUnauthorized,           // 401
+    EMPTY_JWT: StatusCode.ClientErrorUnauthorized,              // 401
+    INVALID_JWT:  StatusCode.ClientErrorUnauthorized,           // 401
+    INVALID_USER_IDX: StatusCode.ClientErrorNotFound,           // 404
+    URI_NOT_FOUND: StatusCode.ClientErrorNotFound,              // 404
+    INVALID_APPOINTMENT_IDX: StatusCode.ClientErrorNotFound,    // 404
 
     // SERVER ERROR
-    INTERNEL_SERVER_ERROR: StatusCode.ServerErrorInternal
+    INTERNEL_SERVER_ERROR: StatusCode.ServerErrorInternal,       // 500
+    DATABASE_ERROR: StatusCode.ServerErrorInternal
 }
 
 module.exports = STATUS_CODE;

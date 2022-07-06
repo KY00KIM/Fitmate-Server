@@ -14,14 +14,14 @@ app.get('/', (req, res) =>{
     ResponseManager.getDefaultResponseHandler(res)['onSuccess']('데이터', 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
     console.log('Get Success 요청 성공');
 });
-// G
+
 app.get('/set', (req, res) => {
     res.set('Content-Type', 'application/json');
-})
+});
 
 //Error 응답
 app.get('/error', (req, res) =>{
-    ResponseManager.getDefaultResponseHandler(res)['onError']({});
+    ResponseManager.getDefaultResponseHandler(res)['onError']('INVALID_USER', STATUS_CODE.INVALID_USER);
     console.log('Get Error 요청 성공');
 });
 
