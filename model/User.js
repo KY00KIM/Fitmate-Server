@@ -46,9 +46,10 @@ const userSchema = mongoose.Schema({
     ref: 'Location'
   },
   social: {
-    user_token: String,
-    user_token_exp: Number,
-    token_provider: String,
+    user_id: String,
+    user_name: String,
+    provider: String,
+    firebase_info: Object,
   }
 }, {
   versionKey: false,
