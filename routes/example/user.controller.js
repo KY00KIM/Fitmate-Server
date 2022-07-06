@@ -1,5 +1,5 @@
 /*
-* 파일명 :user.controller.js
+* 파일명 :example.user.controller.js
 * 기능 : 실제 api 요청 처리 구현
 * 상세 설명 : /api/user 로 들어오는 요청 처리
 */
