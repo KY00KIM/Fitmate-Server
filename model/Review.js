@@ -15,7 +15,12 @@ const reviewSchema = mongoose.Schema({
     required: true
   },
   review_body: {
-    type: String
+    type: String,
+    required: true
+  },
+  user_rating: {
+    type: Number,
+    required: true
   }
 }, {
   versionKey: false,
