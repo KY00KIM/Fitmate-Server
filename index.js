@@ -1,12 +1,11 @@
 const express = require("express");
 const app = express();
 const path = require("path");
-const mongoose = require("mongoose");
+const connect = require('./connection');
 const router = require('./routes')
 
 
-
-
+connect();
 
 app.use('/', router)
 

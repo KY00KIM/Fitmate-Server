@@ -2,6 +2,7 @@ const router = require("express").Router();
 const user = require("./user");
 const appointment = require("./appointment");
 const review = require('./review');
+const match = require('./match');
 const { swaggerUi, specs } = require("../docs/swagger");
 
 
@@ -18,6 +19,7 @@ router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 router.use("/v1/users", user);
 router.use("/v1/appointments", appointment);
 router.use("/v1/reviews", review);
+router.use("/v1/matching", match);
 
 router.get("/", (req, res) => {
     res.send("Hello World")
