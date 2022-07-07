@@ -20,9 +20,9 @@ class ResponseManager {
             onSuccess: function ( data, message, code) {
                 ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
             },
-            onError : function ( error ) {
+            onError : function ( message, code ) {
                 console.log('getDefaultResponseHandler onError');
-                ResponseManager.respondWithError(res, error.status || 500, error.message || 'Unknown error');
+                ResponseManager.respondWithError(res, code || 500, message || 'Unknown error');
             }
         }
     }
@@ -31,9 +31,9 @@ class ResponseManager {
             onSuccess : function ( data, message, code){
                 ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
             },
-            onError :function (error) {
+            onError :function (message, code ) {
                 console.log('getDefaulterResponseHandlerData onError');
-                ResponseManager.respondWithErrorData(res, error.status, error.message, error.data);
+                ResponseManager.respondWithErrorData(res, code || 500 , message || 'Unknown error', error.data || "");
             }
         }
     }
@@ -42,9 +42,9 @@ class ResponseManager {
             onSuccess:function (data, message, code){
                 successCallback(data, message, code);
             },
-            onError : function (error){
+            onError : function (message, code ){
                 console.log('getDefaultResponseHandlerError onError');
-                ResponseManager.respondWithError(res, error.status || 500, error.message || 'Unknown error');
+                ResponseManager.respondWithError(res, code || 500, message || 'Unknown error');
             }
         }
     }
@@ -65,29 +65,26 @@ class ResponseManager {
             rel:rel
         }
     }
-    static respondWithSuccess ( res, code, data, message="", links=[] ){
+    static respondWithSuccess ( res, code, data, message="" ){
         let response = Object.assign({}, BasicResponse);
         response.success = true;
         response.message = message;
         response.data = data;
-        response.links = links;
         res.status(code).json(response);
     }
-    static respondWithErrorData (res, errorCode, message="", data="", llinks=[]) {
+    static respondWithErrorData (res, errorCode, message="", data="") {
         console.log('ResponseManager respondWithErrorData');
         let response = Object.assign({}, BasicResponse);
         response.success = false;
         response.message = message;
         response.data = data;
-        response.links = links;
         res.status(errorCode).json(response);
     }
-    static respondWithError (res, errorCode, message="",links=[]) {
+    static respondWithError (res, errorCode, message="") {
         console.log('ResponseManager respondWithError');
         let response = Object.assign({}, BasicResponse);
         response.success = false;
         response.message = message;
-        response.links = links;
         res.status(errorCode).json(response);
     }
 }
