@@ -19,11 +19,6 @@ const appointmentController = {
   /**
    * @path {GET} http://localhost:8000/v1/appointments/:appointmentId
    * @description 특정 약속글을 조회하는 GET Method
-   *
-   *  Path Variables 방식
-   *
-   *  ex) 아래 GET 주소 에서 :appointmentId 는 서버에서 설정한 주소 키 값이다.
-   *      값을 찾을 때는 req.params.appointmentId 로 값을 찾는다.
    */
 
   getOneAppointment: async (req, res) => {
