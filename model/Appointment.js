@@ -19,6 +19,10 @@ const appointmentSchema = mongoose.Schema({
   match_join_id: {
     type: ObjectId,
     ref: 'User'
+  },
+  match_succeeded:{
+    type: Boolean,
+    default: false
   }
 }, {
   versionKey: false,
