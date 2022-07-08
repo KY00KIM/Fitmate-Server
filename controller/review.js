@@ -1,5 +1,5 @@
-const Review = require('../model/Review');
-const ReviewCandidate = require('../model/ReviewCandidate');
+const {Review} = require('../model/Review');
+const {ReviewCandidate} = require('../model/ReviewCandidate');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 
@@ -13,7 +13,7 @@ const reviewController = {
             const reviewCandidates = await ReviewCandidate.find({});
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](reviewCandidates, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
         } catch (error) {
-            ResponseManager.getDefaultResponseHandler(res)['onError']('INVALID_USER', STATUS_CODE.INVALID_USER);
+            ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
         }
           
     },
@@ -35,7 +35,7 @@ const reviewController = {
             });
             ResponseManager.getDefaultResponseHandler(res)['onSuccess']({}, 'SUCCESS_NO_CONTENT', STATUS_CODE.SUCCESS_NO_CONTENT);
           } catch (error) {       
-            ResponseManager.getDefaultResponseHandler(res)['onError']('INVALID_APPOINTMENT_IDX', STATUS_CODE.INVALID_APPOINTMENT_IDX);
+            ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
           }
     }
 };

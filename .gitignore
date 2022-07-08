@@ -174,4 +174,16 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
+### Firebase ###
+.idea
+**/node_modules/*
+**/.firebaserc
+
+### Firebase Patch ###
+.runtimeconfig.json
+.firebase/
+
+## AdminKey
+config/firebaseAdminKey.json
+
 # End of https://www.toptal.com/developers/gitignore/api/macos,node

@@ -1,4 +1,4 @@
-const Appointment = require('../model/Appointment');
+const {Appointment} = require('../model/Appointment');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 
@@ -12,7 +12,7 @@ const appointmentController = {
       const appointments = await Appointment.find({});
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointments, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
     } catch (error) {
-      ResponseManager.getDefaultResponseHandler(res)['onError']('INVALID_USER', STATUS_CODE.INVALID_USER);
+      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
 
@@ -29,7 +29,7 @@ const appointmentController = {
           const appointment = await Appointment.findById(appointmentId);
           ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
       }catch(error){
-          ResponseManager.getDefaultResponseHandler(res)['onError']('INVALID_APPOINTMENT_IDX', STATUS_CODE.INVALID_APPOINTMENT_IDX);
+          ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
       }
   },
 
@@ -51,7 +51,7 @@ const appointmentController = {
       });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess']({}, 'SUCCESS_NO_CONTENT', STATUS_CODE.SUCCESS_NO_CONTENT);
     } catch (error) {       
-      ResponseManager.getDefaultResponseHandler(res)['onError']('INVALID_APPOINTMENT_IDX', STATUS_CODE.INVALID_APPOINTMENT_IDX);
+      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   }
 };
