@@ -20,8 +20,13 @@ const reviewSchema = mongoose.Schema({
   },
   user_rating: {
     type: Number,
-    required: true
-  }
+    required: true,
+    default: 5
+  },
+  review_candidate:[{
+    type:ObjectId,
+    ref: 'ReviewCandidate'
+  }]
 }, {
   versionKey: false,
   timestamps: true,
