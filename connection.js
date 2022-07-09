@@ -5,7 +5,11 @@ const connect = () => {
     if(process.env.NODE_ENV !== 'production'){
         mongoose.set('debug', true);
     }
-    const url = `mongodb://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOSTNAME}:${process.env.DATABASE_PORT}/${process.env.MONGO_DB}?authSource=admin`;
+    // Local
+    // const url = `mongodb://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@${process.env.DATABASE_HOSTNAME}:${process.env.DATABASE_PORT}/${process.env.MONGO_DB}?authSource=admin`;
+    
+    // Atlas
+    const url = `mongodb+srv://${process.env.DATABASE_USERNAME}:${process.env.DATABASE_PASSWORD}@fitmate.ein72.mongodb.net/?retryWrites=true&w=majority`
     mongoose.connect(url, {
         dbName: 'FitMate',
         // useNewUrlParser: true,

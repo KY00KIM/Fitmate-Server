@@ -1,4 +1,4 @@
-const Appointment = require('../model/Appointment');
+const {Appointment} = require('../model/Appointment');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 
@@ -10,9 +10,9 @@ const appointmentController = {
   getAllAppointment : async (req, res) => {
     try {
       const appointments = await Appointment.find({});
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointments, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointments, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
-      ResponseManager.getDefaultResponseHandler(res)['onError']('INVALID_USER', STATUS_CODE.INVALID_USER);
+      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
 
@@ -27,9 +27,9 @@ const appointmentController = {
               params: { appointmentId },
             } = req;
           const appointment = await Appointment.findById(appointmentId);
-          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
+          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessOK', STATUS_CODE.SuccessOK);
       }catch(error){
-          ResponseManager.getDefaultResponseHandler(res)['onError']('INVALID_APPOINTMENT_IDX', STATUS_CODE.INVALID_APPOINTMENT_IDX);
+          ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
       }
   },
 
@@ -49,9 +49,9 @@ const appointmentController = {
         appointment_location,
         appointment_date,
       });
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess']({}, 'SUCCESS_NO_CONTENT', STATUS_CODE.SUCCESS_NO_CONTENT);
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess']({}, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {       
-      ResponseManager.getDefaultResponseHandler(res)['onError']('INVALID_APPOINTMENT_IDX', STATUS_CODE.INVALID_APPOINTMENT_IDX);
+      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   }
 };
