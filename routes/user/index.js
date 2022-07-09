@@ -14,4 +14,7 @@ userRouter.post('/info/:userId', userController.writeUserInfo);
 // 특정 사용자 정보 변경 PATCH
 userRouter.patch('/:userId', userController.updateUserInfo);
 
+// 새로운 사용자 등록 POST
+userRouter.post('/oauth', userController.assignUser);
+
 module.exports = userRouter; 
