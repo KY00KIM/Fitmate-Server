@@ -66,7 +66,7 @@ const userController = {
                 {user_nickname: (req.body.user_nickname || user.user_nickname)},
                 {overwrite:true}
             );
-            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
         }catch(error){
             ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
         }

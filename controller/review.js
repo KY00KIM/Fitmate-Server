@@ -11,7 +11,7 @@ const reviewController = {
     getReviewCandidates: async (req, res) => {
         try {
             const reviewCandidates = await ReviewCandidate.find({});
-            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](reviewCandidates, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](reviewCandidates, 'SuccessOK', STATUS_CODE.SuccessOK);
         } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
         }
@@ -33,7 +33,7 @@ const reviewController = {
                 user_rating,
                 review_body
             });
-            ResponseManager.getDefaultResponseHandler(res)['onSuccess']({}, 'SUCCESS_NO_CONTENT', STATUS_CODE.SUCCESS_NO_CONTENT);
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess']({}, 'SuccessCreated', STATUS_CODE.SuccessCreated);
           } catch (error) {       
             ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
           }

@@ -10,9 +10,9 @@ const postController = {
      getAllPosts: async (req, res) =>{
         try {
             const posts = await Post.find({});
-            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
           } catch (error) {
-            ResponseManager.getDefaultResponseHandler(res)['onError']('INVALID_USER', STATUS_CODE.INVALID_USER);
+            ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
           }
     },
     /**
@@ -25,9 +25,9 @@ const postController = {
                 params: { postId },
               } = req;
             const post = await Post.findById(postId);
-            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessOK', STATUS_CODE.SuccessOK);
           } catch (error) {
-            ResponseManager.getDefaultResponseHandler(res)['onError']('INVALID_USER', STATUS_CODE.INVALID_USER);
+            ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
           }
     },
     /**
@@ -37,12 +37,13 @@ const postController = {
     writePost: async (req, res) =>{
         try {
             const {
-                body: {  },
+                body: { user_id,location_id, post_fitness_part, post_title, promise_location, promise_date, post_img, post_main_text },
               } = req;
-            const post = await Post.findById(postId);
-            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
+            const post = await Post.create({
+            });
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessCreated', STATUS_CODE.SuccessCreated);
           } catch (error) {
-            ResponseManager.getDefaultResponseHandler(res)['onError']('INVALID_USER', STATUS_CODE.INVALID_USER);
+            ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
           }
     }
 

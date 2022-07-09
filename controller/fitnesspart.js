@@ -24,12 +24,10 @@ const fitnesspartController = {
             const {
                 body: { fitness_name },
               } = req;
-
             const fitnesspart = await FitnessPart.create({
                 'fitness_name':fitness_name
             });
-            console.log(fitnesspart);
-            ResponseManager.getDefaultResponseHandler(res)['onSuccess']({}, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitnesspart, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
           } catch (error) {
             console.log(error);
             ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);

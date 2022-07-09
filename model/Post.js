@@ -38,7 +38,8 @@ const postSchema = mongoose.Schema({
     default: false
   },
   promise_location:{
-    type: String,
+    type: ObjectId,
+    ref: 'FitnessCenter'
   },
   promise_date:{
     type: Date,

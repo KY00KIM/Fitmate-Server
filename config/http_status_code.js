@@ -6,7 +6,7 @@ Example: res.statusCode = StatusCode.ClientErrorBadRequest
 const { StatusCode } = require('status-code-enum')
 const STATUS_CODE = {
     
-    // OK with Content 200
+    // OK 200
     SuccessOK: StatusCode.SuccessOK,
     // Created 201
     SuccessCreated: StatusCode.SuccessCreated,    
@@ -17,7 +17,7 @@ const STATUS_CODE = {
 
     // Bad Request 400
     ClientErrorBadRequest: StatusCode.ClientErrorBadRequest,
-    // Unauthorized 401: JWT...
+    // Unauthorized 401: JWT, Oauth
     ClientErrorUnauthorized: StatusCode.ClientErrorUnauthorized,
     // Forbidden 403: 접근 권한 부족 
     ClientErrorForbidden: StatusCode.ClientErrorForbidden,

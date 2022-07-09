@@ -6,6 +6,8 @@ const review = require('./review');
 const match = require('./match');
 const post = require('./post');
 const fitnesspart = require('./fitnesspart');
+const location = require('./location');
+const fitnesscenter = require('./fitnesscenter');
 
 const { swaggerUi, specs } = require("../docs/swagger");
 
@@ -26,7 +28,8 @@ router.use("/v1/reviews", review);
 router.use("/v1/matching", match);
 router.use("/v1/posts", post);
 router.use("/v1/fitnesspart", fitnesspart);
-
+router.use("/v1/locations", location);
+router.use("/v1/fitnesscenters", fitnesscenter);
 
 router.get("/", (req, res) => {
     res.send("Hello World")
