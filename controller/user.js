@@ -72,6 +72,14 @@ const userController = {
         }
     },
 
+  /**
+  * @path {POST} http://localhost:8000/v1/users/oauth
+  * @description 특정 사용자 정보의 일부를 변경하는 POST Method
+  */
+  assignUser: async (req, res) => {
+
+
+  }
 };
 
 module.exports = userController;

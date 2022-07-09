@@ -50,6 +50,10 @@ const userSchema = mongoose.Schema({
     user_name: String,
     provider: String,
     firebase_info: Object,
+  },
+  is_deleted: {
+    type: Boolean,
+    default: false
   }
 }, {
   versionKey: false,
