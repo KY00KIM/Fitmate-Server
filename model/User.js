@@ -11,20 +11,26 @@ const userSchema = mongoose.Schema({
     select: false
   },
   user_email: String,
+  // 데이터 파싱 필요
   user_address: String,
   user_nickname: {
     type: String,
     required: true
   },
   user_profile_img: String,
-  user_background_img: [{
-    type: String
-  }],
+  // 운동 스케줄
+  user_schedule_time: {
+
+  },
+  user_weekday:{
+
+  },
   user_introduce: String,
   user_fitness_part: [{
     type: ObjectId,
     ref: 'FitnessPart'
   }],
+  // 확인 필요
   user_age: {
     type: Number,
     min: 1,
@@ -34,7 +40,10 @@ const userSchema = mongoose.Schema({
     type: Boolean,
     required: true
   },
-  user_loc_bound: Number,
+  user_loc_bound:{
+    type: Number,
+    default: 3
+  } ,
   fitness_center_id: {
     type: ObjectId,
     ref: 'FitnessCenter'

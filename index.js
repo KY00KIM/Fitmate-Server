@@ -3,13 +3,13 @@ const app = express();
 const path = require("path");
 const connect = require('./connection');
 const router = require('./routes');
-const { verifyUser } = require("./controller/auth")
+const { verifyUser } = require("./middleware/auth")
 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(verifyUser)
+// app.use(verifyUser)
 
 connect();
 app.use(express.json());

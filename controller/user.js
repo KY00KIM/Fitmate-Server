@@ -19,6 +19,7 @@ const userController = {
     * @path {GET} http://localhost:8000/v1/users/:userId
     * @description 특정 사용자를 조회하는 GET Method
     */
+   // 사용자 리뷰 정보 하나 전송 + 없을 시 랜덤 전송
     getOneUser: async (req, res) =>{
         try {
             const {

@@ -8,6 +8,7 @@ const post = require('./post');
 const fitnesspart = require('./fitnesspart');
 const location = require('./location');
 const fitnesscenter = require('./fitnesscenter');
+// const push = require('./push');
 
 const { swaggerUi, specs } = require("../docs/swagger");
 
@@ -30,6 +31,7 @@ router.use("/v1/posts", post);
 router.use("/v1/fitnesspart", fitnesspart);
 router.use("/v1/locations", location);
 router.use("/v1/fitnesscenters", fitnesscenter);
+// router.use("/v1/push", push);
 
 router.get("/", (req, res) => {
     res.send("Hello World")
