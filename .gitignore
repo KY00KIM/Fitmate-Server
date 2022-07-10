@@ -184,6 +184,6 @@ dist
 .firebase/
 
 ## AdminKey
-config/ServiceAccount.json
+config/serviceAccount.json
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,node
