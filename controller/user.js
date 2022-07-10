@@ -1,6 +1,7 @@
 const {User} = require("../model/User");
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
+const {timeConvert} = require('../config/timeConvert')
 
 const userController = {
     /**
@@ -26,6 +27,8 @@ const userController = {
                 params: { userId },
               } = req;
             const user = await User.findById(userId);
+            console.log(user.createdAt);
+            console.log(timeConvert(user.createdAt));
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
         }catch(error){
             ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);

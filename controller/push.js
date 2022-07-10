@@ -3,6 +3,9 @@ const admin = require('firebase-admin');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 
+// 1.채팅: 채팅 오면 알림 전송 -> 바로
+// 2.리뷰: 자정에 약속 탐색 -> 12:00에 리뷰 작성 알림 요청
+// 3.위치정보: FE에 GPS 정보 요청 
 const pushController = {
     pushAlarm: async (req, res) => {
         let deviceToken =`토큰값입력`

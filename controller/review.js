@@ -2,6 +2,7 @@ const {Review} = require('../model/Review');
 const {ReviewCandidate} = require('../model/ReviewCandidate');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
+const moment = require('moment');
 
 const reviewController = {
     /**
@@ -48,6 +49,7 @@ const reviewController = {
                 review_body,
                 review_candidate
             });
+            
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessCreated', STATUS_CODE.SuccessCreated);
           } catch (error) {       
             ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
