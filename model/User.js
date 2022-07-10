@@ -58,6 +58,7 @@ const userSchema = mongoose.Schema({
     user_id: String,
     user_name: String,
     provider: String,
+    device_token: String,
     firebase_info: Object,
   },
   is_deleted: {
