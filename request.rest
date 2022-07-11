@@ -119,3 +119,27 @@ DELETE http://localhost:8000/v1/posts/62cbb7a4e03e3b9ad962e408
 
 
 
+#####################
+# Match API REQUEST #
+#####################
+
+
+###
+#POST http://localhost:8000/v1/matching/:appointmentId
+POST http://localhost:8000/v1/matching/62cb03648cf57fb306c82f6d
+Content-Type: application/json
+
+{
+	"user_1": {
+	    "userId": "62c66c2c4b8212e4674dbe17",
+		"user_latitude": 37.50228,
+		"user_longitude": 127.053906
+	},
+    "user_2":{
+		"userId": "62c66aef4b8212e4674dbe16",
+		"user_latitude": 37.502367,
+		"user_longitude": 127.053864
+    }
+}
+
+
