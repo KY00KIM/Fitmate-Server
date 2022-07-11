@@ -63,3 +63,59 @@ Content-Type: application/json
     "user_weekday": { "sat":true},
     "user_profile_img": "https://i1.sndcdn.com/artworks-000280219757-ls2h99-t500x500.jpg"
 }
+
+
+
+###
+
+
+
+
+
+####################
+# POST API REQUEST #
+####################
+
+#GET http://localhost:8000/v1/posts/
+GET http://localhost:8000/v1/posts/
+
+###
+#GET http://localhost:8000/v1/posts/:postId
+GET http://localhost:8000/v1/posts/62c91f374b3a0eaed88e7a7d
+
+###
+#POST http://localhost:8000/v1/posts/
+POST http://localhost:8000/v1/posts/
+Content-Type: application/json
+
+{
+  "user_id": "62c66d3d4b8212e4674dbe18",
+  "location_id": "62c66fbf4b8212e4674dbe2a",
+  "post_fitness_part":["62c670514b8212e4674dbe34", "62c6705e4b8212e4674dbe35"],
+  "post_title":"내일 여의도역 19시 스타트원짐 같이 등 가슴해요!",
+  "promise_location": "62c672034b8212e4674dbe4b",
+  "promise_date": "2022-07-12T19:00:00.000+00:00",
+  "post_img": "https://www.korea.kr/newsWeb/resources/attaches/2016.11/08/2735a156cafd3ec8c1300e08fed9cf09.jpg",
+  "post_main_text": "안녕하세요 여의도 2년차 직딩이에요!\n요즘 운동을 너무 쉬었더니 살이 너무 쪘네요ㅠㅠ\n근처 계시는 분들, 같이 운동하고 살빼요!!"
+}
+
+
+###
+#PATCH http://localhost:8000/v1/posts/:postId
+PATCH http://localhost:8000/v1/posts/62cbb42936bf379224d1edd9
+Content-Type: application/json
+
+{
+    "post_title":"STARTONE GYM WORKOUT 기릿ㄱㄱ",
+  "post_fitness_part":["62c670664b8212e4674dbe36"],
+    "promise_date": "2022-07-12T10:00:00.000+00:00",
+      "post_main_text": "뒤룩뒤룩 여의도에는 돼지가 살아요~~\n\n근처에 계시는 분들, 같이 운동하고 살빼요!!"
+}
+
+
+###
+#DELETE http://localhost:8000/v1/posts/:postId
+DELETE http://localhost:8000/v1/posts/62cbb7a4e03e3b9ad962e408
+
+
+

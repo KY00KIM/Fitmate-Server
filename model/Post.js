@@ -14,42 +14,45 @@ const postSchema = mongoose.Schema({
     ref: 'Location',
     required: true
   },
-  post_fitness_part:[{
+  post_fitness_part: [{
     type: ObjectId,
     ref: 'FitnessPart'
   }],
-  post_title:{
+  post_title: {
     type: String,
     required: true
   },
-  post_readNo:{
+  post_readNo: {
     type: Number,
     required: true,
     default: 0
   },
-  post_hit:{
+  post_hit: {
     type: Number,
     required: true,
     default: 0
   },
-  is_deleted:{
-    type:Boolean,
+  is_deleted: {
+    type: Boolean,
     required: true,
     default: false
   },
-  promise_location:{
+  promise_location: {
     type: ObjectId,
-    ref: 'FitnessCenter'
+    ref: 'FitnessCenter',
   },
-  promise_date:{
+  promise_date: {
     type: Date,
-    required: true
+    required: true,
+    default: Date.now()
   },
   post_img: {
-    type: String
+    type: String,
+    default: ""
   },
-  post_main_text:{
-    type: String
+  post_main_text: {
+    type: String,
+    default: ""
   }
 
 }, {
