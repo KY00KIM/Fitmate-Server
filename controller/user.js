@@ -16,6 +16,8 @@ const userController = {
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
+
+
   /**
   * @path {GET} http://localhost:8000/v1/users/:userId
   * @description 특정 사용자를 조회하는 GET Method
@@ -27,16 +29,16 @@ const userController = {
         params: { userId },
       } = req;
       const user = await User.findById(userId);
-      console.log(user.createdAt);
-      console.log(timeConvert(user.createdAt));
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
+
+
   /**
   * @path {POST} http://localhost:8000/v1/users/info/:userId
-  * @description 특정 사용자를 조회하는 POST Method
+  * @description 특정 사용자 정보를 등록하는 POST Method
   */
   writeUserInfo: async (req, res) => {
     try {
@@ -54,6 +56,8 @@ const userController = {
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
+
+
   /**
   * @path {PATCH} http://localhost:8000/v1/users/:userId
   * @description 특정 사용자 정보의 일부를 변경하는 PATCH Method
@@ -71,6 +75,7 @@ const userController = {
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
+
 
   /**
   * @path {POST} http://localhost:8000/v1/users/oauth
