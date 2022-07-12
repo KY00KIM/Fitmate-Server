@@ -89,4 +89,34 @@ appointmentRouter.get('/:appointmentId', appointmentController.getOneAppointment
  */
 appointmentRouter.post('/', appointmentController.writeAppointment);
 
+
+/**
+ * @swagger
+ * paths:
+ *  /v1/appointments/{appointmentId}:
+ *    delete:
+ *      summary: "사용자 약속 삭제"
+ *      description: "Delete 방식으로 특정 약속 삭제"
+ *      tags: [Appointments]
+ *      responses:
+ *        "200":
+ *          description: 특정 약속 정보
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                    ok:
+ *                      type: boolean
+ *                    users:
+ *                      type: object
+ *                      example:
+ *                          [
+ *                            { "id": 1, "name": "유저1" },
+ *                            { "id": 2, "name": "유저2" },
+ *                            { "id": 3, "name": "유저3" },
+ *                          ]
+ */
+ appointmentRouter.post('/', appointmentController.writeAppointment);
+
 module.exports = appointmentRouter; 
