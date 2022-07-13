@@ -43,14 +43,10 @@ const reviewController = {
               const {
                   params: { review_recv_id },
                 } = req;
-              const review = await Review.find({"review_recv_id":review_recv_id}).populate('review_send_id');
-              if(review){
-                ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessOK', STATUS_CODE.SuccessOK);
-              }else{
-                ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);  
-              }
+              const review = await Review.find({"review_recv_id":review_recv_id}).populate('review_send_id').populate('review_candidate');
+              ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessOK', STATUS_CODE.SuccessOK);
             } catch (error) {       
-              ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+              ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
             }
     },
     /**

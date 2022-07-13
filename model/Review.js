@@ -21,7 +21,7 @@ const reviewSchema = mongoose.Schema({
   user_rating: {
     type: Number,
     required: true,
-    default: 5
+    default: 3
   },
   review_candidate:[{
     type:ObjectId,

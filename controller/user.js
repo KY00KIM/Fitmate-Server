@@ -89,10 +89,11 @@ const userController = {
       } = req;
       //create -> find fitness_center_id
       const user = await User.create({
+        // BODY for test
         user_name: req.body.name,
         user_pwd: "",
         user_email: req.body.email,
-        //user_address parse
+        //user_address parse 
         user_address: user_address,
         user_nickname: user_nickname,
         user_profile_img: req.body.picture,

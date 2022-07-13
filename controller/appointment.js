@@ -6,7 +6,7 @@ const schedule = require('node-schedule');
 const STATUS_CODE = require('../config/http_status_code');
 const moment = require('moment');
 
-const {timeConvert} = require('../config/timeConvert');
+const timeConvert = require('../config/timeConvert');
 const {pushNotification, pushData} = require('./push');
 
 const appointmentController = {
@@ -14,14 +14,15 @@ const appointmentController = {
    * @path {GET} http://localhost:8000/v1/appointments
    * @description 사용자의 모든 약속을 조회하는 GET Method
    */
+  /// userId 필요
   getAllAppointment : async (req, res) => {
     try {
       const appointments = await Appointment.find({});
-      for(let i = 0; i < appointments.length; ++i){
-        appointments[i].appointment_date = timeConvert(appointments[i].appointment_date);
-        appointments[i].createdAt = timeConvert(appointments[i].createdAt);
-        appointments[i].updatedAt = timeConvert(appointments[i].updatedAt);
-      };
+      appointments.forEach((appointment) =>{        
+        appointment.appointment_date = timeConvert.addNineHours(appointment.appointment_date);
+        appointment.createdAt = timeConvert.addNineHours(appointment.createdAt);
+        appointment.updatedAt = timeConvert.addNineHours(appointment.updatedAt);
+      });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointments, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -39,16 +40,12 @@ const appointmentController = {
               params: { appointmentId },
             } = req;
           const appointment = await Appointment.findById(appointmentId).populate('match_start_id').populate('match_join_id');
-          if(appointment){
-            appointment.appointment_date = timeConvert(appointment.appointment_date);
-            appointment.createdAt = timeConvert(appointment.createdAt);
-            appointment.updatedAt = timeConvert(appointment.updatedAt);
-            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessOK', STATUS_CODE.SuccessOK);
-          }else{
-            ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
-          }
+          appointment.appointment_date = timeConvert.addNineHours(appointment.appointment_date);
+          appointment.createdAt = timeConvert.addNineHours(appointment.createdAt);
+          appointment.updatedAt = timeConvert.addNineHours(appointment.updatedAt);
+          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessOK', STATUS_CODE.SuccessOK);
       }catch(error){
-          ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+          ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
       }
   },
 
@@ -66,38 +63,41 @@ const appointmentController = {
       match_start_user = User.findById(match_start_id);
       match_join_user = User.findById(match_join_id);
 
-      if(match_start_user && match_join_user){
+      const appointment = await Appointment.create({
+        "match_start_id": match_start_id,
+        "match_join_id": match_join_id,
+        "appointment_date": appointment_date,
+      });
 
-        let rule = new schedule.RecurrenceRule();
-        rule.year = moment(appointment_date).year();
-        rule.month = moment(appointment_date).month() + 1;
-        rule.date = moment(appointment_date).date() + 1;
-        
-        // 리뷰 요청 알림 예약
-        console.log(rule)
-        schedule.scheduleJob(rule, pushNotification(match_start_user.social.device_token, `${match_join_user.user_nickname}님과의 운동은 어떻셨나요?`));
-        schedule.scheduleJob(rule, pushNotification(match_join_user.social.device_token, `${match_start_user.user_nickname}님과의 운동은 어떻셨나요?`));
+      // appointment_date= 2022-7-15T21:00:00
+      let rule = new schedule.RecurrenceRule();
+      rule.year = moment(appointment_date).year();        // 2022
+      rule.month = moment(appointment_date).month() + 1;  // 7
+      rule.date = moment(appointment_date).date() + 1;    // 16
+
+      rule.hour = 0;
+      rule.minute = 0;
+      rule.second = 0;
+      console.log(rule);
+
+      // 리뷰 요청 알림 예약
+      schedule.scheduleJob(rule, pushNotification(match_start_user.social.device_token,'FitMate 리뷰 알림!' ,`${match_join_user.user_nickname}님과의 운동은 어떻셨나요?`));
+      schedule.scheduleJob(rule, pushNotification(match_join_user.social.device_token, 'FitMate 리뷰 알림!', `${match_start_user.user_nickname}님과의 운동은 어떻셨나요?`));
       
-        // GPS 요청 정보 예약
-        rule.hour = moment(appointment_date).hour();
-        rule.minute = moment(appointment_date).minute();
-        rule.second = moment(appointment_date).second();
+      // GPS 요청 정보 예약
+      rule.hour = moment(appointment_date).hour();
+      rule.minute = moment(appointment_date).minute();
+      rule.second = moment(appointment_date).second();
 
-        console.log(rule)
-        schedule.scheduleJob(rule, pushData(match_start_user.social.device_token, `GPS`));
-        schedule.scheduleJob(rule, pushData(match_join_user.social.device_token, `GPS`));
-       
+      data = {
+        "appointmentId":appointment._id,
+        "GPS": "GPS"
+      }
+      schedule.scheduleJob(rule, pushData(match_start_user.social.device_token, data));
+      schedule.scheduleJob(rule, pushData(match_join_user.social.device_token, data));
+      
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessCreated', STATUS_CODE.SuccessCreated);
 
-        const post = await Appointment.create({
-          "match_start_id": match_start_id,
-          "match_join_id": match_join_id,
-          "appointment_date": appointment_date,
-        });
-
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessCreated', STATUS_CODE.SuccessCreated);
-    } else{ 
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
-   }
     } catch (error) {       
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }

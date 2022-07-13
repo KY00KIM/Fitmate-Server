@@ -44,10 +44,6 @@ async function pushChat(req, res){
             params: { userId },
           } = req;
         const user = await User.findById(userId);
-        if(!user){
-            ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
-            return;
-        }
         pushNotification(userId.social.device_token, "Mate Chatting", "채팅이 도착했어요!");
         ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessOK', STATUS_CODE.SuccessOK);
       } catch (error) {
