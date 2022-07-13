@@ -1,8 +1,8 @@
 const { User } = require("../model/User");
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
-const {timeConvert} = require('../config/timeConvert');
-
+const timeConvert = require('../config/timeConvert');
+const logger = require('../config/winston');
 const userController = {
   /**
   * @path {GET} http://localhost:8000/v1/users
@@ -11,8 +11,10 @@ const userController = {
   getAllUsers: async (req, res) => {
     try {
       const users = await User.find({});
+      logger.info(`${req.decoded.id}`);
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](users, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
     } catch (error) {
+      logger.error(`${req.decoded.id}`)
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
@@ -108,7 +110,7 @@ const userController = {
         fitness_center_id: "62cafe32db78d1f44debd905",
         user_latitude: user_latitude,
         user_longitude: user_longitude,
-        //location parse & fill
+        //location parse & fill 
         location_id: "62cafe32db78d1f44debd905",
         social: {
           user_id: req.body.uid,
