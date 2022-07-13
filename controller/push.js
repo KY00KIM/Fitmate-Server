@@ -49,7 +49,7 @@ async function pushChat(req, res){
             return;
         }
         pushNotification(userId.social.device_token, "Mate Chatting", "채팅이 도착했어요!");
-        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessOK', STATUS_CODE.SuccessOK);
       } catch (error) {
         ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
       }

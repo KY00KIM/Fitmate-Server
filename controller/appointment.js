@@ -38,7 +38,7 @@ const appointmentController = {
           const {
               params: { appointmentId },
             } = req;
-          const appointment = await Appointment.findById(appointmentId);
+          const appointment = await Appointment.findById(appointmentId).populate('match_start_id').populate('match_join_id');
           if(appointment){
             appointment.appointment_date = timeConvert(appointment.appointment_date);
             appointment.createdAt = timeConvert(appointment.createdAt);
@@ -84,8 +84,8 @@ const appointmentController = {
         rule.second = moment(appointment_date).second();
 
         console.log(rule)
-        schedule.scheduleJob(rule, pushData(match_start_user.social.device_token, `RGB`));
-        schedule.scheduleJob(rule, pushData(match_join_user.social.device_token, `RGB`));
+        schedule.scheduleJob(rule, pushData(match_start_user.social.device_token, `GPS`));
+        schedule.scheduleJob(rule, pushData(match_join_user.social.device_token, `GPS`));
        
 
         const post = await Appointment.create({

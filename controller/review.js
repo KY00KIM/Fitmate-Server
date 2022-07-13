@@ -4,7 +4,7 @@ const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 
 const reviewController = {
-    /**
+  /**
    * @path {GET} http://localhost:8000/v1/reviews/candidates
    * @description 리뷰 후보를 제공하는 GET Method
    */
@@ -43,9 +43,9 @@ const reviewController = {
               const {
                   params: { review_recv_id },
                 } = req;
-              const review = await Review.find({"review_recv_id":review_recv_id});
+              const review = await Review.find({"review_recv_id":review_recv_id}).populate('review_send_id');
               if(review){
-                ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+                ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessOK', STATUS_CODE.SuccessOK);
               }else{
                 ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);  
               }
