@@ -1,6 +1,13 @@
 const {Appointment} = require('../model/Appointment');
+const {User} = require('../model/User');
+
 const ResponseManager = require('../config/response');
+const schedule = require('node-schedule');
 const STATUS_CODE = require('../config/http_status_code');
+const moment = require('moment');
+
+const {timeConvert} = require('../config/timeConvert');
+const {pushNotification, pushData} = require('./push');
 
 const appointmentController = {
   /**
@@ -10,6 +17,11 @@ const appointmentController = {
   getAllAppointment : async (req, res) => {
     try {
       const appointments = await Appointment.find({});
+      for(let i = 0; i < appointments.length; ++i){
+        appointments[i].appointment_date = timeConvert(appointments[i].appointment_date);
+        appointments[i].createdAt = timeConvert(appointments[i].createdAt);
+        appointments[i].updatedAt = timeConvert(appointments[i].updatedAt);
+      };
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointments, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -26,8 +38,15 @@ const appointmentController = {
           const {
               params: { appointmentId },
             } = req;
-          const appointment = await Appointment.findById(appointmentId);
-          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessOK', STATUS_CODE.SuccessOK);
+          const appointment = await Appointment.findById(appointmentId).populate('match_start_id').populate('match_join_id');
+          if(appointment){
+            appointment.appointment_date = timeConvert(appointment.appointment_date);
+            appointment.createdAt = timeConvert(appointment.createdAt);
+            appointment.updatedAt = timeConvert(appointment.updatedAt);
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessOK', STATUS_CODE.SuccessOK);
+          }else{
+            ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+          }
       }catch(error){
           ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
       }
@@ -41,17 +60,46 @@ const appointmentController = {
   writeAppointment: async (req, res) => {
     try {
       const {
-        body: { match_start_id, match_join_id, appointment_location, appointment_date},
+        body: { match_start_id, match_join_id, appointment_date},
       } = req;
-      const post = await Appointment.create({
-        match_start_id,
-        match_join_id,
-        appointment_location,
-        appointment_date,
-      });
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess']({}, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+      
+      match_start_user = User.findById(match_start_id);
+      match_join_user = User.findById(match_join_id);
+
+      if(match_start_user && match_join_user){
+
+        let rule = new schedule.RecurrenceRule();
+        rule.year = moment(appointment_date).year();
+        rule.month = moment(appointment_date).month() + 1;
+        rule.date = moment(appointment_date).date() + 1;
+        
+        // 리뷰 요청 알림 예약
+        console.log(rule)
+        schedule.scheduleJob(rule, pushNotification(match_start_user.social.device_token, `${match_join_user.user_nickname}님과의 운동은 어떻셨나요?`));
+        schedule.scheduleJob(rule, pushNotification(match_join_user.social.device_token, `${match_start_user.user_nickname}님과의 운동은 어떻셨나요?`));
+      
+        // GPS 요청 정보 예약
+        rule.hour = moment(appointment_date).hour();
+        rule.minute = moment(appointment_date).minute();
+        rule.second = moment(appointment_date).second();
+
+        console.log(rule)
+        schedule.scheduleJob(rule, pushData(match_start_user.social.device_token, `GPS`));
+        schedule.scheduleJob(rule, pushData(match_join_user.social.device_token, `GPS`));
+       
+
+        const post = await Appointment.create({
+          "match_start_id": match_start_id,
+          "match_join_id": match_join_id,
+          "appointment_date": appointment_date,
+        });
+
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+    } else{ 
+      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+   }
     } catch (error) {       
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
   }
 };

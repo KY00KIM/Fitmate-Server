@@ -1,7 +1,7 @@
 const {User} = require("../model/User");
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
-const {timeConvert} = require('../config/timeConvert')
+const {timeConvert} = require('../config/timeConvert');
 
 const userController = {
     /**
