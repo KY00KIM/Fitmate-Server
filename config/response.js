@@ -9,6 +9,7 @@ const BasicResponse ={
     "message" : "",
     "data" : {}
 };
+const logger = require('./winston');
 class ResponseManager {
     constructor (){
     }
@@ -17,7 +18,7 @@ class ResponseManager {
     }
     static getDefaultResponseHandler (res) {
         return {
-            onSuccess: function ( data, message, code) {
+            onSuccess: function ( data, message, code) {    
                 ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
             },
             onError : function ( message, code ) {

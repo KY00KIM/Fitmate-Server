@@ -10,8 +10,8 @@ const STATUS_CODE = {
     SuccessOK: StatusCode.SuccessOK,
     // Created 201
     SuccessCreated: StatusCode.SuccessCreated,    
-    // Accepted 202
-    SuccessAccepted: StatusCode.SuccessAccepted,    
+    // // Accepted 202
+    // SuccessAccepted: StatusCode.SuccessAccepted,    
     // No Content 204
     SuccessNoContent: StatusCode.SuccessNoContent,
 
