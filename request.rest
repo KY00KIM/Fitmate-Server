@@ -87,6 +87,11 @@ Content-Type: application/json
 
 #GET http://localhost:8000/v1/posts/
 GET http://localhost:8000/v1/posts/
+Content-Type: application/json
+
+{
+  "userId" : "62c66aef4b8212e4674dbe16"
+}
 
 ###
 #GET http://localhost:8000/v1/posts/:postId
