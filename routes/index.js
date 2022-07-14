@@ -12,7 +12,6 @@ const push = require('./push');
 
 const { swaggerUi, specs } = require("../docs/swagger");
 
-
 /**
  * @swagger
  * tags:

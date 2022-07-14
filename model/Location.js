@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const locationSchema = mongoose.Schema({
   location_name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   }
 }, {
   versionKey: false,

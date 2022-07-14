@@ -1,6 +1,7 @@
 const { FitnessCenter } = require('../model/FitnessCenter');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
+const locationController = require('./location')
 
 const fitnesscenterController = {
   /**
@@ -31,6 +32,29 @@ const fitnesscenterController = {
       console.log(error);
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
+  },
+
+
+  getFitnessCenterId: async (fitness_center) => {
+    const fitnessCenter = await FitnessCenter.find({ center_name: fitness_center.center_name, center_address: fitness_center.center_address });
+    let res = JSON.parse(JSON.stringify(fitnessCenter))
+    if (fitnessCenter.length != 0) {
+      return res[0]._id
+    }
+    else {
+      const locId = await locationController.parseAddress(fitness_center.center_address)
+      let newCenter = await FitnessCenter.create({
+        center_name: fitness_center.center_name,
+        center_address: fitness_center.center_address,
+        center_location: locId,
+        fitness_longitude: fitness_center.fitness_longitude,
+        fitness_latitude: fitness_center.fitness_latitude
+      });
+      newCenter = newCenter.toJSON();
+      console.dir(newCenter)
+      return newCenter._id
+    }
+
   },
 
 };
