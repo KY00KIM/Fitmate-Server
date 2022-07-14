@@ -1,7 +1,9 @@
 const { User } = require("../model/User");
+const locationController = require('./location');
+const fitnesscenterController = require('./fitnesscenter')
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
-const {timeConvert} = require('../config/timeConvert');
+const { timeConvert } = require('../config/timeConvert');
 
 const userController = {
   /**
@@ -82,18 +84,17 @@ const userController = {
   * @description 특정 사용자 정보의 일부를 변경하는 POST Method
   */
   assignUser: async (req, res) => {
-    console.log(11111)
     try {
       const {
-        body: { user_nickname, user_gender, user_weekday, user_schedule_time, user_address, user_latitude, user_longitude, fitness_center_name },
+        body: { user_nickname, user_gender, user_weekday, user_schedule_time, user_address, user_latitude, user_longitude, fitness_center },
       } = req;
-      //create -> find fitness_center_id
+      const locationId = await locationController.parseAddress(user_address);
+      const center = await fitnesscenterController.getFitnessCenterId(fitness_center);
       const user = await User.create({
         // BODY for test
         user_name: req.body.name,
         user_pwd: "",
         user_email: req.body.email,
-        //user_address parse 
         user_address: user_address,
         user_nickname: user_nickname,
         user_profile_img: req.body.picture,
@@ -101,15 +102,12 @@ const userController = {
         user_weekday: user_weekday,
         user_introduce: "",
         user_fitness_part: [],
-        //user age from client required
         user_age: 0,
         user_gender: user_gender,
-        //fitness_center_id to be filled
-        fitness_center_id: "62cafe32db78d1f44debd905",
+        fitness_center_id: center._id,
         user_latitude: user_latitude,
         user_longitude: user_longitude,
-        //location parse & fill
-        location_id: "62cafe32db78d1f44debd905",
+        location_id: locationId,
         social: {
           user_id: req.body.uid,
           user_name: req.body.name,
@@ -117,7 +115,6 @@ const userController = {
           firebase_info: {}
         }
       });
-      await user.save()
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SUCCESS_NO_CONTENT', STATUS_CODE.SUCCESS_NO_CONTENT);
     } catch (error) {
       console.log(error)

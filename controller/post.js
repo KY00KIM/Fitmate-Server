@@ -7,10 +7,10 @@ const postController = {
   * @path {GET} http://localhost:8000/v1/posts
   * @description 사용자와 연관된 모든 매칭글을 조회하는 GET Method
   */
- // user_id 추가
+  // user_id 추가
   getAllPosts: async (req, res) => {
     try {
-      const posts = await Post.find({is_deleted: false });
+      const posts = await Post.find({ is_deleted: false });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
@@ -20,7 +20,7 @@ const postController = {
   * @path {GET} http://localhost:8000/v1/posts/:postId
   * @description 사용자와 연관된 특정 매칭글을 조회하는 GET Method
   */
- // user_id 추가
+  // user_id 추가
   getOnePost: async (req, res) => {
     try {
       const {
@@ -43,14 +43,14 @@ const postController = {
         body: { user_id, location_id, post_fitness_part, post_title, promise_location, promise_date, post_img, post_main_text },
       } = req;
       const post = await Post.create({
-        user_id: user_id,
-        location_id: location_id,
-        post_fitness_part: post_fitness_part,
-        post_title: post_title,
-        promise_location: promise_location,
-        promise_date: promise_date,
-        post_img: post_img,
-        post_main_text: post_main_text
+        user_id,
+        location_id,
+        post_fitness_part,
+        post_title,
+        promise_location,
+        promise_date,
+        post_img,
+        post_main_text
       });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
