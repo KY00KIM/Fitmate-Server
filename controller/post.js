@@ -4,13 +4,14 @@ const STATUS_CODE = require('../config/http_status_code');
 
 const postController = {
   /**
-  * @path {GET} http://localhost:8000/v1/posts
+  * @path {GET} http://localhost:8000/v1/posts/
   * @description 사용자와 연관된 모든 매칭글을 조회하는 GET Method
   */
   // user_id 추가
   getAllPosts: async (req, res) => {
     try {
-      const posts = await Post.find({ is_deleted: false });
+      const { body: { userId } } = req
+      const posts = await Post.find({ user_id: userId, is_deleted: false });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);

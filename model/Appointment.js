@@ -1,6 +1,42 @@
 const mongoose = require('mongoose');
 const { Types: { ObjectId } } = mongoose.Schema;
 
+/**
+ * @swagger
+ * components:
+ *    schemas:
+ *      appointment:
+ *        type: object
+ *        properties:
+ *          center_id:
+ *            type: string
+ *            format: ObjectId
+ *            description: references FitnessCenter
+ *          appointment_location:
+ *            type: string
+ *          appointment_date:
+ *            type: string
+ *            format: date
+ *          match_start_id:
+ *            type: string
+ *            format: ObjectId
+ *            description: references User
+ *          match_join_id:
+ *            type: string
+ *            format: ObjectId
+ *            description: references User
+ *          match_succeeded:
+ *            type: boolean
+ *            default: false
+ *          createdAt:
+ *            type: string
+ *            format : date
+ *          updatedAt:
+ *            type: string
+ *            format : date
+*/
+
+
 const appointmentSchema = mongoose.Schema({
   // center_id: {
   //   type: ObjectId,
@@ -21,7 +57,7 @@ const appointmentSchema = mongoose.Schema({
     type: ObjectId,
     ref: 'User'
   },
-  match_succeeded:{
+  match_succeeded: {
     type: Boolean,
     default: false
   }
@@ -34,5 +70,5 @@ const appointmentSchema = mongoose.Schema({
 
 const Appointment = mongoose.model('Appointment', appointmentSchema);
 
-module.exports = {Appointment};
+module.exports = { Appointment };
 
