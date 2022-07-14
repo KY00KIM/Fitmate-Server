@@ -109,12 +109,7 @@ const userController = {
         fitness_center_id: center._id,
         user_latitude: user_latitude,
         user_longitude: user_longitude,
-<<<<<<< HEAD
         location_id: locationId,
-=======
-        //location parse & fill
-        location_id: "62cafe32db78d1f44debd905",
->>>>>>> 730f12cc4cf1e3fa4dde08bbb9ae2a8019a1e874
         social: {
           user_id: req.body.uid,
           user_name: req.body.name,
