@@ -5,31 +5,40 @@
 ###
 #GET http://localhost:8000/v1/users
 GET http://localhost:8000/v1/users
+user_id : 62c6697a4b8212e4674dbe14
+
 
 ###
 #GET http://localhost:8000/v1/users/:userId
 GET http://localhost:8000/v1/users/62c6697a4b8212e4674dbe14
+user_id : 62c6697a4b8212e4674dbe14
 
 ###
 #POST http://localhost:8000/v1/users/oauth
 POST http://localhost:8000/v1/users/oauth
 Content-Type: application/json
+user_id : 62c6697a4b8212e4674dbe14
 
 {
- "user_nickname": "보석깅깅깅", 
+ "user_nickname": "규민민", 
  "user_gender" : true,
   "user_weekday" : {
-    "mon":  true
+    "fri":  true
   }, 
   "user_schedule_time": 0, 
-  "user_address" : "전라남도 광주광역시 광산구 송정동 상무대로 312", 
+  "user_address" : "서울특별시 강남구 송정동 상무대로 312", 
   "user_latitude" : 35.142905, 
   "user_longitude": 126.800562, 
-  "fitness_center_name" : "하위 피트니스",
+  "fitness_center" : {
+      "center_name":"무야호짐",
+      "center_address":"서울시 강남구 구의로 579 B104호",
+		  "center_latitude": 123.5,
+		  "center_longitude": 123.2334
+  },
 
 
 
-  "name": "김보석",
+  "name": "김규민",
   "picture": "https://graph.facebook.com/1626030847797342/picture",
   "iss": "https://securetoken.google.com/fitmate-cf118",
   "aud": "fitmate-cf118",
@@ -38,7 +47,7 @@ Content-Type: application/json
   "sub": "q6KlqMtj18NFpWHvOB2tQs24PvM2",
   "iat": 1657436473,
   "exp": 1657440073,
-  "email": "boseoggim08@gmail.com",
+  "email": "hihi@gmail.com",
   "email_verified": false,
   "firebase": {
     "identities": { "facebook.com": [], "email": [] },
@@ -142,4 +151,19 @@ Content-Type: application/json
     }
 }
 
+
+
+####
+
+GET http://localhost:8000/qwe
+Content-Type: application/json
+
+{
+  "fitness_center":{
+		    "center_name":"아크로00000",
+		    "center_address":"서울시 광진구 구의로 579 B104호",
+		    "center_latitude": "233.5",
+		    "center_longitude": "233.5"
+			}
+}
 
