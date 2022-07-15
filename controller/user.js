@@ -40,27 +40,6 @@ const userController = {
   },
 
 
-  /**
-  * @path {POST} http://localhost:8000/v1/users/info/:userId
-  * @description 특정 사용자 정보를 등록하는 POST Method
-  */
-  writeUserInfo: async (req, res) => {
-    try {
-      const {
-        body: { user_profile_img, user_nickname, userLatitude, userLongitude },
-      } = req;
-      const post = await Appointment.create({
-        user_profile_img,
-        user_nickname,
-        userLatitude,
-        userLongitude,
-      });
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess']({}, 'SUCCESS_NO_CONTENT', STATUS_CODE.SUCCESS_NO_CONTENT);
-    } catch (error) {
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
-    }
-  },
-
 
   /**
   * @path {PATCH} http://localhost:8000/v1/users/:userId
