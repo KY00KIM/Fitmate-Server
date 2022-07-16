@@ -13,10 +13,10 @@ const userController = {
   getAllUsers: async (req, res) => {
     try {
       const users = await User.find({});
-      logger.info(`${req.decoded.id}`);
+      //logger.info(`${req.decoded.id}`);
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](users, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
     } catch (error) {
-      logger.error(`${req.decoded.id}`)
+      //logger.error(`${req.decoded.id}`)
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
