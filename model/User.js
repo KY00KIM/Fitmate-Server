@@ -139,7 +139,8 @@ const userSchema = mongoose.Schema({
   }],
   // 확인 필요
   user_age: {
-    type: Number
+    type: Number,
+    default: 0
   },
   user_gender: {
     type: Boolean,
@@ -164,7 +165,7 @@ const userSchema = mongoose.Schema({
     user_id: String,
     user_name: String,
     provider: String,
-    device_token: String,
+    device_token: [String],
     firebase_info: Object,
   },
   is_deleted: {
