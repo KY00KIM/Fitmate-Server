@@ -1,5 +1,6 @@
 const {Appointment} = require('../model/Appointment');
 const {User} = require('../model/User');
+const {PushSchedule} = require('../model/PushSchedule');
 
 const ResponseManager = require('../config/response');
 const schedule = require('node-schedule');
@@ -17,7 +18,8 @@ const appointmentController = {
   /// userId 필요
   getAllAppointment : async (req, res) => {
     try {
-      const appointments = await Appointment.find({});
+      let user_id = req.user.id;
+      const appointments = await Appointment.findById(user_id);
       appointments.forEach((appointment) =>{        
         appointment.appointment_date = timeConvert.addNineHours(appointment.appointment_date);
         appointment.createdAt = timeConvert.addNineHours(appointment.createdAt);
@@ -25,7 +27,7 @@ const appointmentController = {
       });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointments, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
 
@@ -45,13 +47,13 @@ const appointmentController = {
           appointment.updatedAt = timeConvert.addNineHours(appointment.updatedAt);
           ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessOK', STATUS_CODE.SuccessOK);
       }catch(error){
-          ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+          ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
       }
   },
 
 
   /**
-   * @path {POST} http://localhost:8000/v1/appointments
+   * @path {POST} http://fitmate.co.kr/v1/appointments
    * @description 약속글을 생성하는 POST Method
    */
   writeAppointment: async (req, res) => {
@@ -60,8 +62,8 @@ const appointmentController = {
         body: { match_start_id, match_join_id, appointment_date},
       } = req;
       
-      match_start_user = User.findById(match_start_id);
-      match_join_user = User.findById(match_join_id);
+      const match_start_user = await User.findById(match_start_id);
+      const match_join_user = await User.findById(match_join_id);
 
       const appointment = await Appointment.create({
         "match_start_id": match_start_id,
@@ -69,11 +71,12 @@ const appointmentController = {
         "appointment_date": appointment_date,
       });
 
-      // appointment_date= 2022-7-15T21:00:00
       let rule = new schedule.RecurrenceRule();
-      rule.year = moment(appointment_date).year();        // 2022
-      rule.month = moment(appointment_date).month() + 1;  // 7
-      rule.date = moment(appointment_date).date() + 1;    // 16
+      let new_date = moment(appointment_date).add(1, 'days');
+
+      rule.year = moment(new_date).year();        
+      rule.month = moment(new_date).month() + 1;  
+      rule.date = moment(new_date).date();    
 
       rule.hour = 0;
       rule.minute = 0;
@@ -81,10 +84,28 @@ const appointmentController = {
       console.log(rule);
 
       // 리뷰 요청 알림 예약
-      schedule.scheduleJob(rule, pushNotification(match_start_user.social.device_token,'FitMate 리뷰 알림!' ,`${match_join_user.user_nickname}님과의 운동은 어떻셨나요?`));
-      schedule.scheduleJob(rule, pushNotification(match_join_user.social.device_token, 'FitMate 리뷰 알림!', `${match_start_user.user_nickname}님과의 운동은 어떻셨나요?`));
-      
+      schedule.scheduleJob(rule,() => pushNotification(match_start_user.social.device_token,'FitMate 리뷰 알림!' ,`${match_join_user.user_nickname}님과의 운동은 어떻셨나요?`));
+      schedule.scheduleJob(rule, () => pushNotification(match_join_user.social.device_token, 'FitMate 리뷰 알림!', `${match_start_user.user_nickname}님과의 운동은 어떻셨나요?`));
+      // schedule.scheduleJob(rule,()=>{
+      //   console.log(match_start_user.social, 'data');
+      // });      
+      // schedule.scheduleJob(rule,()=>{
+      //   console.log(match_join_user.social, 'data');
+      // });
+
+      // DB에 저장
+      await PushSchedule.create({
+        pushType: "REVIEW",
+        appointmentId:appointment._id,
+        match_start_id: match_start_id,
+        match_join_id: match_join_id,
+        rule: new_date
+      });
+
       // GPS 요청 정보 예약
+      rule.year = moment(appointment_date).year();        
+      rule.month = moment(appointment_date).month();  
+      rule.date = moment(appointment_date).date();    
       rule.hour = moment(appointment_date).hour();
       rule.minute = moment(appointment_date).minute();
       rule.second = moment(appointment_date).second();
@@ -93,13 +114,30 @@ const appointmentController = {
         "appointmentId":appointment._id,
         "GPS": "GPS"
       }
-      schedule.scheduleJob(rule, pushData(match_start_user.social.device_token, data));
-      schedule.scheduleJob(rule, pushData(match_join_user.social.device_token, data));
+      schedule.scheduleJob(rule,() => pushData(match_start_user.social.device_token, data));
+      schedule.scheduleJob(rule,() => pushData(match_join_user.social.device_token, data));
+            
+      // schedule.scheduleJob(rule,()=>{
+      //   console.log(match_start_user.social, data);
+      // });      
+      // schedule.scheduleJob(rule,()=>{
+      //   console.log(match_join_user.social, data);
+      // });
+
+      // DB에 저장
+      await PushSchedule.create({
+        pushType: "GPS",
+        appointmentId:appointment._id,
+        match_start_id: match_start_id,
+        match_join_id: match_join_id,
+        rule: appointment_date
+      });
       
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessCreated', STATUS_CODE.SuccessCreated);
 
-    } catch (error) {       
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+    } catch (error) {    
+      console.error(error);   
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
   }
 };
