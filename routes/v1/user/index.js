@@ -1,105 +1,57 @@
 const express = require('express');
 const userRouter = express.Router();
-const userController = require('../../controller/user');
-
-
+const userController = require('../../../controller/user');
 
 /**
  * @swagger
- * components:
- *  schemas:
- *   user:
- *     type: object
- *     properties:
- *       _id:
+ * 
+ * /v1/users/token/{uid}:
+ *   get:
+ *     tags: [Users]
+ *     summary: firebase uid 해당하는 token 발급
+ *     description: firebase uid에 해당하는 `인증토큰`를 반환합니다.
+ *     parameters:
+ *       - in: header
+ *         name: authorization
+ *         description: Firebase UserId Token for authenication
+ *         required: true
  *         type: string
- *         format: ObjectId
- *       user_name:
- *         type: string
- *       user_address:
- *         type: string
- *         format: formatted address
- *       user_nickname:
- *         type: string
- *         description: ''
- *       user_email:
- *         type: string
- *       user_profile_img:
- *         type: string
- *       user_schedule_time:
- *         type: integer
- *         description: '0 : 오전, 1 : 오후, 2 : 저녁'
- *       user_weekday:
- *         type: object
- *         default: false
- *         properties:
- *           mon:
- *             type: boolean
- *           tue:
- *             type: boolean
- *           wed:
- *             type: boolean
- *           thu:
- *             type: boolean
- *           fri:
- *             type: boolean
- *           sat:
- *             type: boolean
- *           sun:
- *             type: boolean
- *       user_introduce:
- *         type: string
- *       user_fitness_part:
- *         type: array
- *         items:
- *           type: string
- *           format: ObjectId
- *       user_age:
- *         type: integer
- *       user_gender:
- *         type: boolean
- *       user_loc_bound:
- *         type: integer
- *         default: 3
- *       fitness_center_id:
- *         type: string
- *         format: ObjectId
- *         description: references FitnessCenter
- *       user_longitude:
- *         type: number
- *         description: double in degrees
- *       user_latitude:
- *         type: number
- *         description: double in degrees
- *       location_id:
- *         type: string
- *         format: ObjectId
- *         description: references Location
- *       social:
- *         type: object
- *         properties:
- *           user_id:
- *             type: string
- *             description: firebase user id
- *           user_name:
- *             type: string
- *             description: firebase user name
- *           provider:
- *             type: string
- *             description: firebase token provider
- *           device_token:
- *             type: string
- *             description: firebase user token
- *           firebase_info:
- *             type: object
- *             description: firebase additional info
- *       is_deleted:
- *         type: boolean
- *         default: false
- *
+ *         format: JsonWebToken
+ *     responses:
+ *       '200':
+ *         description: '`SUCCESS OK`'
+ *         schema:
+ *             data: 
+ *              type: string
+ *              format: Json Web Token
+ *       '401':
+ *         description: '`ClientErrorUnauthorized`'
  */
 
-
+/**
+ * @swagger
+ * 
+ * /v1/users/login:
+ *   get:
+ *     tags: [Users]
+ *     summary: 모든 유저 목록 조회
+ *     description: 인증 토큰에 해당하는 `user_id`를 반환합니다.
+ *     parameters:
+ *       - in: header
+ *         name: authorization
+ *         description: Firebase UserId Token for authenication
+ *         required: true
+ *         type: string
+ *         format: JsonWebToken
+ *     responses:
+ *       '200':
+ *         description: '`SUCCESS OK`'
+ *         schema:
+ *             $ref: '#/components/schemas/user'
+ *       '400':
+ *         description: '`ClientErrorBadRequest`'
+ */
+userRouter.get('/login', userController.checkUserValid);
 
 
 

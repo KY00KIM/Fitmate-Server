@@ -1,6 +1,6 @@
 const express = require('express');
 const fitnesspartRouter = express.Router();
-const fitnesspartController = require('../../controller/fitnesspart');
+const fitnesspartController = require('../../../controller/fitnesspart');
 
 // 모든 운동 부위 조회 GET
 fitnesspartRouter.get('/', fitnesspartController.getAllFitnessPart);

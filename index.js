@@ -5,6 +5,7 @@ const logger = require('./config/winston');
 const morgan = require('morgan');
 require("dotenv").config();
 
+
 const helmet = require('helmet');
 const combined = ':remote-addr - :remote-user ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'
 
@@ -31,6 +32,7 @@ app.use(helmet());
 
 // JWT 설정
 // app.use(verifyUser)
+
 
 // MongoDB 연결
 connect();

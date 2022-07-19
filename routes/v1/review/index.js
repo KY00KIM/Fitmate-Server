@@ -1,6 +1,6 @@
 const express = require('express');
 const reviewRouter = express.Router();
-const reviewController = require('../../controller/review');
+const reviewController = require('../../../controller/review');
 
 /**
  * @swagger

@@ -1,6 +1,6 @@
 const express = require('express');
 const postRouter = express.Router();
-const postController = require('../../controller/post');
+const postController = require('../../../controller/post');
 
 // 모든 모집글 조회 GET
 /**

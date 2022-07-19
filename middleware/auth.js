@@ -5,7 +5,7 @@ const { User } = require("../model/User");
 
 
 /**
- * @description verify firebase token in request header
+ * @description verify firebase token in request header or generates customToken on request
  * @param {*} req.userID if development
  * @param {*} req.header.Authorization if production
  * @param {*} next 
@@ -13,51 +13,32 @@ const { User } = require("../model/User");
  */
 
 const verifyUser = async (req, res, next) => {
-    //PRODUCTION AUTHENICATION
-    if (process.env.NODE_ENV == 'production') {
-        try {
-            const token = req.header('Authorization')
-            const decodeToken = admin.auth().verifyIdToken(token);
-            //토큰이 정상 복호화된 경우
-            if (decodeToken) {
-                req.decoded = decodeToken
-                //DB에 등록되어 있고 활성화된 유저일 경우
-                const user = getUserValidByToken(decodeToken)
-                if (user) {
-                    req.decoded.id = user.id;
-                    return next();
-                }
-                //회원가입을 위한 요청일 경우
-                else if (req.originalUrl === "v1/user/oauth" && req.method === "POST") {
-                    return next();
-                    //DB에 등록되지 않았고 비활성화된 유저일 경우
-                } else {
-                    ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorUnauthorized', STATUS_CODE.ClientErrorUnauthorized);
-                }
+
+    try {
+        const token = req.header('Authorization')
+        const decodeToken = await admin.auth().verifyIdToken(token);
+        //토큰이 정상 복호화된 경우
+        if (decodeToken) {
+            req.user = { social: decodeToken }
+            //DB에 등록되어 있고 활성화된 유저일 경우
+            const user = await getUserValidByToken(decodeToken)
+            if (user) {
+                req.user.id = user._id;
+                return next();
             }
-            //토큰 내용이 없을 경우
-            else {
-                ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorUnauthorized', STATUS_CODE.ClientErrorUnauthorized);
+            //회원가입을 위한 요청일 경우
+            console.log("INTHE MIDDLE")
+            if (req.originalUrl === "/v1/users/oauth" || req.originalUrl === "/v1/users/login") {
+                return next();
             }
-            //firebase 토큰 인증 메서드 오류
-        } catch (err) {
-            console.log(err);
-            ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
         }
-    } else {
-        //DEVELOPMENT LEVEL
-        const id = req.header("user_id")
-        if (id) {
-            const user = await User.findById(id);
-            if (!user) ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
-            req.decoded = {
-                id: id
-            }
-            next();
-        } else {
-            ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorUnauthorized', STATUS_CODE.ClientErrorUnauthorized);
-        }
+        return ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorUnauthorized', STATUS_CODE.ClientErrorUnauthorized);
+    } catch (err) {
+        //firebase 토큰 인증 메서드 오류
+        console.log(err);
+        return ResponseManager.getDefaultResponseHandler(res)['onError'](err, STATUS_CODE.ClientErrorBadRequest);
     }
+
 }
 
 
@@ -68,10 +49,25 @@ const verifyUser = async (req, res, next) => {
  */
 const getUserValidByToken = async (Token) => {
     const userId = Token.uid;
-    const user = await User.find({ 'social.user_id': userId });
-    if (user && !user.is_deleted) return user
+    const users = await User.find({ "social.user_id": userId });
+    if (!users[0])
+        return false
+    console.log("THIS USER IS ")
+    console.log(users[0])
+    if (users[0] && !users[0].is_deleted) return users[0]
     return false
 }
+
+/**
+ * @description Check whether env is development & request to generate firebase token 
+ * @param {*} url req.originalURL
+ * @returns Boolean whether it is valid
+ */
+const checkGetTokenURL = (url) => {
+    return (process.env.NODE_ENV != 'production') && url.startsWith("/v1/users/token/")
+}
+
+
 
 
 module.exports = { verifyUser };

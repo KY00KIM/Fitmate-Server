@@ -1,6 +1,6 @@
 const express = require('express');
 const pushRouter = express.Router();
-const {pushChat} = require('../../controller/push');
+const { pushChat } = require('../../../controller/push');
 /**
  * @swagger
  * paths:

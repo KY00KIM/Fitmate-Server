@@ -1,6 +1,6 @@
 const express = require('express');
 const appointmentRouter = express.Router();
-const appointmentController = require('../../controller/appointment');
+const appointmentController = require('../../../controller/appointment');
 
 /**
  * @swagger
