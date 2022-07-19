@@ -35,7 +35,6 @@ app.use(helmet());
 
 // MongoDB 연결
 connect();
-
 registerPush();
 app.use('/', router)
 

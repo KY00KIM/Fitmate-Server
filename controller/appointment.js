@@ -12,7 +12,7 @@ const {pushNotification, pushData} = require('./push');
 
 const appointmentController = {
   /**
-   * @path {GET} http://localhost:8000/v1/appointments
+   * @path {GET} http://fitmate.co.kr/v1/appointments
    * @description 사용자의 모든 약속을 조회하는 GET Method
    */
   /// userId 필요
@@ -32,7 +32,7 @@ const appointmentController = {
   },
 
   /**
-   * @path {GET} http://localhost:8000/v1/appointments/:appointmentId
+   * @path {GET} http://fitmate.co,kr/v1/appointments/:appointmentId
    * @description 특정 약속글을 조회하는 GET Method
    */
 
@@ -112,7 +112,7 @@ const appointmentController = {
 
       data = {
         "appointmentId":appointment._id,
-        "GPS": "GPS"
+        Type: "GPS"
       }
       schedule.scheduleJob(rule,() => pushData(match_start_user.social.device_token, data));
       schedule.scheduleJob(rule,() => pushData(match_join_user.social.device_token, data));

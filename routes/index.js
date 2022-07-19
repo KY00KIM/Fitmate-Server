@@ -9,8 +9,13 @@ const fitnesspart = require('./fitnesspart');
 const location = require('./location');
 const fitnesscenter = require('./fitnesscenter');
 const push = require('./push');
+const qrcode = require('./qrcode');
 
 const { swaggerUi, specs } = require("../docs/swagger");
+
+
+const {uploadProfileImage} = require('../config/aws_s3');
+const path = require('path');
 
 /**
  * @swagger
@@ -31,9 +36,12 @@ router.use("/v1/fitnesspart", fitnesspart);
 router.use("/v1/locations", location);
 router.use("/v1/fitnesscenters", fitnesscenter);
 router.use("/v1/push", push);
+router.use("/v1/qrcode", qrcode);
 
 router.get("/", (req, res) => {
-    res.send("Hello World")
+    const result = uploadProfileImage(path.join(__dirname, '../algorithm.jpg'), 1234);
+    console.log(result);
+    res.send(result)
 })
 
 module.exports = router
