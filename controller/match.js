@@ -1,5 +1,6 @@
 const { Appointment } = require('../model/Appointment');
 const { User } = require('../model/User');
+const { UserTrace } = require('../model/UserTrace');
 const {pushData} = require('./push');
 const schedule = require('node-schedule');
 const ResponseManager = require('../config/response');
@@ -9,7 +10,7 @@ const { now } = require('mongoose');
 
 const matchController = {
     /**
-    * @path {POST} http://localhost:8000/v1/matching/:appointmentId
+    * @path {POST} http://fitmate.co.kr/v1/matching/:appointmentId
     * @description 사용자들의 매칭 여부를 확인하는 POST Method
     */
     checkMatching: async (req, res) => {
@@ -19,6 +20,16 @@ const matchController = {
                 body: { user_1, user_2 }
             } = req
             const distance = getDistanceFromLatLonInKm(user_1.user_latitude, user_1.user_longitude, user_2.user_latitude, user_2.user_longitude);
+            await UserTrace.create({
+                'user_id': user_1.user_id,
+                'user_longitude': user_1.user_longitude || 126.97,
+                'user_latitude': user_1.user_latitude || 37.56
+            });
+            await UserTrace.create({
+                'user_id': user_2.user_id,
+                'user_longitude': user_2.user_longitude || 126.97,
+                'user_latitude': user_2.user_latitude || 37.56
+            });
             if (distance <= 1) {
                 const appointment = await Appointment.findByIdAndUpdate(appointmentId, { match_succeeded: true }, { new: true, runValidators: true });
                 ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessOK', STATUS_CODE.SuccessOK);
