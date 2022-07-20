@@ -220,7 +220,7 @@ components:
       type: object
       properties:
         _id:
-          type: stirng
+          type: string
           format: ObjectId
         center_name:
           type: string

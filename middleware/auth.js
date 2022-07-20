@@ -11,6 +11,7 @@ const { User } = require("../model/User");
  * @param {*} next 
  * @returns firebase user object in req.decoded & req.decoded.id
  */
+const exceptions = ["/v1/api-docs", "/"]
 
 const verifyUser = async (req, res, next) => {
 
@@ -25,10 +26,8 @@ const verifyUser = async (req, res, next) => {
             if (user) {
                 req.user.id = user._id;
                 return next();
-            }
-            //회원가입을 위한 요청일 경우
-            console.log("INTHE MIDDLE")
-            if (req.originalUrl === "/v1/users/oauth" || req.originalUrl === "/v1/users/login") {
+            } else if (req.originalUrl == "/v1/users/oauth" || req.originalUrl == "/v1/users/login") {
+                //회원가입을 위한 요청일 경우
                 return next();
             }
         }
@@ -52,8 +51,6 @@ const getUserValidByToken = async (Token) => {
     const users = await User.find({ "social.user_id": userId });
     if (!users[0])
         return false
-    console.log("THIS USER IS ")
-    console.log(users[0])
     if (users[0] && !users[0].is_deleted) return users[0]
     return false
 }
@@ -66,7 +63,6 @@ const getUserValidByToken = async (Token) => {
 const checkGetTokenURL = (url) => {
     return (process.env.NODE_ENV != 'production') && url.startsWith("/v1/users/token/")
 }
-
 
 
 

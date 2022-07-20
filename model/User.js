@@ -10,7 +10,8 @@ const userSchema = mongoose.Schema({
   user_name: String,
   user_pwd: {
     type: String,
-    select: false
+    select: false,
+    default: ""
   },
   user_email: String,
   // 데이터 파싱 필요

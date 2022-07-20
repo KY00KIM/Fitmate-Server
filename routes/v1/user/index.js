@@ -2,31 +2,6 @@ const express = require('express');
 const userRouter = express.Router();
 const userController = require('../../../controller/user');
 
-/**
- * @swagger
- * 
- * /v1/users/token/{uid}:
- *   get:
- *     tags: [Users]
- *     summary: firebase uid 해당하는 token 발급
- *     description: firebase uid에 해당하는 `인증토큰`를 반환합니다.
- *     parameters:
- *       - in: header
- *         name: authorization
- *         description: Firebase UserId Token for authenication
- *         required: true
- *         type: string
- *         format: JsonWebToken
- *     responses:
- *       '200':
- *         description: '`SUCCESS OK`'
- *         schema:
- *             data: 
- *              type: string
- *              format: Json Web Token
- *       '401':
- *         description: '`ClientErrorUnauthorized`'
- */
 
 /**
  * @swagger
@@ -34,7 +9,7 @@ const userController = require('../../../controller/user');
  * /v1/users/login:
  *   get:
  *     tags: [Users]
- *     summary: 모든 유저 목록 조회
+ *     summary: 유저의 user_id 반환
  *     description: 인증 토큰에 해당하는 `user_id`를 반환합니다.
  *     parameters:
  *       - in: header
@@ -47,7 +22,13 @@ const userController = require('../../../controller/user');
  *       '200':
  *         description: '`SUCCESS OK`'
  *         schema:
- *             $ref: '#/components/schemas/user'
+ *          type: object
+ *          properties:  
+ *           user_id : 
+ *              type : string
+ *              format : ObjectId
+ *       '404':
+ *          description : '`ClientErrorNotFound` NO ACCOUNT IN DB 회원가입 필요' 
  *       '400':
  *         description: '`ClientErrorBadRequest`'
  */
@@ -64,10 +45,6 @@ userRouter.get('/login', userController.checkUserValid);
  *     tags: [Users]
  *     summary: 모든 유저 목록 조회
  *     description: Response  `array of all user`
- *     consumes:
- *       - application/json
- *     produces:
- *       - application/json
  *     parameters:
  *       - in: header
  *         name: authorization

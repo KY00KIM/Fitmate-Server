@@ -88,7 +88,7 @@ const userController = {
           firebase_info: JSON.parse(JSON.stringify(req.user.social))
         }
       });
-      return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessOK', STATUS_CODE.SuccessOK);
+      return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
       console.log(error)
       return ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
