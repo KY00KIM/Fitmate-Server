@@ -7,7 +7,7 @@ const timeConvert = require('../config/timeConvert');
 const logger = require('../config/winston');
 const userController = {
   /**
-  * @path {GET} http://localhost:8000/v1/users
+  * @path {GET} http://fitmate.co.kr/v1/users
   * @description 모든 사용자를 조회하는 GET Method
   */
   getAllUsers: async (req, res) => {
@@ -22,7 +22,7 @@ const userController = {
 
 
   /**
-  * @path {GET} http://localhost:8000/v1/users/:userId
+  * @path {GET} http://fitmate.co.kr/v1/users/:userId
   * @description 특정 사용자를 조회하는 GET Method
   */
   // 사용자 리뷰 정보 하나 전송 + 없을 시 랜덤 전송
@@ -39,7 +39,7 @@ const userController = {
 
 
   /**
-  * @path {PATCH} http://localhost:8000/v1/users/:userId
+  * @path {PATCH} http://fitmate.co.kr/v1/users/:userId
   * @description 특정 사용자 정보의 일부를 변경하는 PATCH Method
   */
   updateUserInfo: async (req, res) => {
@@ -58,7 +58,7 @@ const userController = {
 
 
   /**
-  * @path {POST} http://localhost:8000/v1/users/oauth
+  * @path {POST} http://fitmate.co.kr/v1/users/oauth
   * @description 특정 사용자 정보의 일부를 변경하는 POST Method
   */
   assignUser: async (req, res) => {
