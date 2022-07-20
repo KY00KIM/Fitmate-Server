@@ -4,7 +4,7 @@ const STATUS_CODE = require('../config/http_status_code');
 
 const fitnesspartController = {
     /**
-    * @path {GET} http://localhost:8000/v1/fitnesspart
+    * @path {GET} http://fitmate.co.kr/v1/fitnesspart
     * @description 모든 약속을 조회하는 GET Method
     */
     getAllFitnessPart : async (req, res) =>{

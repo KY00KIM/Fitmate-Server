@@ -5,7 +5,7 @@ const STATUS_CODE = require('../config/http_status_code');
 
 const reviewController = {
   /**
-   * @path {GET} http://localhost:8000/v1/reviews/candidates
+   * @path {GET} http://fitmate.co.kr/v1/reviews/candidates
    * @description 리뷰 후보를 제공하는 GET Method
    */
   getReviewCandidates: async (req, res) => {
@@ -18,7 +18,7 @@ const reviewController = {
 
   },
   /**
-  * @path {POST} http://localhost:8000/v1/reviews/candidates
+  * @path {POST} http://fitmate.co.kr/v1/reviews/candidates
   * @description 리뷰 후보를 등록하는 POST Method
   */
   writeReviewCandidate: async (req, res) => {
@@ -35,7 +35,7 @@ const reviewController = {
     }
   },
   /**
-  * @path {GET} http://localhost:8000/v1/reviews/:review_recv_id
+  * @path {GET} http://fitmate.co.kr/v1/reviews/:review_recv_id
   * @description 특정 사용자의 리뷰를 조회하는 GET Method
   */
   getOneReview: async (req, res) => {
