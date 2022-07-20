@@ -190,7 +190,7 @@ components:
       type: object
       properties:
         _id:
-          type: stirng
+          type: string
           format: ObjectId
         review_send_id:
           type: string
@@ -276,3 +276,64 @@ components:
         updatedAt:
           type: string
           format: date
+  parameters:
+    authToken:
+      name: authorization
+      in: header
+      required: true
+      description: Firebase UserId Token for authenication and user info
+      schema:
+        type: string
+        format: JWT
+    userId:
+      name: userId
+      in: path
+      description: ID of user to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    postId:
+      name: postId
+      in: path
+      description: ID of post to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    appointmentId:
+      name: appointmentId
+      in: path
+      description: ID of appointment to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    reviewId:
+      name: reviewId
+      in: path
+      description: ID of review to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    locId:
+      name: locId
+      in: path
+      description: ID of location to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    fitnesscenterId:
+      name: fitnesscenterId
+      in: path
+      description: ID of fitnesscenter to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io

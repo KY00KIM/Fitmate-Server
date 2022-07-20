@@ -1,0 +1,826 @@
+paths:
+  /users/login:
+    get:
+      tags:
+        - users
+      summary: 유저 user_id 조회 및 회원가입 여부 조회
+      description: Response  `user_id`
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      user_id:
+                        type: string
+                        format: ObjectId
+        '404':
+          description: '`ClientErrorNotFound` firebase 유저이지만 서버 유저목록에서 유저를 찾을 수 없는 경우'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /users/oauth:
+    post:
+      tags:
+        - users
+      summary: 새로운 유저 등록
+      description: Add new user to db with firebase token
+      operationId: assignUser
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: User object to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_nickname:
+                  type: string
+                user_address:
+                  type: string
+                  format: formatted address
+                user_schedule_time:
+                  type: integer
+                  description: '0 : 오전, 1 : 오후, 2 : 저녁'
+                user_weekday:
+                  type: object
+                  default: false
+                  properties:
+                    mon:
+                      type: boolean
+                    tue:
+                      type: boolean
+                    wed:
+                      type: boolean
+                    thu:
+                      type: boolean
+                    fri:
+                      type: boolean
+                    sat:
+                      type: boolean
+                    sun:
+                      type: boolean
+                user_gender:
+                  type: boolean
+                  format: 'true : male, false : female'
+                user_longitude:
+                  type: number
+                  description: double in degrees
+                user_latitude:
+                  type: number
+                  description: double in degrees
+                fitness_center:
+                  type: object
+                  properties:
+                    center_name:
+                      type: string
+                    center_address:
+                      type: string
+                    fitness_longitude:
+                      type: number
+                      description: double in degrees
+                    fitness_latitude:
+                      type: number
+                      description: double in degrees
+      responses:
+        '201':
+          description: '`SUCCESS CREATED` returns created user document'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/user'
+        '400':
+          description: '`Client Bad Request`'
+  /users:
+    get:
+      tags:
+        - users
+      summary: 모든 유저 목록 조회
+      description: Response  `array of all user`
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/user'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /users/{userId}:
+    get:
+      tags:
+        - users
+      summary: userID로 사용자 1명 조회
+      description: Returns a single user
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: '`SUCCESS_OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/user'
+        '400':
+          description: ClientErrorBadRequest
+    patch:
+      tags:
+        - users
+      summary: 사용자 정보 변경
+      description: update user information
+      operationId: updateUser
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/userId'
+      requestBody:
+        description: User object to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                message:
+                  type: string
+                data:
+                  $ref: '#/components/schemas/user'
+      responses:
+        '200':
+          description: '`SUCCESS_OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/user'
+        '400':
+          description: ClientErrorBadRequest
+
+  /posts:
+    get:
+      tags:
+        - posts
+      summary: 사용자가 작성한 모든 매칭글 목록 조회
+      description: Response  `array of posts written by user`
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/post'
+        '400':
+          description: '`ClientErrorBadRequest`'
+    post:
+      tags:
+        - posts
+      summary: 매칭글 등록
+      description: Assign a  `post`
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: Post object to be posted
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: ObjectId
+                  description: references user
+                location_id:
+                  type: string
+                  format: ObjectId
+                  description: references location
+                post_fitness_part:
+                  type: array
+                  items:
+                    type: string
+                    format: Objectid
+                    description: references fitness part
+                post_title:
+                  type: string
+                promise_location:
+                  type: string
+                  format: ObjectId
+                  description: references fitness center
+                promise_date:
+                  type: string
+                  format: date
+                post_img:
+                  type: string
+                  default: ''
+                post_main_text:
+                  type: string
+                  default: ''
+      responses:
+        '201':
+          description: '`SuccessCreated`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/post'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /posts/{postId}:
+    get:
+      tags:
+        - posts
+      summary: postId로 매칭글 조회
+      description: Returns a single post
+      operationId: getPostById
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/postId'
+      responses:
+        '200':
+          description: '`SUCCESS_OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/post'
+        '400':
+          description: ClientErrorBadRequest
+    patch:
+      tags:
+        - posts
+      summary: 매칭글 정보 변경
+      description: update post information
+      operationId: updatePost
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/postId'
+      requestBody:
+        description: Post object attributes to be updated
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                  format: ObjectId
+                  description: references user
+                location_id:
+                  type: string
+                  format: ObjectId
+                  description: references location
+                post_fitness_part:
+                  type: array
+                  items:
+                    type: string
+                    format: Objectid
+                    description: references fitness part
+                post_title:
+                  type: string
+                promise_location:
+                  type: string
+                  format: ObjectId
+                  description: references fitness center
+                promise_date:
+                  type: string
+                  format: date
+                post_img:
+                  type: string
+                  default: ''
+                post_main_text:
+                  type: string
+                  default: ''
+      responses:
+        '200':
+          description: '`SUCCESS_OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/post'
+        '400':
+          description: ClientErrorBadRequest
+    delete:
+      tags:
+        - posts
+      summary: postId로 매칭글 삭제
+      description: Delete a post by postId
+      parameters:
+        - $ref: '#/components/parameters/postId'
+      responses:
+        '200':
+          description: '`SUCCESS_OK`'
+        '400':
+          description: ClientErrorBadRequest
+
+  /matching/{appointmentId}:
+    post:
+      tags:
+        - matching
+      summary: 매칭 여부 확인 및 등록
+      description: Check a  `matching` and save result to Appointment
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/appointmentId'
+      requestBody:
+        description: Appointment User properties to be checked
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_1:
+                  type: object
+                  properties:
+                    user_id:
+                      type: string
+                      format: ObjectId
+                    user_longitutde:
+                      type: number
+                      description: double in degrees
+                    user_latitude:
+                      type: number
+                      description: double in degrees
+                user_2:
+                  type: object
+                  properties:
+                    user_id:
+                      type: string
+                      format: ObjectId
+                    user_longitutde:
+                      type: number
+                      description: double in degrees
+                    user_latitude:
+                      type: number
+                      description: double in degrees
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/appointment'
+        '400':
+          description: '`ClientErrorBadRequest`'
+
+  /reviews/candidates:
+    get:
+      summary: '리뷰 후보 데이터 전체조회'
+      description: 'GET 방식으로 리뷰 후보 등록'
+      tags:
+        - reviews
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 전체 리뷰 후보 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/reviewCandidate'
+                    example:
+                      [
+                        {
+                          '_id': '62c66ef64b8212e4674dbe20',
+                          'candidate_body': '매너가 좋아요.',
+                          'id': '62c66ef64b8212e4674dbe20',
+                        },
+                        {
+                          '_id': '62c66f0b4b8212e4674dbe21',
+                          'candidate_body': '약속을 잘 지켜요.',
+                          'id': '62c66f0b4b8212e4674dbe21',
+                        },
+                        {
+                          '_id': '62c66f224b8212e4674dbe22',
+                          'candidate_body': '열정적이에요.',
+                          'id': '62c66f224b8212e4674dbe22',
+                        },
+                      ]
+    post:
+      summary: '리뷰 후보 등록'
+      description: 'POST 방식으로 리뷰 후보 등록'
+      tags:
+        - reviews
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 리뷰 후보 등록합니다.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                candidate_body:
+                  type: string
+                  description: '리뷰 후보'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/reviewCandidate'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /reviews:
+    post:
+      summary: '사용자 리뷰 등록'
+      description: 'Post 방식으로 리뷰 등록'
+      tags:
+        - reviews
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 리뷰를 등록합니다.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                review_recv_id:
+                  type: string
+                  format: ObjectId
+                review_body:
+                  type: string
+                  default: ''
+                user_rating:
+                  type: number
+                  default: 3
+                review_candidates:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+                    description: references reviewCandidate
+      responses:
+        '200':
+          description: 리뷰 후보 등록
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/review'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /reviews/{userId}:
+    get:
+      summary: '특정 사용자가 받은 리뷰를 조회'
+      description: 'GET 방식으로 특정 사용자가 받은 리뷰 조회'
+      tags:
+        - reviews
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: 특정 사용자가 받은 리뷰를 조회
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/review'
+
+  /push/chat/{userId}:
+    post:
+      summary: '채팅 답변 알림 푸시'
+      description: 'Post 방식으로 특정 사용자의 채팅 답변 알림 푸시'
+      tags:
+        - push
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: '`SuccessOK` 특정 사용자의 채팅 답변 알림 푸시'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/user'
+  /locations:
+    get:
+      summary: '모든 지역 목록 조회'
+      description: 'GET 방식으로 모든 지역 목록 조회'
+      tags:
+        - location
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/location'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /locations/{locId}:
+    get:
+      summary: '특정 지역 조회'
+      description: 'GET 방식으로 특정 지역 조회'
+      tags:
+        - location
+      parameters:
+        - $ref: '#/components/parameters/locId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/location'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /fitnesscenters:
+    get:
+      summary: '모든 피트니스 센터 목록 조회'
+      description: 'GET 방식으로 모든 피트니스센터 목록 조회'
+      tags:
+        - fitnesscenter
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/fitnessCenter'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /fitnesscenters/{fitnesscenterId}:
+    get:
+      summary: '특정 피트니스 센터 정보 조회'
+      description: 'GET 방식으로 특정 피트니스 센터 정보 조회'
+      tags:
+        - fitnesscenter
+      parameters:
+        - $ref: '#/components/parameters/fitnesscenterId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/fitnessCenter'
+        '400':
+          description: '`ClientErrorBadRequest`'
+
+  /appointments:
+    get:
+      summary: '사용자와 관련된 약속 데이터 전체조회'
+      description: 'Get 방식으로 사용자와 관련된 모든 약속 조회'
+      tags:
+        - appointments
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 전체 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/appointment'
+        '400':
+          description: '`ClientErrorBadRequest`'
+    post:
+      summary: '사용자 약속 등록'
+      description: 'Post 방식으로 특정 약속 등록'
+      tags:
+        - appointments
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 약속을 등록합니다.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                appointment_date:
+                  type: string
+                  format: date
+                match_start_id:
+                  type: string
+                  format: ObjectId
+                  description: references User
+                match_join_id:
+                  type: string
+                  format: ObjectId
+                  description: references User
+      responses:
+        '201':
+          description: '`SuccessCreated`특정 약속 정보'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/appointment'
+        '404':
+          description: '`ClientErrorNotFound`'
+  /appointments/{appointmentId}:
+    get:
+      summary: '특정 약속 데이터 조회'
+      description: 'Get 방식으로 특정 약속 조회'
+      tags:
+        - appointments
+      parameters:
+        - $ref: '#/components/parameters/appointmentId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 특정 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/appointment'
+        '404':
+          description: '`ClientErrorNotFound`'
