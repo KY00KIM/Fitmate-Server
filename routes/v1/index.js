@@ -13,13 +13,6 @@ const path = require('path');
 const {uploadProfileImage} = require('../../config/aws_s3');
 const { swaggerUi, specs } = require("../../docs/swagger");
 
-/**
- * @swagger
- * tags:
- *   name: Users
- *   description: 유저 추가 수정 삭제 조회
- */
-
 
 v1Router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 v1Router.use("/users", user);
