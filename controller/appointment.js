@@ -19,7 +19,9 @@ const appointmentController = {
   getAllAppointment : async (req, res) => {
     try {
       let user_id = req.user.id;
-      const appointments = await Appointment.findById(user_id);
+      const appointments = await Appointment.find(
+        { $or:[{'match_start_id':user_id}, {'match_join_id':user_id} ]});
+
       appointments.forEach((appointment) =>{        
         appointment.appointment_date = timeConvert.addNineHours(appointment.appointment_date);
         appointment.createdAt = timeConvert.addNineHours(appointment.createdAt);
@@ -86,12 +88,6 @@ const appointmentController = {
       // 리뷰 요청 알림 예약
       schedule.scheduleJob(rule,() => pushNotification(match_start_user.social.device_token,'FitMate 리뷰 알림!' ,`${match_join_user.user_nickname}님과의 운동은 어떻셨나요?`));
       schedule.scheduleJob(rule, () => pushNotification(match_join_user.social.device_token, 'FitMate 리뷰 알림!', `${match_start_user.user_nickname}님과의 운동은 어떻셨나요?`));
-      // schedule.scheduleJob(rule,()=>{
-      //   console.log(match_start_user.social, 'data');
-      // });      
-      // schedule.scheduleJob(rule,()=>{
-      //   console.log(match_join_user.social, 'data');
-      // });
 
       // DB에 저장
       await PushSchedule.create({
@@ -104,10 +100,10 @@ const appointmentController = {
 
       // GPS 요청 정보 예약
       rule.year = moment(appointment_date).year();        
-      rule.month = moment(appointment_date).month();  
+      rule.month = moment(appointment_date).month() + 1;  
       rule.date = moment(appointment_date).date();    
       rule.hour = moment(appointment_date).hour();
-      rule.minute = moment(appointment_date).minute();
+      rule.minute = moment(appointment_date).minute() + 5;
       rule.second = moment(appointment_date).second();
 
       data = {
@@ -117,12 +113,6 @@ const appointmentController = {
       schedule.scheduleJob(rule,() => pushData(match_start_user.social.device_token, data));
       schedule.scheduleJob(rule,() => pushData(match_join_user.social.device_token, data));
             
-      // schedule.scheduleJob(rule,()=>{
-      //   console.log(match_start_user.social, data);
-      // });      
-      // schedule.scheduleJob(rule,()=>{
-      //   console.log(match_join_user.social, data);
-      // });
 
       // DB에 저장
       await PushSchedule.create({

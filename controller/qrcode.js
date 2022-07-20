@@ -1,4 +1,4 @@
-
+const {Appointment} = require('../model/Appointment');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 
@@ -23,5 +23,20 @@ const qrcodeController = {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
         }    
       },
+    /**
+     * @path {POST} http://fitmate.co.kr/v1/qrcode/:appointmentId
+     * @description qrcode를 통한 약속 매칭 확인
+     */
+      postQRCODE: async (req, res) => {
+        try{
+            const {
+                params: { appointmentId },
+              } = req;
+            const appointment = Appointment.findByIdAndUpdate(appointmentId, {'match_succeeded': true});
+             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessOK', STATUS_CODE.SuccessOK);
+        }catch(error){
+            ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+        }
+      }
   };
   module.exports = qrcodeController;
