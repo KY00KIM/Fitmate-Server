@@ -1,0 +1,339 @@
+components:
+  schemas:
+    user:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        user_name:
+          type: string
+        user_address:
+          type: string
+          format: formatted address
+        user_nickname:
+          type: string
+          description: ''
+        user_email:
+          type: string
+        user_profile_img:
+          type: string
+        user_schedule_time:
+          type: integer
+          description: '0 : 오전, 1 : 오후, 2 : 저녁'
+        user_weekday:
+          type: object
+          properties:
+            mon:
+              type: boolean
+              default: false
+            tue:
+              type: boolean
+              default: false
+            wed:
+              type: boolean
+              default: false
+            thu:
+              type: boolean
+              default: false
+            fri:
+              type: boolean
+              default: false
+            sat:
+              type: boolean
+              default: false
+            sun:
+              type: boolean
+              default: false
+        user_introduce:
+          type: string
+        user_fitness_part:
+          type: array
+          items:
+            type: string
+            format: ObjectId
+        user_age:
+          type: integer
+        user_gender:
+          type: boolean
+        user_loc_bound:
+          type: integer
+          default: 3
+        fitness_center_id:
+          type: string
+          format: ObjectId
+          description: references FitnessCenter
+        user_longitude:
+          type: number
+          description: double in degrees
+        user_latitude:
+          type: number
+          description: double in degrees
+        location_id:
+          type: string
+          format: ObjectId
+          description: references Location
+        social:
+          type: object
+          properties:
+            user_id:
+              type: string
+              description: firebase user id
+            user_name:
+              type: string
+              description: firebase user name
+            provider:
+              type: string
+              description: firebase token provider
+            device_token:
+              type: array
+              description: list of firebase user device token
+              items:
+                type: string
+                format: deviceToken
+            firebase_info:
+              type: object
+              description: firebase additional info
+        is_deleted:
+          type: boolean
+          default: false
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+    post:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        user_id:
+          type: string
+          format: ObjectId
+          description: references user
+        location_id:
+          type: string
+          format: ObjectId
+          description: references location
+        post_fitness_part:
+          type: array
+          items:
+            type: string
+            format: Object_id
+            description: references fitness part
+        post_title:
+          type: string
+        post_readNo:
+          type: integer
+          default: 0
+        post_hit:
+          type: integer
+          default: 0
+        promise_location:
+          type: string
+          format: ObjectId
+          description: references fitness center
+        promise_date:
+          type: string
+          format: date
+        post_img:
+          type: string
+          default: ''
+        post_main_text:
+          type: string
+          default: ''
+        is_deleted:
+          type: boolean
+          default: false
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+
+    appointment:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        center_id:
+          type: string
+          format: ObjectId
+          description: references FitnessCenter
+        appointment_location:
+          type: string
+        appointment_date:
+          type: string
+          format: date
+        match_start_id:
+          type: string
+          format: ObjectId
+          description: references User
+        match_join_id:
+          type: string
+          format: ObjectId
+          description: references User
+        match_succeeded:
+          type: boolean
+          default: false
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+    review:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        review_send_id:
+          type: string
+          format: ObjectId
+        review_recv_id:
+          type: string
+          format: ObjectId
+        review_body:
+          type: string
+          default: ''
+        user_rating:
+          type: number
+          default: 3
+        review_candidate:
+          type: array
+          items:
+            type: string
+            format: ObjectId
+            description: references reviewCandidate
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+    fitnessCenter:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        center_name:
+          type: string
+        center_address:
+          type: string
+        center_img:
+          type: array
+          items:
+            type: string
+            format: URI
+        center_location:
+          type: string
+          format: ObjectId
+          description: refernces Location ID
+        fitness_longitude:
+          type: number
+          format: double in degree
+        fitness_latitude:
+          type: number
+          format: double in degree
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+    location:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        location_name:
+          type: string
+          format: 구 단위
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+    reviewCandidate:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        candidate_body:
+          type: string
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+  parameters:
+    authToken:
+      name: authorization
+      in: header
+      required: true
+      description: Firebase UserId Token for authenication and user info
+      schema:
+        type: string
+        format: JWT
+    userId:
+      name: userId
+      in: path
+      description: ID of user to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    postId:
+      name: postId
+      in: path
+      description: ID of post to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    appointmentId:
+      name: appointmentId
+      in: path
+      description: ID of appointment to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    reviewId:
+      name: reviewId
+      in: path
+      description: ID of review to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    locId:
+      name: locId
+      in: path
+      description: ID of location to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    fitnesscenterId:
+      name: fitnesscenterId
+      in: path
+      description: ID of fitnesscenter to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io

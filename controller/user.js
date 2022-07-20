@@ -16,8 +16,7 @@ const userController = {
       //logger.info(`${req.decoded.id}`);
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](users, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
     } catch (error) {
-      //logger.error(`${req.decoded.id}`)
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
 
@@ -29,13 +28,11 @@ const userController = {
   // 사용자 리뷰 정보 하나 전송 + 없을 시 랜덤 전송
   getOneUser: async (req, res) => {
     try {
-      const {
-        params: { userId },
-      } = req;
+      const { userId } = req.params
       const user = await User.findById(userId);
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
     } catch (error) {
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
 
@@ -55,7 +52,7 @@ const userController = {
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error)
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
 
@@ -66,40 +63,48 @@ const userController = {
   */
   assignUser: async (req, res) => {
     try {
-      const {
-        body: { user_nickname, user_gender, user_weekday, user_schedule_time, user_address, user_latitude, user_longitude, fitness_center },
-      } = req;
+      const { user_nickname, user_gender, user_weekday, user_schedule_time, user_address, user_latitude, user_longitude, fitness_center } = req.body;
       const locationId = await locationController.parseAddress(user_address);
       const center = await fitnesscenterController.getFitnessCenterId(fitness_center);
       const user = await User.create({
         // BODY for test
-        user_name: req.body.name,
-        user_pwd: "",
-        user_email: req.body.email,
+        user_name: req.user.social.name || "",
+        user_email: req.user.social.email || "",
         user_address: user_address,
         user_nickname: user_nickname,
-        user_profile_img: req.body.picture,
+        user_profile_img: req.user.social.picture || "",
         user_schedule_time: user_schedule_time,
-        user_weekday: user_weekday,
-        user_introduce: "",
-        user_fitness_part: [],
-        user_age: 0,
+        user_weekday: user_weekday || null,
         user_gender: user_gender,
         fitness_center_id: center._id,
-        user_latitude: user_latitude,
-        user_longitude: user_longitude,
+        user_latitude: user_latitude || 0.0,
+        user_longitude: user_longitude || 0.0,
         location_id: locationId,
         social: {
-          user_id: req.body.uid,
-          user_name: req.body.name,
-          provider: req.body.firebase.sign_in_provider,
-          firebase_info: {}
+          user_id: req.user.social.uid,
+          user_name: req.user.social.name || "",
+          provider: req.user.social.firebase.sign_in_provider,
+          firebase_info: JSON.parse(JSON.stringify(req.user.social))
         }
       });
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SUCCESS_NO_CONTENT', STATUS_CODE.SUCCESS_NO_CONTENT);
+      return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
       console.log(error)
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
+
+  checkUserValid: async (req, res) => {
+    try {
+      const uid = req.user.social.uid
+      const users = await User.find({ 'social.user_id': uid });
+      if (!users[0])
+        return ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+
+      return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ user_id: users[0]._id }, 'SuccessOK', STATUS_CODE.SuccessOK);
+    } catch (error) {
+      console.log(error)
+      return ResponseManager.getDefaultResponseHandler(res)['onError'](error, STATUS_CODE.ClientErrorBadRequest);
     }
   }
 };

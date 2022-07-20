@@ -14,9 +14,46 @@ const options = {
             {
                 url: "http://localhost:8000", // 요청 URL
             },
+            {
+                url: "http://localhost:8000/v1"
+            },
+        ],
+        tags: [
+            {
+                name: "users",
+                description: "Operations about users"
+            },
+            {
+                name: "posts",
+                description: "Operations about posts"
+            },
+            {
+                name: "matching",
+                description: "Operation check matching"
+            },
+            {
+                name: "reviews",
+                description: "Operation about reviews"
+            },
+            {
+                name: "push",
+                description: "Operation about push notification"
+            },
+            {
+                name: "location",
+                description: "Operation about locations"
+            },
+            {
+                name: "fitnesscenter",
+                description: "Operation about fitnesscenters"
+            },
+            {
+                name: "appointments",
+                description: "Operation about appointments"
+            }
         ],
     },
-    apis: ["./model/*.js", "./routes/*.js", "./routes/*/*.js"], //Swagger 파일 연동
+    apis: ["./docs/*.yaml"], //Swagger 파일 연동
 }
 const specs = swaggereJsdoc(options)
 
