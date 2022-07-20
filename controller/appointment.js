@@ -19,7 +19,9 @@ const appointmentController = {
   getAllAppointment : async (req, res) => {
     try {
       let user_id = req.user.id;
-      const appointments = await Appointment.findById(user_id);
+      const appointments = await Appointment.find(
+        { $or:[{'match_start_id':user_id}, {'match_join_id':user_id} ]});
+
       appointments.forEach((appointment) =>{        
         appointment.appointment_date = timeConvert.addNineHours(appointment.appointment_date);
         appointment.createdAt = timeConvert.addNineHours(appointment.createdAt);

@@ -23,9 +23,13 @@ const uploadProfileImage = async (toUploadFile, userId) =>{
         Body: fileContent
     };
 
-    const data = await s3.upload(params).promise(); // Then
-    console.log(`File uploaded successfully. ${data.Location}`);
-    return data.Location;
+    const res = await s3.upload(params).promise()
+        .then((data)=>{
+            console.log(`File uploaded successfully. ${data.Location}`);
+            return data.Location;
+        }); // Then
+    console.log(res);
+    return res;
 };
 
 

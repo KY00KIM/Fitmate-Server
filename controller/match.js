@@ -1,7 +1,11 @@
 const { Appointment } = require('../model/Appointment');
-const {pushNotification, pushData} = require('./push');
+const { User } = require('../model/User');
+const {pushData} = require('./push');
+const schedule = require('node-schedule');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
+const e = require('express');
+const { now } = require('mongoose');
 
 const matchController = {
     /**
@@ -24,8 +28,21 @@ const matchController = {
                 data = {
                     "appointmentId":appointment._id,
                     Type: "QRCODE"
-                }
-    // Should add FCM Data push---------------------------------------------------------------------------------------------------------------------------------------------------
+                };
+
+                let rule = new schedule.RecurrenceRule();
+                const now_date = Date.now();
+
+                rule.year = moment(now_date).year();
+                rule.month = moment(now_date).month() + 1;
+                rule.date = moment(now_date).date();
+                rule.hour = moment(now_date).hour();
+                rule.minute = moment(now_date).minute() + 5;
+                rule.second = moment(now_date).second();
+
+                const match_start_user = await User.findById(user_1.user_id);
+                const match_join_user = await User.findById(user_2.user_id);
+                
                 schedule.scheduleJob(rule,() => pushData(match_start_user.social.device_token, data));
                 schedule.scheduleJob(rule,() => pushData(match_join_user.social.device_token, data));
                 ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessOK', STATUS_CODE.SuccessOK);
