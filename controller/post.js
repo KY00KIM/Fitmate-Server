@@ -7,11 +7,10 @@ const postController = {
   * @path {GET} http://localhost:8000/v1/posts/
   * @description 사용자와 연관된 모든 매칭글을 조회하는 GET Method
   */
-  // user_id 추가
   getAllPosts: async (req, res) => {
     try {
-      const { body: { userId } } = req
-      const posts = await Post.find({ user_id: userId, is_deleted: false });
+      const user_id = req.user.id
+      const posts = await Post.find({ user_id: user_id, is_deleted: false });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
@@ -30,7 +29,7 @@ const postController = {
       const post = await Post.find({ _id: postId, is_deleted: false });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
   },
 
@@ -55,7 +54,7 @@ const postController = {
       });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
 
@@ -69,9 +68,9 @@ const postController = {
         params: { postId }
       } = req;
       const post = await Post.findByIdAndUpdate(postId, req.body, { new: true, runValidators: true });
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
 
@@ -87,7 +86,7 @@ const postController = {
       const post = await Post.findByIdAndUpdate(postId, { is_deleted: true }, { new: true, runValidators: true });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   }
 

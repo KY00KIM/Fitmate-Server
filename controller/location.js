@@ -9,24 +9,25 @@ const locationController = {
   */
   getAllLocation: async (req, res) => {
     try {
-      const location = await Location.find({});
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](location, 'SuccessOK', STATUS_CODE.SuccessOK);
+      const locations = await Location.find({});
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](locations, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error);
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
   /**
-  * @path {GET} http://localhost:8000/v1/locations
+  * @path {GET} http://localhost:8000/v1/locations/:locId
   * @description 모든 지역(구) 단위를 조회하는 GET Method
   */
   getOneLocation: async (req, res) => {
     try {
-      const location = await Location.find({});
+      const { locId } = req.params
+      const location = await Location.findById(locId);
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](location, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error);
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
 
@@ -43,9 +44,9 @@ const locationController = {
         key = word;
       }
     });
-    let location = await Location.find({ location_name: key });
+    let locations = await Location.find({ location_name: key });
     const result = JSON.parse(JSON.stringify(location));
-    if (location.length == 0) {
+    if (locations.length == 0) {
       let newLoc = await Location.create({ location_name: key });
       return newLoc._id
     }

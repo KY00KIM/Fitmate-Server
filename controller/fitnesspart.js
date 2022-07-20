@@ -15,7 +15,7 @@ const fitnesspartController = {
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitnesspart, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
           } catch (error) {
             console.log(error);
-            ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+            ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
           }
     },
     writeFitnessPart: async (req, res) => {
@@ -30,7 +30,7 @@ const fitnesspartController = {
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitnesspart, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
           } catch (error) {
             console.log(error);
-            ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+            ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
           }
     },
 };

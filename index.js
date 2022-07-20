@@ -3,7 +3,10 @@ const app = express();
 const path = require('path');
 const logger = require('./config/winston');
 const morgan = require('morgan');
+const { registerPush } = require('./controller/push');
 require("dotenv").config();
+const { swaggerUi, specs } = require("./docs/swagger");
+
 
 const helmet = require('helmet');
 const combined = ':remote-addr - :remote-user ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'
@@ -30,12 +33,17 @@ app.use(morgan(morganFormat, { stream: logger.stream }));
 app.use(helmet());
 
 // JWT 설정
-// app.use(verifyUser)
+// app.use('/v1', verifyUser)
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 // MongoDB 연결
 connect();
+registerPush();
 app.use('/', router)
-
+app.get('/', (req, res) => {
+    res.render('./view/landing-02-image-bg.html');
+})
 const port = process.env.PORT || 8000
 
 

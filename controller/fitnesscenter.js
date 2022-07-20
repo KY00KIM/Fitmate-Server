@@ -14,7 +14,7 @@ const fitnesscenterController = {
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitnesscenters, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error);
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
   /**
@@ -23,14 +23,12 @@ const fitnesscenterController = {
   */
   getOneFitnessCenter: async (req, res) => {
     try {
-      const {
-        params: { fitnesscenterId },
-      } = req;
+      const { fitnesscenterId } = req.params;
       const fitnesscenter = await FitnessCenter.findById(fitnesscenterId);
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitnesscenter, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error);
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
 
