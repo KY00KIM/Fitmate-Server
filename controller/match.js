@@ -54,8 +54,12 @@ const matchController = {
                 const match_start_user = await User.findById(user_1.user_id);
                 const match_join_user = await User.findById(user_2.user_id);
                 
-                schedule.scheduleJob(rule,() => pushData(match_start_user.social.device_token, data));
-                schedule.scheduleJob(rule,() => pushData(match_join_user.social.device_token, data));
+                match_start_user.social.device_token.forEach((deviceToken)=>{
+                    schedule.scheduleJob(rule,() => pushData(deviceToken, data));
+                  });
+                  match_join_user.social.device_token.forEach((deviceToken) => {
+                    schedule.scheduleJob(rule,() => pushData(deviceToken, data));
+                  });
                 ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessOK', STATUS_CODE.SuccessOK);
             }
         } catch (error) {

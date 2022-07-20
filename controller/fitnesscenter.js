@@ -18,7 +18,7 @@ const fitnesscenterController = {
     }
   },
   /**
-  * @path {GET} http://localhost:8000/v1/fitnesscenters/:fitnesscenterId
+  * @path {GET} http://fitmate.co.kr/v1/fitnesscenters/:fitnesscenterId
   * @description 특정 운동 센터를 조회하는 GET Method
   */
   getOneFitnessCenter: async (req, res) => {

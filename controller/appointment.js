@@ -86,8 +86,12 @@ const appointmentController = {
       console.log(rule);
 
       // 리뷰 요청 알림 예약
-      schedule.scheduleJob(rule,() => pushNotification(match_start_user.social.device_token,'FitMate 리뷰 알림!' ,`${match_join_user.user_nickname}님과의 운동은 어떻셨나요?`));
-      schedule.scheduleJob(rule, () => pushNotification(match_join_user.social.device_token, 'FitMate 리뷰 알림!', `${match_start_user.user_nickname}님과의 운동은 어떻셨나요?`));
+      match_start_user.social.device_token.forEach((deviceToken)=>{
+        schedule.scheduleJob(rule,() => pushNotification(deviceToken, 'FitMate 리뷰 알림!' ,`${match_join_user.user_nickname}님과의 운동은 어떠셨나요?`));
+      });
+      match_join_user.social.device_token.forEach((deviceToken) => {
+        schedule.scheduleJob(rule,() => pushNotification(deviceToken,'FitMate 리뷰 알림!' ,`${match_join_user.user_nickname}님과의 운동은 어떠셨나요?`));
+      });
 
       // DB에 저장
       await PushSchedule.create({
@@ -110,9 +114,12 @@ const appointmentController = {
         "appointmentId":appointment._id,
         Type: "GPS"
       }
-      schedule.scheduleJob(rule,() => pushData(match_start_user.social.device_token, data));
-      schedule.scheduleJob(rule,() => pushData(match_join_user.social.device_token, data));
-            
+      match_start_user.social.device_token.forEach((deviceToken)=>{
+        schedule.scheduleJob(rule,() => pushData(deviceToken, data));
+      });
+      match_join_user.social.device_token.forEach((deviceToken) => {
+        schedule.scheduleJob(rule,() => pushData(deviceToken, data));
+      });
 
       // DB에 저장
       await PushSchedule.create({
