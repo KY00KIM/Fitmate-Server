@@ -13,7 +13,7 @@ const locationController = {
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](location, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error);
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
   /**
@@ -26,7 +26,7 @@ const locationController = {
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](location, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error);
-      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
 
