@@ -3,8 +3,9 @@ const app = express();
 const path = require('path');
 const logger = require('./config/winston');
 const morgan = require('morgan');
-const {registerPush} = require('./controller/push');
+const { registerPush } = require('./controller/push');
 require("dotenv").config();
+const { swaggerUi, specs } = require("./docs/swagger");
 
 
 const helmet = require('helmet');
@@ -32,8 +33,9 @@ app.use(morgan(morganFormat, { stream: logger.stream }));
 app.use(helmet());
 
 // JWT 설정
-// app.use(verifyUser)
+// app.use('/v1', verifyUser)
 
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
 // MongoDB 연결
 connect();

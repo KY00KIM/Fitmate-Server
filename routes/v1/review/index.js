@@ -82,7 +82,7 @@ reviewRouter.post('/candidates', reviewController.writeReviewCandidate);
  *                            { "id": 3, "name": "유저3" },
  *                          ]
  */
-reviewRouter.post('/:review_send_id', reviewController.writeReview);
+reviewRouter.post('/', reviewController.writeReview);
 
 /**
  * @swagger

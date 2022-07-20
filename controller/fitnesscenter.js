@@ -23,9 +23,7 @@ const fitnesscenterController = {
   */
   getOneFitnessCenter: async (req, res) => {
     try {
-      const {
-        params: { fitnesscenterId },
-      } = req;
+      const { fitnesscenterId } = req.params;
       const fitnesscenter = await FitnessCenter.findById(fitnesscenterId);
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitnesscenter, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {

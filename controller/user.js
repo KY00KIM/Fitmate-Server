@@ -28,8 +28,8 @@ const userController = {
   // 사용자 리뷰 정보 하나 전송 + 없을 시 랜덤 전송
   getOneUser: async (req, res) => {
     try {
-      const id = req.user.id;
-      const user = await User.findById(id);
+      const { userId } = req.params
+      const user = await User.findById(userId);
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);

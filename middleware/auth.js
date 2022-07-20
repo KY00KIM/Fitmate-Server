@@ -32,10 +32,10 @@ const verifyUser = async (req, res, next) => {
             }
         }
         return ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorUnauthorized', STATUS_CODE.ClientErrorUnauthorized);
-    } catch (err) {
+    } catch (error) {
         //firebase 토큰 인증 메서드 오류
-        console.log(err);
-        return ResponseManager.getDefaultResponseHandler(res)['onError'](err, STATUS_CODE.ClientErrorBadRequest);
+        console.log(error);
+        return ResponseManager.getDefaultResponseHandler(res)['onError'](error, "ClientErrorBadRequest", STATUS_CODE.ClientErrorBadRequest);
     }
 
 }
