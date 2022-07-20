@@ -1,4 +1,5 @@
 const { Appointment } = require('../model/Appointment');
+const {pushNotification, pushData} = require('./push');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 
@@ -20,10 +21,17 @@ const matchController = {
             }
             else {
                 const appointment = await Appointment.findByIdAndUpdate(appointmentId, { match_succeeded: false }, { new: true, runValidators: true });
+                data = {
+                    "appointmentId":appointment._id,
+                    Type: "QRCODE"
+                }
+    // Should add FCM Data push---------------------------------------------------------------------------------------------------------------------------------------------------
+                schedule.scheduleJob(rule,() => pushData(match_start_user.social.device_token, data));
+                schedule.scheduleJob(rule,() => pushData(match_join_user.social.device_token, data));
                 ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessOK', STATUS_CODE.SuccessOK);
             }
         } catch (error) {
-            ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+            ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
         }
     }
 };

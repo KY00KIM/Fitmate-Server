@@ -21,9 +21,9 @@ class ResponseManager {
             onSuccess: function ( data, message, code) {    
                 ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
             },
-            onError : function ( message, code ) {
+            onError : function (error, message, code ) {
                 console.log('getDefaultResponseHandler onError');
-                ResponseManager.respondWithError(res, code || 500, message || 'Unknown error');
+                ResponseManager.respondWithError(res, error , code || 500, message || 'Unknown error');
             }
         }
     }
@@ -32,9 +32,9 @@ class ResponseManager {
             onSuccess : function ( data, message, code){
                 ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
             },
-            onError :function (message, code ) {
+            onError :function (error, message, code ) {
                 console.log('getDefaulterResponseHandlerData onError');
-                ResponseManager.respondWithErrorData(res, code || 500 , message || 'Unknown error', error.data || "");
+                ResponseManager.respondWithErrorData(res, error, code || 500 , message || 'Unknown error');
             }
         }
     }
@@ -73,18 +73,20 @@ class ResponseManager {
         response.data = data;
         res.status(code).json(response);
     }
-    static respondWithErrorData (res, errorCode, message="", data="") {
+    static respondWithErrorData (res, error, errorCode, message="", data="") {
         console.log('ResponseManager respondWithErrorData');
         let response = Object.assign({}, BasicResponse);
         response.success = false;
         response.message = message;
+        response.error = error;
         response.data = data;
         res.status(errorCode).json(response);
     }
-    static respondWithError (res, errorCode, message="") {
+    static respondWithError (res, error, errorCode, message="") {
         console.log('ResponseManager respondWithError');
         let response = Object.assign({}, BasicResponse);
         response.success = false;
+        response.error = error;
         response.message = message;
         res.status(errorCode).json(response);
     }

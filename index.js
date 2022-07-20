@@ -3,6 +3,7 @@ const app = express();
 const path = require('path');
 const logger = require('./config/winston');
 const morgan = require('morgan');
+const {registerPush} = require('./controller/push');
 require("dotenv").config();
 
 
@@ -36,6 +37,7 @@ app.use(helmet());
 
 // MongoDB 연결
 connect();
+registerPush();
 app.use('/', router)
 
 const port = process.env.PORT || 8000
