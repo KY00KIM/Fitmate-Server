@@ -84,7 +84,7 @@ const userController = {
         user_longitude: user_longitude || 0.0,
         location_id: locationId,
         social: {
-          user_id: req.user.social.uid,
+          user_id: req.user.social.uid || req.user.social.user_id,
           user_name: req.user.social.name || "",
           provider: req.user.social.firebase.sign_in_provider,
           firebase_info: JSON.parse(JSON.stringify(req.user.social))
