@@ -200,6 +200,41 @@ paths:
                     $ref: '#/components/schemas/user'
         '400':
           description: ClientErrorBadRequest
+  /users/image:
+    post:
+      tags:
+        - users
+      summary: 사용자 프로필 이미지 등록
+      description: 토큰에 해당하는 사용자의 사진을 등록/변경합니다. `AWS-s3 URL of image stored`
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                # 'file' will be the field name in this multipart request
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: string
+                    format: s3 URL
+        '400':
+          description: '`ClientErrorBadRequest`'
 
   /posts:
     get:
@@ -394,6 +429,41 @@ paths:
           description: '`SUCCESS_OK`'
         '400':
           description: ClientErrorBadRequest
+  /posts/image/{postId}:
+    post:
+      tags:
+        - posts
+      summary: 매칭글 프로필 이미지 등록
+      description: 매칭글Iddp  해당하는 매칭글의 사진을 등록/변경합니다. `AWS-s3 URL of image stored`
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/postId'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: string
+                    format: s3 URL
+        '400':
+          description: '`ClientErrorBadRequest`'
 
   /matching/{appointmentId}:
     post:

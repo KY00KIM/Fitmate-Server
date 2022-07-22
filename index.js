@@ -40,10 +40,9 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 // MongoDB 연결
 connect();
 registerPush();
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', router)
-app.get('/', (req, res) => {
-    res.render('./view/landing-02-image-bg.html');
-})
+
 const port = process.env.PORT || 8000
 
 

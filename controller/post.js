@@ -1,6 +1,8 @@
 const { Post } = require('../model/Post');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
+const { uploadImg } = require('../middleware/multer')
+
 
 const postController = {
   /**
@@ -88,8 +90,18 @@ const postController = {
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
-  }
+  },
 
+  uploadPostImg: async (req, res) => {
+    try {
+      const { postId } = req.params
+      const post = await Post.findByIdAndUpdate(postId, { post_img: req.file.location }, { new: true, runValidators: true });
+      return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](req.file.location, 'SuccessOK', STATUS_CODE.SuccessOK);
+    } catch (error) {
+      console.log(error)
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  }
 }
 
 module.exports = postController;
