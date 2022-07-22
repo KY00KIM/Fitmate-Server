@@ -47,7 +47,7 @@ const verifyUser = async (req, res, next) => {
  * @returns Boolean whether user exists and is valid
  */
 const getUserValidByToken = async (Token) => {
-    const userId = Token.uid;
+    const userId = Token.uid || Token.user_id;
     const users = await User.find({ "social.user_id": userId });
     if (!users[0])
         return false
