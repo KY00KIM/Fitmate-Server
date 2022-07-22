@@ -45,13 +45,15 @@ const locationController = {
       }
     });
     let locations = await Location.find({ location_name: key });
-    const result = JSON.parse(JSON.stringify(location));
+    const result = JSON.parse(JSON.stringify(locations));
     if (locations.length == 0) {
       let newLoc = await Location.create({ location_name: key });
       return newLoc._id
     }
-    else
+    else {
       return result[0]._id
+
+    }
   }
 };
 
