@@ -5,6 +5,9 @@ const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const timeConvert = require('../config/timeConvert');
 const logger = require('../config/winston');
+const { uploadImg } = require('../middleware/multer')
+
+
 const userController = {
   /**
   * @path {GET} http://fitmate.co.kr/v1/users
@@ -96,7 +99,7 @@ const userController = {
 
   checkUserValid: async (req, res) => {
     try {
-      const uid = req.user.social.uid
+      const uid = req.user.social.uid || user_id
       const users = await User.find({ 'social.user_id': uid });
       if (!users[0])
         return ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
@@ -105,6 +108,17 @@ const userController = {
     } catch (error) {
       console.log(error)
       return ResponseManager.getDefaultResponseHandler(res)['onError'](error, STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
+
+  uploadUserImg: async (req, res) => {
+    try {
+      await uploadImg('profile_img', req.user.id).single('image');
+      const user = await User.findByIdAndUpdate(req.user.id, { user_profile_img: req.file.location }, { new: true, runValidators: true });
+      return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](req.file.location, 'SuccessOK', STATUS_CODE.SuccessOK);
+    } catch (error) {
+      console.log(error)
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   }
 };
