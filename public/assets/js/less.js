@@ -398,7 +398,7 @@ module.exports = function(window, less, options) {
 
 module.exports = function(options, logger) {
 
-    var AbstractFileManager = require("../less/environment/abstract-file-manager.js");
+    var AbstractFileManager = require("../less/environment/abstract-file-manager.js.js.js");
 
     var fileCache = {};
 
@@ -517,7 +517,7 @@ module.exports = function(options, logger) {
 },{"../less/environment/abstract-file-manager.js":15}],7:[function(require,module,exports){
 module.exports = function() {
 
-    var functionRegistry = require("./../less/functions/function-registry");
+    var functionRegistry = require("../less/functions/function-registry");
 
     function imageSize() {
         throw {
@@ -2015,7 +2015,7 @@ MathHelper._math = function (fn, unit, n) {
 module.exports = MathHelper;
 },{"../tree/dimension":56}],25:[function(require,module,exports){
 var functionRegistry = require("./function-registry"),
-    mathHelper = require("./math-helper.js");
+    mathHelper = require("./math-helper.js.js.js");
 
 var mathFunctions = {
     // name,  unit
@@ -2048,7 +2048,7 @@ functionRegistry.addMultiple(mathFunctions);
 var Dimension = require("../tree/dimension"),
     Anonymous = require("../tree/anonymous"),
     functionRegistry = require("./function-registry"),
-    mathHelper = require("./math-helper.js");
+    mathHelper = require("./math-helper.js.js.js");
 
 var minMax = function (isMin, args) {
     args = Array.prototype.slice.call(args);
@@ -10706,7 +10706,7 @@ function doResolve(fn, promise) {
 
 //This file contains the ES6 extensions to the core Promises/A+ API
 
-var Promise = require('./core.js');
+var Promise = require('./core.js.js.js');
 
 module.exports = Promise;
 
@@ -10829,11 +10829,11 @@ if (typeof Promise.prototype.done !== 'function') {
 var asap = require('asap');
 
 if (typeof Promise === 'undefined') {
-  Promise = require('./lib/core.js')
-  require('./lib/es6-extensions.js')
+  Promise = require('./lib/core.js.js.js')
+  require('./lib/es6-extensions.js.js.js')
 }
 
-require('./polyfill-done.js');
+require('./polyfill-done.js.js.js');
 
 },{"./lib/core.js":94,"./lib/es6-extensions.js":95,"./polyfill-done.js":96,"asap":92}]},{},[2])(2)
 });
