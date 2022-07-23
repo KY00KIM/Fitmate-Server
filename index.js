@@ -47,5 +47,13 @@ const port = process.env.PORT || 8000
 
 
 app.listen(port, () => {
-    console.log(`Server Listening on ${port}`)
+    process.send('ready');
+    console.log(`Server Listening on ${port}`);
 });
+
+process.on('SIGINT', function () {
+    app.close(function () {
+    console.log('server closed');
+    process.exit(0)
+    })
+  })
