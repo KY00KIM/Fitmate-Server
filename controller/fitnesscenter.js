@@ -32,6 +32,17 @@ const fitnesscenterController = {
     }
   },
 
+  writeOneFitnessCenter: async (req, res) => {
+    try {
+      const fitnesscenterId = await getFitnessCenterId(req.body);
+      const fitnesscenter = await FitnessCenter.findById(fitnesscenterId);
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitnesscenter, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+    } catch (error) {
+      console.log(error);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
+
 
   getFitnessCenterId: async (fitness_center) => {
     const fitnessCenter = await FitnessCenter.find({ center_name: fitness_center.center_name, center_address: fitness_center.center_address });

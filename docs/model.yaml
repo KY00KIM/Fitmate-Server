@@ -295,6 +295,21 @@ components:
         updatedAt:
           type: string
           format: date
+    fitnessPart:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        fitness_name:
+          type: string
+          format: 부위 별
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
 
   parameters:
     authToken:

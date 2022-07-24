@@ -4,6 +4,7 @@ const fitnesscenterController = require('../../../controller/fitnesscenter');
 
 fitnesscenterRouter.get('/', fitnesscenterController.getAllFitnessCenter);
 fitnesscenterRouter.get('/:fitnesscenterId', fitnesscenterController.getOneFitnessCenter);
+fitnesscenterRouter.get('/', fitnesscenterController.writeOneFitnessCenter);
 
 
 module.exports = fitnesscenterRouter; 

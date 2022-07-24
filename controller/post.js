@@ -2,6 +2,7 @@ const { Post } = require('../model/Post');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const { uploadImg } = require('../middleware/multer')
+const fitnesscenterController = require('./fitnesscenter');
 
 
 const postController = {
@@ -44,12 +45,13 @@ const postController = {
       const {
         body: { user_id, location_id, post_fitness_part, post_title, promise_location, promise_date, post_img, post_main_text },
       } = req;
+      const center_id = await fitnesscenterController.getFitnessCenterId(promise_location);
       const post = await Post.create({
         user_id,
         location_id,
         post_fitness_part,
         post_title,
-        promise_location,
+        promise_location: center_id,
         promise_date,
         post_img,
         post_main_text

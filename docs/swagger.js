@@ -50,6 +50,10 @@ const options = {
             {
                 name: "appointments",
                 description: "Operation about appointments"
+            },
+            {
+                name: "fitnesspart",
+                description: "Operation about fitnesspart"
             }
         ],
     },
