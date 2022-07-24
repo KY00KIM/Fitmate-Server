@@ -6,7 +6,7 @@ const ResponseManager = require('../config/response');
 const schedule = require('node-schedule');
 const STATUS_CODE = require('../config/http_status_code');
 const moment = require('moment');
-
+const fitnesscenterController = require('./fitnesscenter');
 const timeConvert = require('../config/timeConvert');
 const {pushNotification, pushData} = require('./push');
 
@@ -61,13 +61,15 @@ const appointmentController = {
   writeAppointment: async (req, res) => {
     try {
       const {
-        body: { match_start_id, match_join_id, appointment_date},
+        body: {fitness_center, match_start_id, match_join_id, appointment_date},
       } = req;
-      
+      const fitness_center_id = await fitnesscenterController.getFitnessCenterId(fitness_center);
+
       const match_start_user = await User.findById(match_start_id);
       const match_join_user = await User.findById(match_join_id);
 
       const appointment = await Appointment.create({
+        "center_id": fitness_center_id,
         "match_start_id": match_start_id,
         "match_join_id": match_join_id,
         "appointment_date": appointment_date,
