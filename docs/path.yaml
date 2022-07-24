@@ -522,7 +522,44 @@ paths:
                     $ref: '#/components/schemas/appointment'
         '400':
           description: '`ClientErrorBadRequest`'
-
+  /matching:
+    post:
+      summary: '사용자 위치 정보 등록'
+      description: 'POST 방식으로 토큰 사용자의 위치정보 등록'
+      tags:
+        - matching
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 등록할 위치정보
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_longitude:
+                  type: number
+                user_latitude:
+                  type: number
+      responses:
+        '200':
+          description: 전체 리뷰 후보 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/userTrace'
+        '400':
+          description: 'ClientErrorBadRequest'
   /reviews/candidates:
     get:
       summary: '리뷰 후보 데이터 전체조회'
