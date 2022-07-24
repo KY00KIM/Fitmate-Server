@@ -12,7 +12,7 @@ const postController = {
   getAllPosts: async (req, res) => {
     try {
       const user_id = req.user.id
-      const posts = await Post.find({ user_id: user_id, is_deleted: false });
+      const posts = await Post.find({ is_deleted: false });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
