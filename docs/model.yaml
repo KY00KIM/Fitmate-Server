@@ -276,6 +276,26 @@ components:
         updatedAt:
           type: string
           format: date
+    userTrace:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        user_id:
+          type: string
+          format: ObjectId
+        user_longitude:
+          type: number
+        user_latitude:
+          type: number
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+
   parameters:
     authToken:
       name: authorization
