@@ -12,8 +12,14 @@ const userTraceSchema = mongoose.Schema({
     type: ObjectId,
     ref: 'User',
   },
-  user_longitude: Double,
-  user_latitude: Double,
+  user_longitude: {
+    type: Double,
+    default: 0.0,
+  },
+  user_latitude: {
+    type: Double,
+    default: 0.0,
+  },
 }, {
   versionKey: false,
   timestamps: true,

@@ -55,8 +55,14 @@ const userSchema = mongoose.Schema({
     ref: 'FitnessCenter',
 
   },
-  user_longitude: Double,
-  user_latitude: Double,
+  user_longitude: {
+    type: Double,
+    default: 0.0,
+  },
+  user_latitude: {
+    type: Double,
+    default: 0.0,
+  },
   location_id: {
     type: ObjectId,
     ref: 'Location',

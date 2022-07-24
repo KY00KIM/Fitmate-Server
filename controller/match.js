@@ -22,13 +22,13 @@ const matchController = {
             const distance = getDistanceFromLatLonInKm(user_1.user_latitude, user_1.user_longitude, user_2.user_latitude, user_2.user_longitude);
             await UserTrace.create({
                 'user_id': user_1.user_id,
-                'user_longitude': user_1.user_longitude || 126.97,
-                'user_latitude': user_1.user_latitude || 37.56
+                'user_longitude': user_1.user_longitude,
+                'user_latitude': user_1.user_latitude,
             });
             await UserTrace.create({
                 'user_id': user_2.user_id,
-                'user_longitude': user_2.user_longitude || 126.97,
-                'user_latitude': user_2.user_latitude || 37.56
+                'user_longitude': user_2.user_longitude,
+                'user_latitude': user_2.user_latitude
             });
             if (distance <= 1) {
                 const appointment = await Appointment.findByIdAndUpdate(appointmentId, { match_succeeded: true }, { new: true, runValidators: true });
