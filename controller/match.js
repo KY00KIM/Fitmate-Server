@@ -86,6 +86,20 @@ const matchController = {
         const user_1 = await User.findById(user_id1);
         const user_2 = await User.findById(user_id2);
         return getDistanceFromLatLonInKm(user_1.user_latitude, user_1.user_longitude, user_2.user_latitude, user_2.user_longitude)
+    },
+
+    assignUserLocation: async (req, res) => {
+        try {
+            const { user_longitude, user_latitude } = req.body;
+            const trace = await UserTrace.create({
+                user_id: req.user.id,
+                user_longitude,
+                user_latitude
+            });
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](trace, 'SuccessOK', STATUS_CODE.SuccessOK);
+        } catch (error) {
+            ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+        }
     }
 };
 
