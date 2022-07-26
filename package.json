@@ -29,6 +29,7 @@
     "node-schedule": "^2.1.0",
     "nodemon": "^2.0.18",
     "qrcode": "^1.5.1",
+    "slack-notify": "^2.0.2",
     "status-code-enum": "^1.0.0",
     "swagger-ui-express": "^4.5.0",
     "winston": "^3.8.1",
