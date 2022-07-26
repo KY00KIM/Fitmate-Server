@@ -80,8 +80,8 @@ const userController = {
         user_weekday: user_weekday || null,
         user_gender: user_gender,
         fitness_center_id: center._id,
-        user_latitude: user_latitude || 0.0,
-        user_longitude: user_longitude || 0.0,
+        user_latitude: user_latitude,
+        user_longitude: user_longitude,
         location_id: locationId,
         social: {
           user_id: req.user.social.uid || req.user.social.user_id,

@@ -28,10 +28,16 @@ const uploadProfileImage = async (toUploadFile, userId) => {
             console.log(`File uploaded successfully. ${data.Location}`);
             return data.Location;
         }); // Then
-    console.log("end of res  " + res);
+    console.log("end of res " + res);
+
     return res;
 };
 
+const replaceS3toCloudFront = (url) => {
+    const S3 = process.env.AWS_S3_URL;
+    const CLOUDFRONT = process.env.AWS_CLOUDFRONT_URL;
+    return url.replace(S3, CLOUDFRONT);
+};
 
 const downloadFile = (fileName) => {
     const params = {
@@ -49,4 +55,4 @@ const downloadFile = (fileName) => {
         }
     });
 };
-module.exports = { uploadProfileImage, s3 };
+module.exports = { uploadProfileImage, s3, replaceS3toCloudFront };

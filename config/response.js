@@ -3,7 +3,13 @@ REFERENCES
 Example:    ./ReponseExample.js
 Link:       https://www.tabnine.com/code/javascript/modules/http-status-codes
 */
+
 const HttpStatus = require('http-status-codes');
+require("dotenv").config();
+const SlackNotify = require('slack-notify');
+const MY_SLACK_WEBHOOK_URL = process.env.MY_SLACK_WEBHOOK_URL;
+const slack = SlackNotify(MY_SLACK_WEBHOOK_URL);
+
 const BasicResponse ={
     "success" : false,
     "message" : "",
@@ -22,7 +28,12 @@ class ResponseManager {
                 ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
             },
             onError : function (error, message, code ) {
-                console.log('getDefaultResponseHandler onError');
+                console.log('ResponseManager respondWithErrorData');
+                slack.send({
+                    channel: '#error',
+                    text: `ERROR: ${JSON.stringify(error)} \nMessage: ${message} \nCode: ${code}`,
+                    username:'nodejs'
+                });
                 ResponseManager.respondWithError(res, error , code || 500, message || 'Unknown error');
             }
         }
@@ -33,7 +44,12 @@ class ResponseManager {
                 ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
             },
             onError :function (error, message, code ) {
-                console.log('getDefaulterResponseHandlerData onError');
+                console.log('ResponseManager respondWithErrorData');
+                slack.send({
+                    channel: '#error',
+                    text: `ERROR: ${JSON.stringify(error)} \nMessage: ${message} \nCode: ${code}`,
+                    username:'nodejs'
+                });
                 ResponseManager.respondWithErrorData(res, error, code || 500 , message || 'Unknown error');
             }
         }
@@ -44,7 +60,12 @@ class ResponseManager {
                 successCallback(data, message, code);
             },
             onError : function (message, code ){
-                console.log('getDefaultResponseHandlerError onError');
+                console.log('ResponseManager respondWithErrorData');
+                slack.send({
+                    channel: '#error',
+                    text: `ERROR: ${JSON.stringify(error)} \nMessage: ${message} \nCode: ${code}`,
+                    username:'nodejs'
+                });
                 ResponseManager.respondWithError(res, code || 500, message || 'Unknown error');
             }
         }
@@ -74,7 +95,6 @@ class ResponseManager {
         res.status(code).json(response);
     }
     static respondWithErrorData (res, error, errorCode, message="", data="") {
-        console.log('ResponseManager respondWithErrorData');
         let response = Object.assign({}, BasicResponse);
         response.success = false;
         response.message = message;
@@ -83,7 +103,6 @@ class ResponseManager {
         res.status(errorCode).json(response);
     }
     static respondWithError (res, error, errorCode, message="") {
-        console.log('ResponseManager respondWithError');
         let response = Object.assign({}, BasicResponse);
         response.success = false;
         response.error = error;
