@@ -6,10 +6,6 @@ const { verifyUser } = require("..//middleware/auth");
 const { UserTrace } = require('../model/UserTrace')
 const { Appointment } = require('../model/Appointment')
 
-router.get('/test/:url', (req, res) => {
-    res.send(replaceS3toCloudFront(req.params.url));
-});
-
 router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/landing-02-image-bg.html'));
 })
