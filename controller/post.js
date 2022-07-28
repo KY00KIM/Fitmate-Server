@@ -12,7 +12,6 @@ const postController = {
   */
   getAllPosts: async (req, res) => {
     try {
-      const user_id = req.user.id
       const posts = await Post.find({ is_deleted: false });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
