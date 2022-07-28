@@ -16,10 +16,11 @@ const uploadImg = (storePath) => {
                 cb(null, { fieldName: file.fieldname })
             },
             key: function (req, file, cb) {
+                const extentsion = file.mimetype.split('/')[1];
                 if (storePath == "profile_image")
-                    cb(null, `${storePath}/${req.user.id || file.originalname}_${timeConvert.convertZeroHours(Date.now())}`);
+                    cb(null, `${storePath}/${req.user.id || file.originalname}_${timeConvert.convertZeroHours(Date.now())}.${extentsion || 'jpeg'}`);
                 else {
-                    cb(null, `${storePath}/${req.params.postId || file.originalname}_${timeConvert.convertZeroHours(Date.now())}`)
+                    cb(null, `${storePath}/${req.params.postId || file.originalname}_${timeConvert.convertZeroHours(Date.now())}.${extentsion || 'jpeg'}`)
                 }
             },
         })

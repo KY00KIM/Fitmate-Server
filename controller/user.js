@@ -113,7 +113,6 @@ const userController = {
 
   uploadUserImg: async (req, res) => {
     try {
-      await uploadImg('profile_img', req.user.id).single('image');
       const user = await User.findByIdAndUpdate(req.user.id, { user_profile_img: req.file.location }, { new: true, runValidators: true });
       return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](req.file.location, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {

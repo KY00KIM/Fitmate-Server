@@ -138,7 +138,28 @@ const appointmentController = {
       console.error(error);
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
-  }
+  },
+
+
+  /**
+   * @path {DELETE} http://fitmate.co.kr/v1/appointments/:appointmentId
+   * @description 약속글을 삭제하는 DELETE Method
+   */
+  deleteAppointment: async (req, res) => {
+    try {
+      const {
+        body: { fitness_center, match_start_id, match_join_id, appointment_date },
+      } = req;
+      const fitness_center_id = await fitnesscenterController.getFitnessCenterId(fitness_center);
+
+
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+
+    } catch (error) {
+      console.error(error);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+    }
+  },  
 };
 
 module.exports = appointmentController;
