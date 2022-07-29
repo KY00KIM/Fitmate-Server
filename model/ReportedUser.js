@@ -2,18 +2,15 @@ const mongoose = require('mongoose');
 require('mongoose-double')(mongoose);
 const { Types: { ObjectId, Double } } = mongoose.Schema;
 
-const ReportedChatsSchema = mongoose.Schema({
+const ReportedUserSchema = mongoose.Schema({
   report_user: {
     type: ObjectId,
     ref: 'User'
   },
-  reported_user: {
+  reported_user: [{
     type: ObjectId,
     ref: 'User'
-  },
-  // chat_content: {
-  //   type: String,
-  // },
+  }],
 }, {
   versionKey: false,
   timestamps: true,
@@ -21,6 +18,6 @@ const ReportedChatsSchema = mongoose.Schema({
 });
 
 
-const ReportedChats = mongoose.model('ReportedChats', ReportedChatsSchema);
+const ReportedUser = mongoose.model('ReportedUser', ReportedUserSchema);
 
-module.exports = { ReportedChats };
+module.exports = { ReportedUser };
