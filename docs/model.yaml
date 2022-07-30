@@ -369,6 +369,14 @@ components:
         type: string
         format: ObjectId
 
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - tokenAuth: []
+
 externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
