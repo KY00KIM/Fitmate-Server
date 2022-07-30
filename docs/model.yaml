@@ -315,7 +315,6 @@ components:
     authToken:
       name: authorization
       in: header
-      required: true
       description: Firebase UserId Token for authenication and user info
       schema:
         type: string
