@@ -16,7 +16,7 @@ const exceptions = ["/v1/api-docs", "/"]
 const verifyUser = async (req, res, next) => {
 
     try {
-        const token = req.header('Authorization')
+        const token = req.header('Authorization').split(' ')[1];
         const decodeToken = await admin.auth().verifyIdToken(token);
         //토큰이 정상 복호화된 경우
         if (decodeToken) {

@@ -315,7 +315,6 @@ components:
     authToken:
       name: authorization
       in: header
-      required: true
       description: Firebase UserId Token for authenication and user info
       schema:
         type: string
@@ -368,6 +367,14 @@ components:
       schema:
         type: string
         format: ObjectId
+
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - tokenAuth: []
 
 externalDocs:
   description: Find out more about Swagger

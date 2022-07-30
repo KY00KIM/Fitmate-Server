@@ -567,6 +567,7 @@ paths:
                       $ref: '#/components/schemas/userTrace'
         '400':
           description: 'ClientErrorBadRequest'
+
   /reviews/candidates:
     get:
       summary: '리뷰 후보 데이터 전체조회'
@@ -740,6 +741,7 @@ paths:
                     type: string
                   data:
                     $ref: '#/components/schemas/user'
+
   /locations:
     get:
       summary: '모든 지역 목록 조회'
@@ -792,6 +794,7 @@ paths:
                     $ref: '#/components/schemas/location'
         '400':
           description: '`ClientErrorBadRequest`'
+
   /fitnesscenters:
     get:
       summary: '모든 피트니스 센터 목록 조회'
@@ -882,6 +885,7 @@ paths:
                     $ref: '#/components/schemas/fitnessCenter'
         '400':
           description: '`ClientErrorBadRequest`'
+
   /fitnesspart:
     get:
       tags:
