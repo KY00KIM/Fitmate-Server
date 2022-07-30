@@ -12,7 +12,7 @@ const options = {
         },
         servers: [
             {
-                url: "http://localhost:8000", // 요청 URL
+                url: "https://fitmate.co.kr/v1", // 요청 URL
             },
             {
                 url: "http://localhost:8000/v1"
@@ -56,6 +56,9 @@ const options = {
                 description: "Operation about fitnesspart"
             }
         ],
+        security: [{
+            tokenAuth: []
+        }]
     },
     apis: ["./docs/*.yaml"], //Swagger 파일 연동
 }
