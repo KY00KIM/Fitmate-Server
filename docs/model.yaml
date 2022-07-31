@@ -310,13 +310,34 @@ components:
         updatedAt:
           type: string
           format: date
-    
+    chatroom:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        chat_start_id:
+          type: string
+          format: ObjectId
+          description: references User
+        chat_join_id:
+          type: string
+          format: ObjectId
+          description: references User
+        is_deleted:
+          type: boolean
+          default: false
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
 
   parameters:
     authToken:
       name: authorization
       in: header
-      required: true
       description: Firebase UserId Token for authenication and user info
       schema:
         type: string
@@ -369,6 +390,22 @@ components:
       schema:
         type: string
         format: ObjectId
+    chatroomId:
+      name: chatroomId
+      in: path
+      description: ID of chatroom to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+
+  securitySchemes:
+    tokenAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - tokenAuth: []
 
 externalDocs:
   description: Find out more about Swagger

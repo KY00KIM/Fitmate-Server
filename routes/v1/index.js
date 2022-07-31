@@ -9,9 +9,10 @@ const fitnesspart = require('./fitnesspart');
 const location = require('./location');
 const fitnesscenter = require('./fitnesscenter');
 const push = require('./push');
+const chat = require('./chat');
 const report = require('./report');
 const path = require('path');
-const {uploadProfileImage} = require('../../config/aws_s3');
+const { uploadProfileImage } = require('../../config/aws_s3');
 const { swaggerUi, specs } = require("../../docs/swagger");
 
 
@@ -25,7 +26,6 @@ v1Router.use("/fitnesspart", fitnesspart);
 v1Router.use("/locations", location);
 v1Router.use("/fitnesscenters", fitnesscenter);
 v1Router.use("/push", push);
-v1Router.use("/reports", report);
 
 v1Router.get("/", async (req, res) => {
     console.log('Success Connected');

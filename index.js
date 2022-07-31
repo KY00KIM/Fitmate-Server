@@ -22,6 +22,12 @@ const router = require('./routes');
 const { verifyUser } = require("./middleware/auth");
 
 
+const cors = require('cors');
+const corsOptions = {
+    origin: "http://localhost:",
+    credentials: true
+}
+app.use(cors());
 // JSON Parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -31,9 +37,6 @@ app.use(morgan(morganFormat, { stream: logger.stream }));
 
 // 보안 설정
 app.use(helmet());
-
-// JWT 설정
-// app.use('/v1', verifyUser)
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 
@@ -53,7 +56,7 @@ app.listen(port, () => {
 
 process.on('SIGINT', function () {
     app.close(function () {
-    console.log('server closed');
-    process.exit(0)
+        console.log('server closed');
+        process.exit(0)
     })
-  })
+})
