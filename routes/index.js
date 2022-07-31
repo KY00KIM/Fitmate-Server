@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const v1Router = require('./v1');
 const path = require('path');
-const {replaceS3toCloudFront} = require('../config/aws_s3')
+const { replaceS3toCloudFront } = require('../config/aws_s3')
 const { verifyUser } = require("..//middleware/auth");
 const { UserTrace } = require('../model/UserTrace')
 const { Appointment } = require('../model/Appointment')

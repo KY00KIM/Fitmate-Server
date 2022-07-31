@@ -3,8 +3,8 @@ paths:
     get:
       tags:
         - users
-      summary: 유저 user_id 조회 및 회원가입 여부 조회
-      description: Response  `user_id`
+      summary: Author:규민, 유저 user_id 조회 및 회원가입 여부 조회
+      description: Author:규민, Response  `user_id`
       parameters:
         - $ref: '#/components/parameters/authToken'
       responses:
@@ -33,8 +33,8 @@ paths:
     post:
       tags:
         - users
-      summary: 새로운 유저 등록
-      description: Add new user to db with firebase token
+      summary: Author:규민, 새로운 유저 등록
+      description: Author:규민,Add new user to db with firebase token
       operationId: assignUser
       parameters:
         - $ref: '#/components/parameters/authToken'
@@ -114,8 +114,8 @@ paths:
     get:
       tags:
         - users
-      summary: 모든 유저 목록 조회
-      description: Response  `array of all user`
+      summary: Author:규민, 모든 유저 목록 조회
+      description: Author:규민,Response  `array of all user`
       parameters:
         - $ref: '#/components/parameters/authToken'
       responses:
@@ -140,8 +140,8 @@ paths:
     get:
       tags:
         - users
-      summary: userID로 사용자 1명 조회
-      description: Returns a single user
+      summary: Author:규민, userID로 사용자 1명 조회
+      description: Author:규민,Returns a single user
       parameters:
         - $ref: '#/components/parameters/authToken'
         - $ref: '#/components/parameters/userId'
@@ -164,7 +164,7 @@ paths:
     patch:
       tags:
         - users
-      summary: 사용자 정보 변경
+      summary: Author:규민,사용자 정보 변경
       description: update user information
       operationId: updateUser
       parameters:
@@ -176,14 +176,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                message:
-                  type: string
-                data:
-                  $ref: '#/components/schemas/user'
+              $ref: '#/components/schemas/user'
       responses:
         '200':
           description: '`SUCCESS_OK`'
@@ -204,8 +197,8 @@ paths:
     post:
       tags:
         - users
-      summary: 사용자 프로필 이미지 등록
-      description: 토큰에 해당하는 사용자의 사진을 등록/변경합니다. `AWS-s3 URL of image stored`
+      summary: Author:규민, 사용자 프로필 이미지 등록
+      description: Author:규민,토큰에 해당하는 사용자의 사진을 등록/변경합니다. `AWS-s3 URL of image stored`
       parameters:
         - $ref: '#/components/parameters/authToken'
       requestBody:
@@ -240,8 +233,8 @@ paths:
     get:
       tags:
         - posts
-      summary: 모든 매칭글 목록 조회
-      description: Response  `array of posts written by user`
+      summary: Author:규민, 모든 매칭글 목록 조회
+      description: Author:규민,Response  `array of posts written by user`
       parameters:
         - $ref: '#/components/parameters/authToken'
       responses:
@@ -266,7 +259,7 @@ paths:
     post:
       tags:
         - posts
-      summary: 매칭글 등록
+      summary: Author:규민,매칭글 등록
       description: Assign a  `post`
       parameters:
         - $ref: '#/components/parameters/authToken'
@@ -337,8 +330,8 @@ paths:
     get:
       tags:
         - posts
-      summary: postId로 매칭글 조회
-      description: Returns a single post
+      summary: Author:규민, postId로 매칭글 조회
+      description: Author:규민,Returns a single post
       operationId: getPostById
       parameters:
         - $ref: '#/components/parameters/authToken'
@@ -365,7 +358,7 @@ paths:
     patch:
       tags:
         - posts
-      summary: 매칭글 정보 변경
+      summary: Author:규민,매칭글 정보 변경
       description: update post information
       operationId: updatePost
       parameters:
@@ -440,8 +433,8 @@ paths:
     post:
       tags:
         - posts
-      summary: 매칭글 프로필 이미지 등록
-      description: 매칭글Iddp  해당하는 매칭글의 사진을 등록/변경합니다. `AWS-s3 URL of image stored`
+      summary: Author:규민, 매칭글 프로필 이미지 등록
+      description: Author:규민,매칭글Iddp  해당하는 매칭글의 사진을 등록/변경합니다. `AWS-s3 URL of image stored`
       parameters:
         - $ref: '#/components/parameters/authToken'
         - $ref: '#/components/parameters/postId'
@@ -476,8 +469,8 @@ paths:
     post:
       tags:
         - matching
-      summary: 매칭 여부 확인 및 등록
-      description: Check a  `matching` and save result to Appointment
+      summary: Author:규민, 매칭 여부 확인 및 등록
+      description: Author:규민,Check a  `matching` and save result to Appointment
       parameters:
         - $ref: '#/components/parameters/authToken'
         - $ref: '#/components/parameters/appointmentId'
@@ -531,8 +524,8 @@ paths:
           description: '`ClientErrorBadRequest`'
   /matching:
     post:
-      summary: '사용자 위치 정보 등록'
-      description: 'POST 방식으로 토큰 사용자의 위치정보 등록'
+      summary: 'Author:규민, 사용자 위치 정보 등록'
+      description: 'Author:규민,POST 방식으로 토큰 사용자의 위치정보 등록'
       tags:
         - matching
       parameters:
@@ -570,8 +563,8 @@ paths:
 
   /reviews/candidates:
     get:
-      summary: '리뷰 후보 데이터 전체조회'
-      description: 'GET 방식으로 리뷰 후보 등록'
+      summary: 'Author:기호, 리뷰 후보 데이터 전체조회'
+      description: 'Author:기호,GET 방식으로 리뷰 후보 등록'
       tags:
         - reviews
       parameters:
@@ -646,8 +639,8 @@ paths:
           description: '`ClientErrorBadRequest`'
   /reviews:
     post:
-      summary: '사용자 리뷰 등록'
-      description: 'Post 방식으로 리뷰 등록'
+      summary: 'Author:기호, 사용자 리뷰 등록'
+      description: 'Author:기호,Post 방식으로 리뷰 등록'
       tags:
         - reviews
       parameters:
@@ -693,8 +686,8 @@ paths:
           description: '`ClientErrorBadRequest`'
   /reviews/{userId}:
     get:
-      summary: '특정 사용자가 받은 리뷰를 조회'
-      description: 'GET 방식으로 특정 사용자가 받은 리뷰 조회'
+      summary: 'Author:기호특정 사용자가 받은 리뷰를 조회'
+      description: 'Author:기호, GET 방식으로 특정 사용자가 받은 리뷰 조회'
       tags:
         - reviews
       parameters:
@@ -720,8 +713,8 @@ paths:
 
   /push/chat/{userId}:
     post:
-      summary: '채팅 답변 알림 푸시'
-      description: 'Post 방식으로 특정 사용자의 채팅 답변 알림 푸시'
+      summary: 'Author:기호채팅 답변 알림 푸시'
+      description: 'Author:기호, Post 방식으로 특정 사용자의 채팅 답변 알림 푸시'
       tags:
         - push
       parameters:
@@ -744,7 +737,7 @@ paths:
 
   /locations:
     get:
-      summary: '모든 지역 목록 조회'
+      summary: 'Author:기호모든 지역 목록 조회'
       description: 'GET 방식으로 모든 지역 목록 조회'
       tags:
         - location
@@ -771,7 +764,7 @@ paths:
           description: '`ClientErrorBadRequest`'
   /locations/{locId}:
     get:
-      summary: '특정 지역 조회'
+      summary: 'Author:기호, 특정 지역 조회'
       description: 'GET 방식으로 특정 지역 조회'
       tags:
         - location
@@ -797,8 +790,8 @@ paths:
 
   /fitnesscenters:
     get:
-      summary: '모든 피트니스 센터 목록 조회'
-      description: 'GET 방식으로 모든 피트니스센터 목록 조회'
+      summary: 'Author:기호, 모든 피트니스 센터 목록 조회'
+      description: 'Author:기호, GET 방식으로 모든 피트니스센터 목록 조회'
       tags:
         - fitnesscenter
       parameters:
@@ -862,8 +855,8 @@ paths:
           description: '`ClientErrorBadRequest`'
   /fitnesscenters/{fitnesscenterId}:
     get:
-      summary: '특정 피트니스 센터 정보 조회'
-      description: 'GET 방식으로 특정 피트니스 센터 정보 조회'
+      summary: 'Author:기호,특정 피트니스 센터 정보 조회'
+      description: 'Author:기호, GET 방식으로 특정 피트니스 센터 정보 조회'
       tags:
         - fitnesscenter
       parameters:
@@ -890,8 +883,8 @@ paths:
     get:
       tags:
         - fitnesspart
-      summary: 모든 운동부위 목록 조회
-      description: Response  `array of fitnessparts written by user`
+      summary: Author:기호,모든 운동부위 목록 조회
+      description: Author:기호, Response  `array of fitnessparts written by user`
       parameters:
         - $ref: '#/components/parameters/authToken'
       responses:
@@ -916,8 +909,8 @@ paths:
 
   /appointments:
     get:
-      summary: '사용자와 관련된 약속 데이터 전체조회'
-      description: 'Get 방식으로 사용자와 관련된 모든 약속 조회'
+      summary: 'Author:기호,사용자와 관련된 약속 데이터 전체조회'
+      description: 'Author:기호, Get 방식으로 사용자와 관련된 모든 약속 조회'
       tags:
         - appointments
       parameters:
@@ -995,8 +988,8 @@ paths:
           description: '`ClientErrorNotFound`'
   /appointments/{appointmentId}:
     get:
-      summary: '특정 약속 데이터 조회'
-      description: 'Get 방식으로 특정 약속 조회'
+      summary: 'Author:기호,특정 약속 데이터 조회'
+      description: 'Author:기호, Get 방식으로 특정 약속 조회'
       tags:
         - appointments
       parameters:
@@ -1016,6 +1009,242 @@ paths:
                     type: string
                   data:
                     type: object
+                    $ref: '#/components/schemas/appointment'
+        '404':
+          description: '`ClientErrorNotFound`'
+
+  /chats:
+    get:
+      summary: 'Author:규민, 사용자와 관련된 채팅목록 전체조회'
+      description: 'Get 방식으로 사용자와 관련된 모든 약속 조회'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 활성화된 전체 채팅방 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+    post:
+      summary: '채팅방 생성'
+      description: 'Post 방식으로 토큰 소유자와 상대방의 채팅방 생성'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 채팅방을 생성합니다.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                chat_join_id:
+                  type: string
+                  format: ObjectId
+                  description: references User
+      responses:
+        '201':
+          description: '`SuccessCreated`특정 약속 정보'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /chats/{chatroomId}:
+    get:
+      summary: 'Author:규민, 특정 채팅방 조회'
+      description: 'Get 방식으로 특정 채팅방 조회'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/chatroomId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 특정 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+    delete:
+      summary: '특정 채팅방 삭제'
+      description: 'Delete 방식으로 특정 채팅방 삭제'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/chatroomId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 특정 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+
+  /chats/info:
+    get:
+      summary: 'Author:규민, 사용자와 관련된 채팅목록 사용자 상세정보 포함 전체조회'
+      description: 'Get 방식으로 사용자와 관련된 모든 약속 조회'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 활성화된 전체 채팅방 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /chats/info/{chatroomId}:
+    get:
+      summary: 'Author:규민, 특정 채팅방 사용자 상세정보 포함 조회'
+      description: 'Get 방식으로 특정 채팅방 조회'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/chatroomId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 특정 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+
+  /report/{postId}:
+    post:
+      summary: 'Author:기호, 모집글 신고'
+      description: 'Author:기호, Post 방식으로 특정 모집글 신고'
+      tags:
+        - report
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/postId'
+      requestBody:
+        description: POST 방식으로 모집글을 신고합니다.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+      responses:
+        '201':
+          description: '`SuccessCreated`특정 약속 정보'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/appointment'
+        '404':
+          description: '`ClientErrorNotFound`'
+  /report/user:
+    post:
+      summary: 'Author:기호, 사용자 신고'
+      description: 'Author:기호,Post 방식으로 사용자를 신고합니다.'
+      tags:
+        - report
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 사용자를 신고합니다.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reportedUserId:
+                  type: string
+                  format: ObjectId
+                  description: 신고 당한 User
+      responses:
+        '201':
+          description: '`SuccessCreated`특정 약속 정보'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
                     $ref: '#/components/schemas/appointment'
         '404':
           description: '`ClientErrorNotFound`'
