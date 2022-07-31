@@ -3,7 +3,7 @@ paths:
     get:
       tags:
         - users
-      summary: 유저 user_id 조회 및 회원가입 여부 조회
+      summary: Author:규민, 유저 user_id 조회 및 회원가입 여부 조회
       description: Author:규민, Response  `user_id`
       parameters:
         - $ref: '#/components/parameters/authToken'
@@ -33,7 +33,7 @@ paths:
     post:
       tags:
         - users
-      summary: 새로운 유저 등록
+      summary: Author:규민, 새로운 유저 등록
       description: Author:규민,Add new user to db with firebase token
       operationId: assignUser
       parameters:
@@ -114,7 +114,7 @@ paths:
     get:
       tags:
         - users
-      summary: 모든 유저 목록 조회
+      summary: Author:규민, 모든 유저 목록 조회
       description: Author:규민,Response  `array of all user`
       parameters:
         - $ref: '#/components/parameters/authToken'
@@ -140,7 +140,7 @@ paths:
     get:
       tags:
         - users
-      summary: userID로 사용자 1명 조회
+      summary: Author:규민, userID로 사용자 1명 조회
       description: Author:규민,Returns a single user
       parameters:
         - $ref: '#/components/parameters/authToken'
@@ -164,7 +164,7 @@ paths:
     patch:
       tags:
         - users
-      summary: 사용자 정보 변경
+      summary: Author:규민,사용자 정보 변경
       description: update user information
       operationId: updateUser
       parameters:
@@ -197,7 +197,7 @@ paths:
     post:
       tags:
         - users
-      summary: 사용자 프로필 이미지 등록
+      summary: Author:규민, 사용자 프로필 이미지 등록
       description: Author:규민,토큰에 해당하는 사용자의 사진을 등록/변경합니다. `AWS-s3 URL of image stored`
       parameters:
         - $ref: '#/components/parameters/authToken'
@@ -233,7 +233,7 @@ paths:
     get:
       tags:
         - posts
-      summary: 모든 매칭글 목록 조회
+      summary: Author:규민, 모든 매칭글 목록 조회
       description: Author:규민,Response  `array of posts written by user`
       parameters:
         - $ref: '#/components/parameters/authToken'
@@ -259,7 +259,7 @@ paths:
     post:
       tags:
         - posts
-      summary: 매칭글 등록
+      summary: Author:규민,매칭글 등록
       description: Assign a  `post`
       parameters:
         - $ref: '#/components/parameters/authToken'
@@ -330,7 +330,7 @@ paths:
     get:
       tags:
         - posts
-      summary: postId로 매칭글 조회
+      summary: Author:규민, postId로 매칭글 조회
       description: Author:규민,Returns a single post
       operationId: getPostById
       parameters:
@@ -358,7 +358,7 @@ paths:
     patch:
       tags:
         - posts
-      summary: 매칭글 정보 변경
+      summary: Author:규민,매칭글 정보 변경
       description: update post information
       operationId: updatePost
       parameters:
@@ -433,7 +433,7 @@ paths:
     post:
       tags:
         - posts
-      summary: 매칭글 프로필 이미지 등록
+      summary: Author:규민, 매칭글 프로필 이미지 등록
       description: Author:규민,매칭글Iddp  해당하는 매칭글의 사진을 등록/변경합니다. `AWS-s3 URL of image stored`
       parameters:
         - $ref: '#/components/parameters/authToken'
@@ -469,7 +469,7 @@ paths:
     post:
       tags:
         - matching
-      summary: 매칭 여부 확인 및 등록
+      summary: Author:규민, 매칭 여부 확인 및 등록
       description: Author:규민,Check a  `matching` and save result to Appointment
       parameters:
         - $ref: '#/components/parameters/authToken'
@@ -524,7 +524,7 @@ paths:
           description: '`ClientErrorBadRequest`'
   /matching:
     post:
-      summary: '사용자 위치 정보 등록'
+      summary: 'Author:규민, 사용자 위치 정보 등록'
       description: 'Author:규민,POST 방식으로 토큰 사용자의 위치정보 등록'
       tags:
         - matching
@@ -563,7 +563,7 @@ paths:
 
   /reviews/candidates:
     get:
-      summary: '리뷰 후보 데이터 전체조회'
+      summary: 'Author:기호, 리뷰 후보 데이터 전체조회'
       description: 'Author:기호,GET 방식으로 리뷰 후보 등록'
       tags:
         - reviews
@@ -639,7 +639,7 @@ paths:
           description: '`ClientErrorBadRequest`'
   /reviews:
     post:
-      summary: '사용자 리뷰 등록'
+      summary: 'Author:기호, 사용자 리뷰 등록'
       description: 'Author:기호,Post 방식으로 리뷰 등록'
       tags:
         - reviews
@@ -686,7 +686,7 @@ paths:
           description: '`ClientErrorBadRequest`'
   /reviews/{userId}:
     get:
-      summary: '특정 사용자가 받은 리뷰를 조회'
+      summary: 'Author:기호특정 사용자가 받은 리뷰를 조회'
       description: 'Author:기호, GET 방식으로 특정 사용자가 받은 리뷰 조회'
       tags:
         - reviews
@@ -713,7 +713,7 @@ paths:
 
   /push/chat/{userId}:
     post:
-      summary: '채팅 답변 알림 푸시'
+      summary: 'Author:기호채팅 답변 알림 푸시'
       description: 'Author:기호, Post 방식으로 특정 사용자의 채팅 답변 알림 푸시'
       tags:
         - push
@@ -737,7 +737,7 @@ paths:
 
   /locations:
     get:
-      summary: '모든 지역 목록 조회'
+      summary: 'Author:기호모든 지역 목록 조회'
       description: 'GET 방식으로 모든 지역 목록 조회'
       tags:
         - location
@@ -764,7 +764,7 @@ paths:
           description: '`ClientErrorBadRequest`'
   /locations/{locId}:
     get:
-      summary: '특정 지역 조회'
+      summary: 'Author:기호, 특정 지역 조회'
       description: 'GET 방식으로 특정 지역 조회'
       tags:
         - location
@@ -790,7 +790,7 @@ paths:
 
   /fitnesscenters:
     get:
-      summary: '모든 피트니스 센터 목록 조회'
+      summary: 'Author:기호, 모든 피트니스 센터 목록 조회'
       description: 'Author:기호, GET 방식으로 모든 피트니스센터 목록 조회'
       tags:
         - fitnesscenter
@@ -855,7 +855,7 @@ paths:
           description: '`ClientErrorBadRequest`'
   /fitnesscenters/{fitnesscenterId}:
     get:
-      summary: '특정 피트니스 센터 정보 조회'
+      summary: 'Author:기호,특정 피트니스 센터 정보 조회'
       description: 'Author:기호, GET 방식으로 특정 피트니스 센터 정보 조회'
       tags:
         - fitnesscenter
@@ -883,7 +883,7 @@ paths:
     get:
       tags:
         - fitnesspart
-      summary: 모든 운동부위 목록 조회
+      summary: Author:기호,모든 운동부위 목록 조회
       description: Author:기호, Response  `array of fitnessparts written by user`
       parameters:
         - $ref: '#/components/parameters/authToken'
@@ -909,7 +909,7 @@ paths:
 
   /appointments:
     get:
-      summary: '사용자와 관련된 약속 데이터 전체조회'
+      summary: 'Author:기호,사용자와 관련된 약속 데이터 전체조회'
       description: 'Author:기호, Get 방식으로 사용자와 관련된 모든 약속 조회'
       tags:
         - appointments
@@ -988,7 +988,7 @@ paths:
           description: '`ClientErrorNotFound`'
   /appointments/{appointmentId}:
     get:
-      summary: '특정 약속 데이터 조회'
+      summary: 'Author:기호,특정 약속 데이터 조회'
       description: 'Author:기호, Get 방식으로 특정 약속 조회'
       tags:
         - appointments
@@ -1015,7 +1015,7 @@ paths:
 
   /chats:
     get:
-      summary: '사용자와 관련된 채팅목록 전체조회'
+      summary: 'Author:규민, 사용자와 관련된 채팅목록 전체조회'
       description: 'Get 방식으로 사용자와 관련된 모든 약속 조회'
       tags:
         - chats
@@ -1076,7 +1076,7 @@ paths:
           description: '`ClientErrorBadRequest`'
   /chats/{chatroomId}:
     get:
-      summary: '특정 채팅방 조회'
+      summary: 'Author:규민, 특정 채팅방 조회'
       description: 'Get 방식으로 특정 채팅방 조회'
       tags:
         - chats
@@ -1128,7 +1128,7 @@ paths:
 
   /chats/info:
     get:
-      summary: '사용자와 관련된 채팅목록 사용자 상세정보 포함 전체조회'
+      summary: 'Author:규민, 사용자와 관련된 채팅목록 사용자 상세정보 포함 전체조회'
       description: 'Get 방식으로 사용자와 관련된 모든 약속 조회'
       tags:
         - chats
@@ -1154,7 +1154,7 @@ paths:
           description: '`ClientErrorBadRequest`'
   /chats/info/{chatroomId}:
     get:
-      summary: '특정 채팅방 사용자 상세정보 포함 조회'
+      summary: 'Author:규민, 특정 채팅방 사용자 상세정보 포함 조회'
       description: 'Get 방식으로 특정 채팅방 조회'
       tags:
         - chats
@@ -1181,7 +1181,7 @@ paths:
 
   /report/{postId}:
     post:
-      summary: '모집글 신고'
+      summary: 'Author:기호, 모집글 신고'
       description: 'Author:기호, Post 방식으로 특정 모집글 신고'
       tags:
         - report
@@ -1214,7 +1214,7 @@ paths:
           description: '`ClientErrorNotFound`'
   /report/user:
     post:
-      summary: '사용자 신고'
+      summary: 'Author:기호, 사용자 신고'
       description: 'Author:기호,Post 방식으로 사용자를 신고합니다.'
       tags:
         - report
