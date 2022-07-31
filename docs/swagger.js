@@ -54,6 +54,10 @@ const options = {
             {
                 name: "fitnesspart",
                 description: "Operation about fitnesspart"
+            },
+            {
+                name: "chats",
+                description: "Operations about chats"
             }
         ],
         security: [{

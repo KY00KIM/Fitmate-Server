@@ -176,14 +176,7 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                message:
-                  type: string
-                data:
-                  $ref: '#/components/schemas/user'
+              $ref: '#/components/schemas/user'
       responses:
         '200':
           description: '`SUCCESS_OK`'
@@ -1019,3 +1012,169 @@ paths:
                     $ref: '#/components/schemas/appointment'
         '404':
           description: '`ClientErrorNotFound`'
+
+  /chats:
+    get:
+      summary: '사용자와 관련된 채팅목록 전체조회'
+      description: 'Get 방식으로 사용자와 관련된 모든 약속 조회'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 활성화된 전체 채팅방 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+    post:
+      summary: '채팅방 생성'
+      description: 'Post 방식으로 토큰 소유자와 상대방의 채팅방 생성'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 채팅방을 생성합니다.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                chat_join_id:
+                  type: string
+                  format: ObjectId
+                  description: references User
+      responses:
+        '201':
+          description: '`SuccessCreated`특정 약속 정보'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /chats/{chatroomId}:
+    get:
+      summary: '특정 채팅방 조회'
+      description: 'Get 방식으로 특정 채팅방 조회'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/chatroomId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 특정 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+    delete:
+      summary: '특정 채팅방 삭제'
+      description: 'Delete 방식으로 특정 채팅방 삭제'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/chatroomId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 특정 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+
+  /chats/info:
+    get:
+      summary: '사용자와 관련된 채팅목록 사용자 상세정보 포함 전체조회'
+      description: 'Get 방식으로 사용자와 관련된 모든 약속 조회'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 활성화된 전체 채팅방 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /chats/info/{chatroomId}:
+    get:
+      summary: '특정 채팅방 사용자 상세정보 포함 조회'
+      description: 'Get 방식으로 특정 채팅방 조회'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/chatroomId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 특정 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'

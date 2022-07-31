@@ -9,8 +9,9 @@ const fitnesspart = require('./fitnesspart');
 const location = require('./location');
 const fitnesscenter = require('./fitnesscenter');
 const push = require('./push');
+const chat = require('./chat');
 const path = require('path');
-const {uploadProfileImage} = require('../../config/aws_s3');
+const { uploadProfileImage } = require('../../config/aws_s3');
 const { swaggerUi, specs } = require("../../docs/swagger");
 
 
@@ -24,6 +25,7 @@ v1Router.use("/fitnesspart", fitnesspart);
 v1Router.use("/locations", location);
 v1Router.use("/fitnesscenters", fitnesscenter);
 v1Router.use("/push", push);
+v1Router.use("/chats", chat);
 
 v1Router.get("/", async (req, res) => {
     // const MYURL = await uploadProfileImage(path.join(__dirname, '../../algorithm.jpg'), 12354);

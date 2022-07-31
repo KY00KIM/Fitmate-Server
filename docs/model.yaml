@@ -310,6 +310,29 @@ components:
         updatedAt:
           type: string
           format: date
+    chatroom:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        chat_start_id:
+          type: string
+          format: ObjectId
+          description: references User
+        chat_join_id:
+          type: string
+          format: ObjectId
+          description: references User
+        is_deleted:
+          type: boolean
+          default: false
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
 
   parameters:
     authToken:
@@ -363,6 +386,14 @@ components:
       name: fitnesscenterId
       in: path
       description: ID of fitnesscenter to operate upon
+      required: true
+      schema:
+        type: string
+        format: ObjectId
+    chatroomId:
+      name: chatroomId
+      in: path
+      description: ID of chatroom to operate upon
       required: true
       schema:
         type: string
