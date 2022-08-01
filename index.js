@@ -22,6 +22,13 @@ const router = require('./routes');
 const { verifyUser } = require("./middleware/auth");
 
 
+///////
+
+const { adminJs, adminRouter } = require('./config/adminjs');
+app.use(adminJs.options.rootPath, adminRouter)
+
+///////
+
 const cors = require('cors');
 const corsOptions = {
     origin: "http://localhost:",

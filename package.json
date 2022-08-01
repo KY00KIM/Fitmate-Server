@@ -13,6 +13,9 @@
   "author": "team HYEDA",
   "license": "ISC",
   "dependencies": {
+    "@adminjs/express": "^5.0.0",
+    "@adminjs/mongoose": "^3.0.0",
+    "adminjs": "^6.0.4",
     "aws-sdk": "^2.1180.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
