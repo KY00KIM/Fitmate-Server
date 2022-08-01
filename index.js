@@ -24,8 +24,15 @@ const { verifyUser } = require("./middleware/auth");
 
 ///////
 
-const { adminJs, adminRouter } = require('./config/adminjs');
-app.use(adminJs.options.rootPath, adminRouter)
+// const { adminJs, adminRouter } = require('./config/adminjs');
+// app.use(adminJs.options.rootPath, adminRouter)
+
+const formidableMiddleware = require('express-formidable');
+
+app.use(formidableMiddleware());
+const { adminBro, adminBroRouter } = require('./config/adminbro')
+app.use(adminBro.options.rootPath, adminBroRouter)
+
 
 ///////
 
