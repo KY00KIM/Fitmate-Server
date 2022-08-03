@@ -29,9 +29,7 @@ async function pushNotification(deviceToken="디바이스 토큰값", TITLE="No 
 // To be Fixed
 async function pushData(deviceToken="디바이스 토큰값",Data="No Data"){
     let message = {
-        data: {
-            data: Data
-            },
+        data: Data,
         token: deviceToken,
         }
         admin
