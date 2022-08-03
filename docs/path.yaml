@@ -1209,7 +1209,7 @@ paths:
                   message:
                     type: string
                   data:
-                    $ref: '#/components/schemas/appointment'
+                    $ref: '#/components/schemas/reportedPost'
         '404':
           description: '`ClientErrorNotFound`'
   /report/user:
@@ -1249,6 +1249,6 @@ paths:
                   message:
                     type: string
                   data:
-                    $ref: '#/components/schemas/appointment'
+                    $ref: '#/components/schemas/reportedUser'
         '404':
           description: '`ClientErrorNotFound`'

@@ -333,6 +333,51 @@ components:
         updatedAt:
           type: string
           format: date
+    
+    reportedPost:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        report_user:
+          type: string
+          format: ObjectId
+          description: references User
+        reported_post:
+          type: string
+          format: ObjectId
+          description: references User
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+    reportedUser:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        report_user:
+          type: string
+          format: ObjectId
+          description: references User
+        reported_user:
+          type: string
+          format: ObjectId
+          description: references User
+        reported_content:
+          type: string
+          default: '김규민 아이디 도용'
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+
 
   parameters:
     authToken:
