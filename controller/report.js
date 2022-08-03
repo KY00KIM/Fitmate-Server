@@ -8,7 +8,7 @@ const STATUS_CODE = require('../config/http_status_code');
 
 const reportController = {
     /**
-    * @path {POST} http://fitmate.co.kr/v1/reports/:postId
+    * @path {POST} http://fitmate.co.kr/v1/report/:postId
     * @description POST를 신고하는 POST Method
     */
     reportPost: async (req, res) => {
@@ -33,29 +33,44 @@ const reportController = {
         }
     },
     /**
-    * @path {POST} http://fitmate.co.kr/v1/reports/user
+    * @path {POST} http://fitmate.co.kr/v1/report/users
     * @description 사용자를 신고하는 POST Method
     */
     reportUser: async (req, res) => {
         try {
-            const result = await ReportedUser.findOne({'report_user':req.user.id});
-            if(result){
-                await result['reported_user'].push(req.body.reportedUserId);
-                const newResult = await result.save();
-                ResponseManager.getDefaultResponseHandler(res)['onSuccess'](newResult, 'SuccessCreated', STATUS_CODE.SuccessCreated);
-                return;
-            }else{
-                const newResult = await ReportedUser.create({
-                    'report_user': req.user.id,
-                    'reported_user': [req.body.reportedUserId],
-                }); 
-                ResponseManager.getDefaultResponseHandler(res)['onSuccess'](newResult, 'SuccessCreated', STATUS_CODE.SuccessCreated);
-                return;
-            }
+            const result = await ReportedUser.create({
+                'report_user': req.user.id,
+                'reported_user': req.body.reported_user,
+                'reported_content': req.body.reported_content,
+            });
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessCreated', STATUS_CODE.SuccessCreated);
             } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
         }
     },
-
+    /**
+    * @path {GET} http://fitmate.co.kr/v1/report/posts
+    * @description 모든 모집글 신고 내역을 보는 GET Method
+    */
+     getAllPostReport: async (req, res) => {
+        try {
+            const reports = await ReportedPost.find();
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](reports, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+            } catch (error) {
+            ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+        }
+    },    
+    /**
+    * @path {GET} http://fitmate.co.kr/v1/report/users
+    * @description 모든 사용자 신고 내역을 보는 GET Method
+    */
+     getAllUserReport: async (req, res) => {
+        try {
+            const reports = await ReportedUser.find();
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](reports, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+            } catch (error) {
+            ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+        }
+    },
 };
 module.exports = reportController;
