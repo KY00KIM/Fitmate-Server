@@ -7,10 +7,14 @@ const ReportedUserSchema = mongoose.Schema({
     type: ObjectId,
     ref: 'User'
   },
-  reported_user: [{
+  reported_user: {
     type: ObjectId,
     ref: 'User'
-  }],
+  },
+  reported_content:{
+    type: String,
+    default: '',
+  }
 }, {
   versionKey: false,
   timestamps: true,

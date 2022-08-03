@@ -8,7 +8,7 @@ const STATUS_CODE = require('../config/http_status_code');
 const moment = require('moment');
 const fitnesscenterController = require('./fitnesscenter');
 const timeConvert = require('../config/timeConvert');
-const { pushNotification, pushData } = require('./push');
+const { pushNotificationUser,pushDataUser} = require('./push');
 
 const appointmentController = {
   /**
@@ -86,15 +86,10 @@ const appointmentController = {
       rule.minute = moment(review_date).minute();
       rule.second = moment(review_date).second();
       console.log(rule);
-
-      // 리뷰 요청 알림 예약
-      match_start_user.social.device_token.forEach((deviceToken) => {
-        schedule.scheduleJob(rule, () => pushNotification(deviceToken, 'FitMate 리뷰 알림!', `${match_join_user.user_nickname}님과의 운동은 어떠셨나요?`));
-      });
-      match_join_user.social.device_token.forEach((deviceToken) => {
-        schedule.scheduleJob(rule, () => pushNotification(deviceToken, 'FitMate 리뷰 알림!', `${match_join_user.user_nickname}님과의 운동은 어떠셨나요?`));
-      });
-
+      
+      schedule.scheduleJob(rule, () => pushNotificationUser(match_start_id, 'FitMate 리뷰 알림!', `${match_join_user.user_nickname}님과의 운동은 어떠셨나요?`));
+      schedule.scheduleJob(rule, () => pushNotificationUser(match_join_user, 'FitMate 리뷰 알림!', `${match_start_user.user_nickname}님과의 운동은 어떠셨나요?`));
+     
       // DB에 저장
       await PushSchedule.create({
         pushType: "REVIEW",
@@ -113,16 +108,13 @@ const appointmentController = {
       rule.minute = moment(gps_date).minute();
       rule.second = moment(gps_date).second();
 
-      data = {
+      const data = {
         "appointmentId": appointment._id,
-        Type: "GPS"
+        "Type": "GPS"
       }
-      match_start_user.social.device_token.forEach((deviceToken) => {
-        schedule.scheduleJob(rule, () => pushData(deviceToken, data));
-      });
-      match_join_user.social.device_token.forEach((deviceToken) => {
-        schedule.scheduleJob(rule, () => pushData(deviceToken, data));
-      });
+
+      schedule.scheduleJob(rule, () => pushDataUser(match_start_id, data));
+      schedule.scheduleJob(rule, () => pushDataUser(match_join_id, data));
 
       // DB에 저장
       await PushSchedule.create({

@@ -1182,7 +1182,7 @@ paths:
   /report/{postId}:
     post:
       summary: 'Author:기호, 모집글 신고'
-      description: 'Author:기호, Post 방식으로 특정 모집글 신고'
+      description: 'Author:기호, Post 방식으로 특정 모집글 신고, PostId를 통해 모집글 신고, request body 없음'
       tags:
         - report
       parameters:
@@ -1198,7 +1198,7 @@ paths:
               properties:
       responses:
         '201':
-          description: '`SuccessCreated`특정 약속 정보'
+          description: '`SuccessCreated` 모집글 신고 완료'
           content:
             application/json:
               schema:
@@ -1232,9 +1232,13 @@ paths:
                   type: string
                   format: ObjectId
                   description: 신고 당한 User
+                reported_content:
+                  type: string
+                  format: String
+                  description: 신고 내용
       responses:
         '201':
-          description: '`SuccessCreated`특정 약속 정보'
+          description: '`SuccessCreated` 사용자 신고 등록 완료'
           content:
             application/json:
               schema:

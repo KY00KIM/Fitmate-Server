@@ -27,6 +27,7 @@ v1Router.use("/locations", location);
 v1Router.use("/fitnesscenters", fitnesscenter);
 v1Router.use("/push", push);
 v1Router.use("/chats", chat);
+v1Router.use("/report", report);
 
 v1Router.get("/", async (req, res) => {
     console.log('Success Connected');
