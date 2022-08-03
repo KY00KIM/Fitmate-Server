@@ -15,14 +15,7 @@ const { UserTrace } = require('../model/UserTrace')
 const { FitnessCenter } = require('../model/FitnessCenter')
 const { FitnessPart } = require('../model/FitnessPart')
 
-
-
-
 AdminJS.registerAdapter(AdminJSMongoose)
-
-
-
-
 
 const adminJs = new AdminJS({
     resources: [User, Appointment, Chatroom, FitnessCenter, Location, Post, PushSchedule, ReportedPost, ReportedUser, Review, UserTrace, ReviewCandidate, FitnessPart],

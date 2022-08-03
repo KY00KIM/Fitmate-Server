@@ -3,8 +3,8 @@ const fitnesscenterRouter = express.Router();
 const fitnesscenterController = require('../../../controller/fitnesscenter');
 
 fitnesscenterRouter.get('/', fitnesscenterController.getAllFitnessCenter);
+fitnesscenterRouter.post('/', fitnesscenterController.writeOneFitnessCenter);
 fitnesscenterRouter.get('/:fitnesscenterId', fitnesscenterController.getOneFitnessCenter);
-fitnesscenterRouter.get('/', fitnesscenterController.writeOneFitnessCenter);
 
 
 module.exports = fitnesscenterRouter; 
