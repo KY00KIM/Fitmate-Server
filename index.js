@@ -30,8 +30,8 @@ const { verifyUser } = require("./middleware/auth");
 const formidableMiddleware = require('express-formidable');
 
 app.use(formidableMiddleware());
-const { adminBro, adminBroRouter } = require('./config/adminbro')
-app.use(adminBro.options.rootPath, adminBroRouter)
+// const { adminBro, adminBroRouter } = require('./config/adminbro')
+// app.use(adminBro.options.rootPath, adminBroRouter)
 
 
 ///////
