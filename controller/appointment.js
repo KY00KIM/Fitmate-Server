@@ -76,15 +76,15 @@ const appointmentController = {
       });
 
       let rule = new schedule.RecurrenceRule();
-      let new_date = moment(appointment_date).add(1, 'days');
+      const review_date = moment(appointment_date).add(2, 'hours');
 
-      rule.year = moment(new_date).year();
-      rule.month = moment(new_date).month() + 1;
-      rule.date = moment(new_date).date();
-
-      rule.hour = 0;
-      rule.minute = 0;
-      rule.second = 0;
+      // Review 요청 예약
+      rule.year = moment(review_date).year();
+      rule.month = moment(review_date).month() + 1;
+      rule.date = moment(review_date).date();
+      rule.hour = moment(review_date).hour();
+      rule.minute = moment(review_date).minute();
+      rule.second = moment(review_date).second();
       console.log(rule);
 
       // 리뷰 요청 알림 예약
@@ -101,16 +101,17 @@ const appointmentController = {
         appointmentId: appointment._id,
         match_start_id: match_start_id,
         match_join_id: match_join_id,
-        rule: new_date
+        rule: review_date
       });
 
+      const gps_date = moment(appointment_date).add(5, 'minutes');
       // GPS 요청 정보 예약
-      rule.year = moment(appointment_date).year();
-      rule.month = moment(appointment_date).month() + 1;
-      rule.date = moment(appointment_date).date();
-      rule.hour = moment(appointment_date).hour();
-      rule.minute = moment(appointment_date).minute() + 5;
-      rule.second = moment(appointment_date).second();
+      rule.year = moment(gps_date).year();
+      rule.month = moment(gps_date).month() + 1;
+      rule.date = moment(gps_date).date();
+      rule.hour = moment(gps_date).hour();
+      rule.minute = moment(gps_date).minute();
+      rule.second = moment(gps_date).second();
 
       data = {
         "appointmentId": appointment._id,
@@ -129,7 +130,7 @@ const appointmentController = {
         appointmentId: appointment._id,
         match_start_id: match_start_id,
         match_join_id: match_join_id,
-        rule: appointment_date
+        rule: gps_date
       });
 
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessCreated', STATUS_CODE.SuccessCreated);
