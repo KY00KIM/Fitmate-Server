@@ -70,7 +70,6 @@ async function registerPush(date = Date.now()){
             rule.hour = moment(push.rule).hour();
             rule.minute = moment(push.rule).minute();
             rule.second = moment(push.rule).second();
-            console.log(push);
             if(push.pushType == 'REVIEW'){
                 schedule.scheduleJob(rule, () => pushNotificationUser(push.match_start_id._id,'FitMate 리뷰 알림!' ,`${push.match_join_id.user_nickname}님과의 운동은 어떻셨나요?`));
                 schedule.scheduleJob(rule, () => pushNotificationUser(push.match_join_id._id, 'FitMate 리뷰 알림!', `${push.match_start_id.user_nickname}님과의 운동은 어떻셨나요?`));          
