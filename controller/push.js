@@ -101,4 +101,26 @@ async function pushChat(req, res){
       }
 };
 
-module.exports = {pushNotificationUser, pushDataUser, pushChat, registerPush};
+async function pushPopup(req, res){
+    try {
+        const {
+            body: { notification },
+        } = req;
+    
+        const data = {
+            "notification": notification,
+            "Type": "NOTICE"
+        };
+        const users = await User.find();
+        users.forEach((user) => {    
+            user.social.device_token.forEach((deviceToken) => {
+            pushData(deviceToken, data);
+        });
+        });
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess']([], 'SuccessOK', STATUS_CODE.SuccessOK);
+      } catch (error) {
+        ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      }
+}
+
+module.exports = {pushNotificationUser, pushDataUser, pushChat, registerPush, pushPopup};
