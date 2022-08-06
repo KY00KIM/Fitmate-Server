@@ -23,7 +23,7 @@ async function pushDataUser(userId, Data){
 };
 
 async function pushNotification(deviceToken="디바이스 토큰값", TITLE="No Title", BODY="No Body"){
-    let message = {
+    const message = {
         notification: {
                 title: TITLE,
                 body: BODY,
@@ -41,7 +41,7 @@ async function pushNotification(deviceToken="디바이스 토큰값", TITLE="No 
 
 // To be Fixed
 async function pushData(deviceToken="디바이스 토큰값",Data="No Data"){
-    let message = {
+    const message = {
         data: Data,
         token: deviceToken,
         }
