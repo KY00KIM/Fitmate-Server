@@ -9,7 +9,8 @@ const { Appointment } = require('../model/Appointment')
 router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/landing-02-image-bg.html'));
 })
-router.use('/v1', verifyUser, v1Router);
+// router.use('/v1', verifyUser, v1Router);
+router.use('/v1', v1Router);
 
 
 module.exports = router
