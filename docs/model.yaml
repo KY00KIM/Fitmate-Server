@@ -333,7 +333,7 @@ components:
         updatedAt:
           type: string
           format: date
-    
+
     reportedPost:
       type: object
       properties:
@@ -378,8 +378,13 @@ components:
           type: string
           format: date
 
-
   parameters:
+    deviceToken:
+      name: deviceToken
+      in: header
+      description: Firebase DeviceToken for registering user device
+      schema:
+        type: string
     authToken:
       name: authorization
       in: header
