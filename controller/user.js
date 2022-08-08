@@ -65,7 +65,6 @@ const userController = {
   assignUser: async (req, res) => {
     try {
       const { user_nickname, user_gender, user_weekday, user_schedule_time, user_address, user_latitude, user_longitude, fitness_center, device_token } = req.body;
-      social
       const locationId = await locationController.parseAddress(user_address);
       const center = await fitnesscenterController.getFitnessCenterId(fitness_center);
       const user = await User.create({
@@ -97,14 +96,19 @@ const userController = {
     }
   },
 
-  checkUserValid: async (req, res) => {
+  loginUser: async (req, res) => {
     try {
-      const uid = req.user.social.uid || user_id
-      const users = await User.find({ 'social.user_id': uid });
-      if (!users[0])
-        return ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+      const uid = req.user.social.uid
+      const user_id = await checkUserValid(uid)
+      if (user_id) {
+        const device_token = req.header('Device')
+        const deviceRes = await checkDeviceToken(user_id, device_token)
+        console.log("deviceRes : " + deviceRes)
 
-      return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ user_id: users[0]._id }, 'SuccessOK', STATUS_CODE.SuccessOK);
+        return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ user_id, device_set: deviceRes }, 'SuccessOK', STATUS_CODE.SuccessOK);
+      }
+
+      return ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     } catch (error) {
       console.log(error)
       return ResponseManager.getDefaultResponseHandler(res)['onError'](error, STATUS_CODE.ClientErrorBadRequest);
@@ -121,17 +125,30 @@ const userController = {
     }
   },
 
-  checkDeviceToken: async (user_id, device_token) => {
-    try {
-      const user = await User.findById(user_id);
-      if (!user.social.device_token.includes(device_token)) {
-        const updatedser = await User.findByIdAndUpdate(user_id, { $push: { "social.device_token": device_token } }, { new: true, runValidators: true })
-        return true
-      }
-      return false
-    } catch (e) {
-      return false
+
+};
+
+const checkDeviceToken = async (user_id, device_token) => {
+  try {
+    const user = await User.findById(user_id);
+    if (device_token && !user.social.device_token.includes(device_token)) {
+      const updateduser = await User.findByIdAndUpdate(user_id, { $push: { "social.device_token": device_token } }, { new: true, runValidators: true })
+      return true
     }
+    return false
+  } catch (e) {
+    return false
+  }
+};
+
+const checkUserValid = async (firebase_uid) => {
+  try {
+    const users = await User.find({ 'social.user_id': firebase_uid });
+    if (!users[0]) return false;
+    return users[0]._id;
+  } catch (error) {
+    console.log(error)
+    return false
   }
 };
 

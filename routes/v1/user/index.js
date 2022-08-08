@@ -3,7 +3,7 @@ const userRouter = express.Router();
 const userController = require('../../../controller/user');
 const { uploadImg } = require('../../../middleware/multer')
 
-userRouter.get('/login', userController.checkUserValid);
+userRouter.get('/login', userController.loginUser);
 
 userRouter.get('/', userController.getAllUsers);
 
