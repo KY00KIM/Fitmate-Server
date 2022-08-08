@@ -34,7 +34,7 @@ class ResponseManager {
                     text: `ERROR: ${JSON.stringify(error)} \nMessage: ${message} \nCode: ${code}`,
                     username:'nodejs'
                 });
-                ResponseManager.respondWithError(res, error , code || 500, message || 'Unknown error');
+                ResponseManager.respondWithError(res, error , code || 400, message || 'Unknown error');
             }
         }
     }
@@ -50,7 +50,7 @@ class ResponseManager {
                     text: `ERROR: ${JSON.stringify(error)} \nMessage: ${message} \nCode: ${code}`,
                     username:'nodejs'
                 });
-                ResponseManager.respondWithErrorData(res, error, code || 500 , message || 'Unknown error');
+                ResponseManager.respondWithErrorData(res, error, code || 400 , message || 'Unknown error');
             }
         }
     }
@@ -66,7 +66,7 @@ class ResponseManager {
                     text: `ERROR: ${JSON.stringify(error)} \nMessage: ${message} \nCode: ${code}`,
                     username:'nodejs'
                 });
-                ResponseManager.respondWithError(res, code || 500, message || 'Unknown error');
+                ResponseManager.respondWithError(res, code || 400, message || 'Unknown error');
             }
         }
     }

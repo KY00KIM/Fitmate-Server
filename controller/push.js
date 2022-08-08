@@ -21,9 +21,9 @@ async function pushDataUser(userId, Data){
         pushData(deviceToken, Data);
     });
 };
-
+ 
 async function pushNotification(deviceToken="디바이스 토큰값", TITLE="No Title", BODY="No Body"){
-    let message = {
+    const message = {
         notification: {
                 title: TITLE,
                 body: BODY,
@@ -41,7 +41,7 @@ async function pushNotification(deviceToken="디바이스 토큰값", TITLE="No 
 
 // To be Fixed
 async function pushData(deviceToken="디바이스 토큰값",Data="No Data"){
-    let message = {
+    const message = {
         data: Data,
         token: deviceToken,
         }
@@ -101,4 +101,26 @@ async function pushChat(req, res){
       }
 };
 
-module.exports = {pushNotificationUser, pushDataUser, pushChat, registerPush};
+async function pushPopup(req, res){
+    try {
+        const {
+            body: { notification },
+        } = req;
+    
+        const data = {
+            "notification": notification,
+            "Type": "NOTICE"
+        };
+        const users = await User.find();
+        users.forEach((user) => {    
+            user.social.device_token.forEach((deviceToken) => {
+            pushData(deviceToken, data);
+        });
+        });
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess']([], 'SuccessOK', STATUS_CODE.SuccessOK);
+      } catch (error) {
+        ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      }
+}
+
+module.exports = {pushNotificationUser, pushDataUser, pushChat, registerPush, pushPopup};

@@ -3,10 +3,11 @@ paths:
     get:
       tags:
         - users
-      summary: Author:규민, 유저 user_id 조회 및 회원가입 여부 조회
+      summary: Author:규민, 유저 user_id 조회 및 회원가입 여부 조회 및 디바이스 토큰 등록
       description: Author:규민, Response  `user_id`
       parameters:
         - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/deviceToken'
       responses:
         '200':
           description: '`SUCCESS OK`'
@@ -25,6 +26,9 @@ paths:
                       user_id:
                         type: string
                         format: ObjectId
+                      device_set:
+                        type: boolean
+                        description: 'true : 새로운 디바이스로 접속 및 토큰 등록됨 / false : 기존 디바이스으로 접속함'
         '404':
           description: '`ClientErrorNotFound` firebase 유저이지만 서버 유저목록에서 유저를 찾을 수 없는 경우'
         '400':
@@ -94,6 +98,8 @@ paths:
                     fitness_latitude:
                       type: number
                       description: double in degrees
+                device_token:
+                  type: string
       responses:
         '201':
           description: '`SUCCESS CREATED` returns created user document'
@@ -732,8 +738,44 @@ paths:
                     type: boolean
                   message:
                     type: string
-                  data:
-                    $ref: '#/components/schemas/user'
+                  data: 
+                    type: string
+                    default: 'title: ~~, body: ~~'
+
+  /push/popup:
+    post:
+      summary: 'Author:기호,전체 공지 알림 푸시'
+      description: 'Author:기호, Post 방식으로 전체 사용자 공지 알림 푸시'
+      tags:
+        - push
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: 전송할 전체 공지 사항 내용
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notification:
+                  type: string
+      responses:
+        '200':
+          description: '`SuccessOK` 전체 사용자의 공지 알림 푸시'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data: 
+                    type: string
+                    default: 'notification: notification, Type: NOTICE'
+                    
 
   /locations:
     get:
@@ -1270,7 +1312,7 @@ paths:
               properties:
       responses:
         '201':
-          description: '`SuccessCreated` 사용자 신고 등록 완료, 결과는 리스트 형태' 
+          description: '`SuccessCreated` 사용자 신고 등록 완료, 결과는 리스트 형태'
           content:
             application/json:
               schema:
