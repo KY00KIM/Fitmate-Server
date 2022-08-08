@@ -21,8 +21,12 @@ app.get('/set', (req, res) => {
 
 //Error 응답
 app.get('/error', (req, res) =>{
-    ResponseManager.getDefaultResponseHandler(res)['onError']({});
-    console.log('Get Error 요청 성공');
+    try{
+        throw new Error('BROKEN');
+    }catch(error){
+        ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+        console.log('Get Error 요청 성공');
+    }
 });
 
 app.listen(port, () => {

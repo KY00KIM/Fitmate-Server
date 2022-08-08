@@ -21,7 +21,7 @@ async function pushDataUser(userId, Data){
         pushData(deviceToken, Data);
     });
 };
-
+ 
 async function pushNotification(deviceToken="디바이스 토큰값", TITLE="No Title", BODY="No Body"){
     const message = {
         notification: {
