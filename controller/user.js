@@ -47,9 +47,7 @@ const userController = {
   */
   updateUserInfo: async (req, res) => {
     try {
-      const {
-        params: { userId },
-      } = req;
+      const { userId } = req.params;
       //찾아서 업데이트
       const user = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessOK', STATUS_CODE.SuccessOK);
@@ -66,7 +64,8 @@ const userController = {
   */
   assignUser: async (req, res) => {
     try {
-      const { user_nickname, user_gender, user_weekday, user_schedule_time, user_address, user_latitude, user_longitude, fitness_center } = req.body;
+      const { user_nickname, user_gender, user_weekday, user_schedule_time, user_address, user_latitude, user_longitude, fitness_center, device_token } = req.body;
+      social
       const locationId = await locationController.parseAddress(user_address);
       const center = await fitnesscenterController.getFitnessCenterId(fitness_center);
       const user = await User.create({
@@ -86,6 +85,7 @@ const userController = {
         social: {
           user_id: req.user.social.uid || req.user.social.user_id,
           user_name: req.user.social.name || "",
+          device_token: [device_token],
           provider: req.user.social.firebase.sign_in_provider,
           firebase_info: JSON.parse(JSON.stringify(req.user.social))
         }
@@ -118,6 +118,19 @@ const userController = {
     } catch (error) {
       console.log(error)
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
+
+  checkDeviceToken: async (user_id, device_token) => {
+    try {
+      const user = await User.findById(user_id);
+      if (!user.social.device_token.includes(device_token)) {
+        const updatedser = await User.findByIdAndUpdate(user_id, { $push: { "social.device_token": device_token } }, { new: true, runValidators: true })
+        return true
+      }
+      return false
+    } catch (e) {
+      return false
     }
   }
 };
