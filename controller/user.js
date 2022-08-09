@@ -103,8 +103,6 @@ const userController = {
       if (user_id) {
         const device_token = req.header('Device')
         const deviceRes = await checkDeviceToken(user_id, device_token)
-        console.log("deviceRes : " + deviceRes)
-
         return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ user_id, device_set: deviceRes }, 'SuccessOK', STATUS_CODE.SuccessOK);
       }
 
