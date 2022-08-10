@@ -60,10 +60,10 @@ const reviewController = {
       } = req;
       const review = await Review.create({
         review_send_id: req.user.id,
-        review_recv_id,
-        user_rating,
-        review_body,
-        review_candidates
+        review_recv_id:review_recv_id,
+        user_rating:user_rating,
+        review_body:review_body,
+        review_candidates:review_candidates
       });
 
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessCreated', STATUS_CODE.SuccessCreated);

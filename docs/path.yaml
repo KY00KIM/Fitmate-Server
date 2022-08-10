@@ -741,7 +741,6 @@ paths:
                   data: 
                     type: string
                     default: 'title: ~~, body: ~~'
-
   /push/popup:
     post:
       summary: 'Author:기호,전체 공지 알림 푸시'
@@ -775,7 +774,40 @@ paths:
                   data: 
                     type: string
                     default: 'notification: notification, Type: NOTICE'
-                    
+  /push/test:
+    post:
+      summary: 'Author:기호, Data 푸시 테스트'
+      description: 'Author:기호, Post 방식으로 특정 사용자의 푸시 테스트'
+      tags:
+        - push
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: 유저 아이디
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string      
+      responses:
+        '200':
+          description: '`SuccessOK` 특정 사용자의 채팅 답변 알림 푸시'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data: 
+                    type: string
+                    default: "notification: TEST,Type: TEST"
+              
 
   /locations:
     get:
