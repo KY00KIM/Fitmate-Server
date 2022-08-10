@@ -4,7 +4,7 @@ const moment = require('moment');
 const timeConvert = require('../config/timeConvert');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
-const User = require('../model/User');
+const { User } = require("../model/User");
 
 const { PushSchedule } = require('../model/PushSchedule');
 
@@ -123,4 +123,21 @@ async function pushPopup(req, res){
       }
 }
 
-module.exports = {pushNotificationUser, pushDataUser, pushChat, registerPush, pushPopup};
+async function pushTest(req, res){
+    try {
+        const {
+            body: { userId },
+        } = req;
+    
+        const user = await User.findById(userId);  
+        user.social.device_token.forEach((deviceToken) => {
+            pushNotification(deviceToken);
+        });
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess']([], 'SuccessOK', STATUS_CODE.SuccessOK);
+      } catch (error) {
+
+        console.error(error);
+        ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      }
+}
+module.exports = {pushNotificationUser, pushDataUser, pushChat, registerPush, pushPopup, pushTest};
