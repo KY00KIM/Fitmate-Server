@@ -130,8 +130,13 @@ async function pushTest(req, res){
         } = req;
     
         const user = await User.findById(userId);  
+            
+        const data = {
+            "notification": "TEST",
+            "Type": "TEST"
+        };
         user.social.device_token.forEach((deviceToken) => {
-            pushNotification(deviceToken);
+            pushData(deviceToken, data);
         });
         ResponseManager.getDefaultResponseHandler(res)['onSuccess']([], 'SuccessOK', STATUS_CODE.SuccessOK);
       } catch (error) {
