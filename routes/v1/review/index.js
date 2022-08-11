@@ -7,9 +7,9 @@ reviewRouter.get('/candidates', reviewController.getReviewCandidates);
 
 reviewRouter.post('/candidates', reviewController.writeReviewCandidate);
 
+reviewRouter.post('/', reviewController.writeReview);
 
 reviewRouter.get('/:review_recv_id', reviewController.getOneReview);
 
-reviewRouter.post('/', reviewController.writeReview);
 
 module.exports = reviewRouter;
