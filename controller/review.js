@@ -34,6 +34,36 @@ const reviewController = {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
+
+  /**
+  * @path {POST} http://localhost:8000/v1/reviews/
+  * @description 리뷰를 등록하는 POST Method
+  */
+  writeReview: async (req, res) => {
+    try {
+
+      console.log("Fine");
+      
+      const {
+        body: { review_recv_id, user_rating, review_body, review_candidates },
+      } = req;
+
+      const review = await Review.create({
+        review_send_id: req.user.id,
+        review_recv_id:review_recv_id,
+        user_rating:user_rating,
+        review_body:review_body,
+        review_candidates: review_candidates
+      });
+
+      
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+    } catch (error) {
+      
+      console.log('\n',error);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
   /**
   * @path {GET} http://fitmate.co.kr/v1/reviews/:review_recv_id
   * @description 특정 사용자의 리뷰를 조회하는 GET Method
@@ -49,27 +79,6 @@ const reviewController = {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
   },
-  /**
-  * @path {POST} http://localhost:8000/v1/reviews/
-  * @description 리뷰를 등록하는 POST Method
-  */
-  writeReview: async (req, res) => {
-    try {
-      const {
-        body: { review_recv_id, user_rating, review_body, review_candidates },
-      } = req;
-      const review = await Review.create({
-        review_send_id: req.user.id,
-        review_recv_id:review_recv_id,
-        user_rating:user_rating,
-        review_body:review_body,
-        review_candidates:review_candidates
-      });
 
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessCreated', STATUS_CODE.SuccessCreated);
-    } catch (error) {
-      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
-    }
-  }
 };
 module.exports = reviewController;

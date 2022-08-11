@@ -50,10 +50,9 @@ const reviewSchema = mongoose.Schema({
   },
   user_rating: {
     type: Number,
-    required: true,
     default: 3
   },
-  review_candidate: [{
+  review_candidates: [{
     type: ObjectId,
     ref: 'ReviewCandidate'
   }]
