@@ -1,4 +1,5 @@
 const { Review } = require('../model/Review');
+const { Appointment} = require('../model/Appointment');
 const { ReviewCandidate } = require('../model/ReviewCandidate');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
@@ -45,7 +46,7 @@ const reviewController = {
       console.log("Fine");
       
       const {
-        body: { review_recv_id, user_rating, review_body, review_candidates },
+        body: { review_recv_id, user_rating, review_body, review_candidates, appointmentId },
       } = req;
 
       const review = await Review.create({
@@ -56,7 +57,7 @@ const reviewController = {
         review_candidates: review_candidates
       });
 
-      
+      await Appointment.updateOne({_id: appointmentId}, {$set: {isReviewed: true}});
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
       

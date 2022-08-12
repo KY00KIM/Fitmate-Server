@@ -73,6 +73,7 @@ const appointmentController = {
         "match_start_id": match_start_id,
         "match_join_id": match_join_id,
         "appointment_date": appointment_date,
+        "isReviewed": false,
       });
 
       let rule = new schedule.RecurrenceRule();
