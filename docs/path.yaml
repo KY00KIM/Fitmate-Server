@@ -674,6 +674,8 @@ paths:
                     type: string
                     format: ObjectId
                     description: references reviewCandidate
+                appointmentId:
+                  type: string
       responses:
         '200':
           description: 리뷰 후보 등록
