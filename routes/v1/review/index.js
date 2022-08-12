@@ -11,5 +11,6 @@ reviewRouter.post('/', reviewController.writeReview);
 
 reviewRouter.get('/:review_recv_id', reviewController.getOneReview);
 
+reviewRouter.delete('/:review_id', reviewController.deleteOneReview);
 
 module.exports = reviewRouter;
