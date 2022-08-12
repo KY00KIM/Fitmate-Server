@@ -180,6 +180,9 @@ components:
         match_succeeded:
           type: boolean
           default: false
+        isReviewed:
+          type: boolean
+          default: false
         createdAt:
           type: string
           format: date
