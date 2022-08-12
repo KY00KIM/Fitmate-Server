@@ -73,12 +73,27 @@ const reviewController = {
       const {
         params: { review_recv_id },
       } = req;
-      const review = await Review.find({ "review_recv_id": review_recv_id }).populate('review_send_id').populate('review_candidate');
+      const review = await Review.find({ "review_recv_id": review_recv_id }).populate('review_send_id').populate('review_candidates');
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessOK', STATUS_CODE.SuccessOK);
+    } catch (error) {
+      console.error(error);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+    }
+  },
+  /**
+  * @path {DELETE} http://fitmate.co.kr/v1/reviews/:review_id
+  * @description 특정 리뷰를 삭제하는 DELETE Method
+  */
+  deleteOneReview: async (req, res) =>{
+    try {
+      const {
+        params: { review_id },
+      } = req;
+      const review = await Review.deleteOne({ "_id": review_id });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
-  },
-
+  }
 };
 module.exports = reviewController;
