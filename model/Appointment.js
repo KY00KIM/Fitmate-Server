@@ -25,7 +25,11 @@ const appointmentSchema = mongoose.Schema({
   match_succeeded: {
     type: Boolean,
     default: false
-  }
+  },
+  isReviewed:{
+    type: Boolean,
+    default: false
+  },
 }, {
   versionKey: false,
   timestamps: true,
