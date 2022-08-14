@@ -16,7 +16,7 @@ const postController = {
   */
   getAllPosts: async (req, res) => {
     try {
-      const posts = await Post.find({ is_deleted: false, user_id: { $ne: req.user.id } }).sort({ createdAt: -1 });
+      const posts = await Post.find({ is_deleted: false, user_id:{ $ne: req.user.id }}).populate('user_id', 'user_nickname user_profile_img').sort({createdAt: -1});
       posts.forEach((post) => {
         post.post_img = replaceS3toCloudFront(post.post_img)
         console.log(post.post_img)
