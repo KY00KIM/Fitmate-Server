@@ -1,11 +1,12 @@
 const { Post } = require('../model/Post');
-const {User} = require('../model/User');
+const { User } = require('../model/User');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const { uploadImg } = require('../middleware/multer')
 const fitnesscenterController = require('./fitnesscenter');
 const matchController = require('./match');
 const reviewController = require('./review');
+const { replaceS3toCloudFront } = require('../config/aws_s3')
 
 
 const postController = {
@@ -15,7 +16,12 @@ const postController = {
   */
   getAllPosts: async (req, res) => {
     try {
-      const posts = await Post.find({ is_deleted: false, user_id:{ $ne: req.user.id }}).sort({createdAt: -1});
+      const posts = await Post.find({ is_deleted: false, user_id: { $ne: req.user.id } }).sort({ createdAt: -1 });
+      posts.forEach((post) => {
+        post.post_img = replaceS3toCloudFront(post.post_img)
+        console.log(post.post_img)
+      })
+
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.error(error);
@@ -33,6 +39,9 @@ const postController = {
         params: { postId },
       } = req;
       const post = await Post.find({ _id: postId, is_deleted: false });
+      post.forEach((post) => {
+        post.post_img = replaceS3toCloudFront(post.post_img)
+      })
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
@@ -59,6 +68,7 @@ const postController = {
         post_img,
         post_main_text
       });
+
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -75,6 +85,7 @@ const postController = {
         params: { postId }
       } = req;
       const post = await Post.findByIdAndUpdate(postId, req.body, { new: true, runValidators: true });
+      post.post_img = replaceS3toCloudFront(post.post_img);
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
