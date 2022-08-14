@@ -15,7 +15,7 @@ const postController = {
   */
   getAllPosts: async (req, res) => {
     try {
-      const posts = await Post.find({ is_deleted: false, user_id:{ $ne: req.user.id }}).sort({createdAt: -1});
+      const posts = await Post.find({ is_deleted: false, user_id:{ $ne: req.user.id }}).populate('user_id', 'user_nickname user_profile_img').sort({createdAt: -1});
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.error(error);
