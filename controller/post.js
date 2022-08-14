@@ -1,8 +1,11 @@
 const { Post } = require('../model/Post');
+const {User} = require('../model/User');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const { uploadImg } = require('../middleware/multer')
 const fitnesscenterController = require('./fitnesscenter');
+const matchController = require('./match');
+const reviewController = require('./review');
 
 
 const postController = {
@@ -12,9 +15,10 @@ const postController = {
   */
   getAllPosts: async (req, res) => {
     try {
-      const posts = await Post.find({ is_deleted: false });
+      const posts = await Post.find({ is_deleted: false, user_id:{ $ne: req.user.id }}).sort({createdAt: -1});
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
+      console.error(error);
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
   },
