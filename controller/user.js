@@ -6,6 +6,8 @@ const STATUS_CODE = require('../config/http_status_code');
 const timeConvert = require('../config/timeConvert');
 const logger = require('../config/winston');
 const { uploadImg } = require('../middleware/multer')
+const { replaceS3toCloudFront } = require('../config/aws_s3')
+
 
 
 const userController = {
@@ -17,6 +19,9 @@ const userController = {
     try {
       const users = await User.find({});
       //logger.info(`${req.decoded.id}`);
+      users.forEach((user) => {
+        user.user_profile_img = replaceS3toCloudFront(user.user_profile_img)
+      })
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](users, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -33,6 +38,7 @@ const userController = {
     try {
       const { userId } = req.params
       const user = await User.findById(userId);
+      user.user_profile_img = replaceS3toCloudFront(user.user_profile_img)
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -50,6 +56,7 @@ const userController = {
       const { userId } = req.params;
       //찾아서 업데이트
       const user = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true });
+
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error)
@@ -89,6 +96,7 @@ const userController = {
           firebase_info: JSON.parse(JSON.stringify(req.user.social))
         }
       });
+      user.user_profile_img = replaceS3toCloudFront(user.user_profile_img)
       return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
       console.log(error)
@@ -116,6 +124,7 @@ const userController = {
   uploadUserImg: async (req, res) => {
     try {
       const user = await User.findByIdAndUpdate(req.user.id, { user_profile_img: req.file.location }, { new: true, runValidators: true });
+      user.user_profile_img = replaceS3toCloudFront(user.user_profile_img)
       return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](req.file.location, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error)
