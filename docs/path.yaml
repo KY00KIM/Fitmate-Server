@@ -528,44 +528,7 @@ paths:
                     $ref: '#/components/schemas/appointment'
         '400':
           description: '`ClientErrorBadRequest`'
-  /matching:
-    post:
-      summary: 'Author:규민, 사용자 위치 정보 등록'
-      description: 'Author:규민,POST 방식으로 토큰 사용자의 위치정보 등록'
-      tags:
-        - matching
-      parameters:
-        - $ref: '#/components/parameters/authToken'
-      requestBody:
-        description: POST 방식으로 등록할 위치정보
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                user_longitude:
-                  type: number
-                user_latitude:
-                  type: number
-      responses:
-        '200':
-          description: 전체 리뷰 후보 정보
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  message:
-                    type: string
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/userTrace'
-        '400':
-          description: 'ClientErrorBadRequest'
+
 
   /reviews/candidates:
     get:
@@ -1392,3 +1355,45 @@ paths:
                     $ref: '#/components/schemas/reportedPost'
         '404':
           description: '`ClientErrorNotFound`'
+
+  /trace:
+    post:
+      summary: 'Author:규민, 사용자 위치 정보'
+      description: 'Author:규민, POST 방식으로 특정 사용자 위치 정보 등록'
+      tags:
+        - matching
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 특정 사용자 정보 등록
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_longitude:
+                  type: number
+                  format: double
+                  description: 사용자 경도
+                user_latitude:
+                  type: number
+                  format: double
+                  description: 사용자 위도
+      responses:
+        '201':
+          description: '`SuccessCreated` 사용자 위치 정보 등록 완료'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/userTrace'
+        '404':
+          description: '`ClientErrorNotFound`'
+
