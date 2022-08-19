@@ -34,8 +34,8 @@ const postController = {
         .exec();
 
       posts.forEach((post) => {
-        post.post_img = replaceS3toCloudFront(post.post_img)
-        console.log(post.post_img)
+        post.post_img = replaceS3toCloudFront(post.post_img);
+        // console.log(post.post_img);
       })
 
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);

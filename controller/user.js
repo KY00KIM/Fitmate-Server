@@ -21,7 +21,8 @@ const userController = {
       //logger.info(`${req.decoded.id}`);
       users.forEach((user) => {
         user.user_profile_img = replaceS3toCloudFront(user.user_profile_img)
-      })
+      });
+
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](users, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);

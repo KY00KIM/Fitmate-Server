@@ -1,4 +1,5 @@
 const { FitnessCenter } = require('../model/FitnessCenter');
+const { User } = require('../model/User');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const locationController = require('./location')
@@ -67,6 +68,31 @@ const fitnesscenterController = {
 
   },
 
+  countAllUsersbyFitenessCenter: async (req, res) => {
+    try {
+      const {
+        params: { fitnesscenterId },
+      } = req;
+      const users = await User.find({fitnesscenterId:fitnesscenterId});
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitnesscenter, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+    } catch (error) {
+      console.log(error);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
+  countUnMatchedPostsbyFitenessCenter: async (req, res) => {
+    try {
+      const {
+        params: { fitnesscenterId },
+      } = req;
+      const fitnesscenter = await FitnessCenter.findById(fitnesscenterId);
+      const users = await User.find({fitnesscenterId:fitnesscenterId});
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitnesscenter, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+    } catch (error) {
+      console.log(error);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
 };
 
 module.exports = fitnesscenterController;
