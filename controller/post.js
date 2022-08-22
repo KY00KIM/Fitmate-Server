@@ -7,7 +7,7 @@ const fitnesscenterController = require('./fitnesscenter');
 const matchController = require('./match');
 const reviewController = require('./review');
 const { replaceS3toCloudFront } = require('../config/aws_s3')
-
+// cloudwatch
 
 const postController = {
   /**
@@ -15,17 +15,48 @@ const postController = {
   * @description 사용자와 연관된 모든 매칭글을 조회하는 GET Method
   */
   getAllPosts: async (req, res) => {
-    try {
-      const posts = await Post.find({ is_deleted: false, user_id:{ $ne: req.user.id }}).populate('user_id', 'user_nickname user_profile_img').populate('promise_location').sort({createdAt: -1});
+    try {     
+      let { page, limit = 10 } = req.query;
+
+      if(req.query.page){
+          page = parseInt(req.query.page);
+      }
+      else{
+          page = 1;
+      };
+      
+      const posts = await Post.find({ is_deleted: false, user_id:{ $ne: req.user.id }})      
+        .populate('user_id', 'user_nickname user_profile_img')
+        .populate('promise_location')
+        .sort({createdAt: -1})      
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
+        .exec();
+
       posts.forEach((post) => {
-        post.post_img = replaceS3toCloudFront(post.post_img)
-        console.log(post.post_img)
+        post.post_img = replaceS3toCloudFront(post.post_img);
+        // console.log(post.post_img);
       })
 
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.error(error);
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+    }
+  },
+
+  getMyPost: async (req, res) => {
+    try {      
+      const {
+        params: { userId },
+      } = req;
+      const posts = await Post.find({is_deleted: false, user_id: userId});
+      posts.forEach((post) => {
+        post.post_img = replaceS3toCloudFront(post.post_img)
+      })
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
+    } catch (error) {
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
   },
   /**
