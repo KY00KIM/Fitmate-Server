@@ -235,7 +235,7 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
-  /posts:
+  /posts?page=2:
     get:
       tags:
         - posts
@@ -468,6 +468,34 @@ paths:
                   data:
                     type: string
                     format: s3 URL
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /posts/user/userId:
+    get:
+      tags:
+        - posts
+      summary: Author:기호, 특정 사용자가 쓴 글 조회 
+      description: Author:기호, 특정 사용자가 쓴 글 조회 
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/post'
         '400':
           description: '`ClientErrorBadRequest`'
 
