@@ -7,7 +7,7 @@ const fitnesscenterController = require('./fitnesscenter');
 const matchController = require('./match');
 const reviewController = require('./review');
 const { replaceS3toCloudFront } = require('../config/aws_s3')
-
+// cloudwatch
 
 const postController = {
   /**
@@ -42,6 +42,21 @@ const postController = {
     } catch (error) {
       console.error(error);
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+    }
+  },
+
+  getMyPost: async (req, res) => {
+    try {      
+      const {
+        params: { userId },
+      } = req;
+      const posts = await Post.find({is_deleted: false, user_id: userId});
+      posts.forEach((post) => {
+        post.post_img = replaceS3toCloudFront(post.post_img)
+      })
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
+    } catch (error) {
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
   },
   /**
