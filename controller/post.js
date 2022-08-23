@@ -16,7 +16,7 @@ const postController = {
   */
   getAllPosts: async (req, res) => {
     try {
-      const posts = await Post.find({ is_deleted: false, user_id:{ $ne: req.user.id }}).populate('user_id', 'user_nickname user_profile_img').populate('promise_location').sort({createdAt: -1});
+      const posts = await Post.find({ is_deleted: false, user_id: { $ne: req.user.id } }).populate('user_id', 'user_nickname user_profile_img').populate('promise_location').sort({ createdAt: -1 });
       posts.forEach((post) => {
         post.post_img = replaceS3toCloudFront(post.post_img)
         console.log(post.post_img)
@@ -116,6 +116,16 @@ const postController = {
     } catch (error) {
       console.log(error)
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
+
+  deleteManyPostByUser: async (user_id) => {
+    try {
+      const result = await Post.updateMany({ user_id: user_id }, { is_deleted: true });
+      return result
+    } catch (e) {
+      console.log(e)
+      return (e)
     }
   }
 }

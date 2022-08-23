@@ -26,10 +26,14 @@ const appointmentSchema = mongoose.Schema({
     type: Boolean,
     default: false
   },
-  isReviewed:{
+  isReviewed: {
     type: Boolean,
     default: false
   },
+  is_deleted: {
+    type: Boolean,
+    default: false
+  }
 }, {
   versionKey: false,
   timestamps: true,
