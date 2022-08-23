@@ -55,7 +55,11 @@ const reviewSchema = mongoose.Schema({
   review_candidates: [{
     type: ObjectId,
     ref: 'ReviewCandidate'
-  }]
+  }],
+  is_deleted: {
+    type: Boolean,
+    default: false
+  }
 }, {
   versionKey: false,
   timestamps: true,

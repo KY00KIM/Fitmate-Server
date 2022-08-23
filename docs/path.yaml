@@ -140,6 +140,85 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/user'
+
+        '400':
+          description: '`ClientErrorBadRequest`'
+    delete:
+      tags:
+        - users
+      summary: Author:규민, 유저 회원탈퇴
+      description: Author:규민, Response  `result of signed out user`, 사용자가 회원탈퇴하고 사용자와 관련된 Post, Chatroom, Review, Appointment 를 삭제합니다.
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      resultUser:
+                        $ref: '#/components/schemas/user'
+                      resultPost:
+                        type: object
+                        properties:
+                          acknowledged:
+                            type: boolean
+                          modifiedCount:
+                            type: number
+                          upsertedId:
+                            type: string
+                          upsertedCount:
+                            type: number
+                          matchedCount:
+                            type: number
+                      resultChatroom:
+                        type: object
+                        properties:
+                          acknowledged:
+                            type: boolean
+                          modifiedCount:
+                            type: number
+                          upsertedId:
+                            type: string
+                          upsertedCount:
+                            type: number
+                          matchedCount:
+                            type: number
+                      resultReview:
+                        type: object
+                        properties:
+                          acknowledged:
+                            type: boolean
+                          modifiedCount:
+                            type: number
+                          upsertedId:
+                            type: string
+                          upsertedCount:
+                            type: number
+                          matchedCount:
+                            type: number
+                      resultAppointment:
+                        type: object
+                        properties:
+                          acknowledged:
+                            type: boolean
+                          modifiedCount:
+                            type: number
+                          upsertedId:
+                            type: string
+                          upsertedCount:
+                            type: number
+                          matchedCount:
+                            type: number
         '400':
           description: '`ClientErrorBadRequest`'
   /users/{userId}:
@@ -557,7 +636,6 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
-
   /reviews/candidates:
     get:
       summary: 'Author:기호, 리뷰 후보 데이터 전체조회'
@@ -731,7 +809,7 @@ paths:
                     type: boolean
                   message:
                     type: string
-                  data: 
+                  data:
                     type: string
                     default: 'title: ~~, body: ~~'
   /push/popup:
@@ -764,7 +842,7 @@ paths:
                     type: boolean
                   message:
                     type: string
-                  data: 
+                  data:
                     type: string
                     default: 'notification: notification, Type: NOTICE'
   /push/test:
@@ -784,7 +862,7 @@ paths:
               type: object
               properties:
                 userId:
-                  type: string      
+                  type: string
       responses:
         '200':
           description: '`SuccessOK` 특정 사용자의 채팅 답변 알림 푸시'
@@ -797,10 +875,9 @@ paths:
                     type: boolean
                   message:
                     type: string
-                  data: 
+                  data:
                     type: string
-                    default: "notification: TEST,Type: TEST"
-              
+                    default: 'notification: TEST,Type: TEST'
 
   /locations:
     get:
@@ -1424,4 +1501,3 @@ paths:
                     $ref: '#/components/schemas/userTrace'
         '404':
           description: '`ClientErrorNotFound`'
-

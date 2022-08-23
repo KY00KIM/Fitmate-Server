@@ -15,5 +15,7 @@ userRouter.post('/oauth', userController.assignUser);
 
 userRouter.post('/image', uploadImg('profile_image').single('image'), userController.uploadUserImg)
 
+userRouter.delete('/', userController.userSignOut);
+
 
 module.exports = userRouter;
