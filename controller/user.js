@@ -1,4 +1,9 @@
 const { User } = require("../model/User");
+const postController = require('../controller/post')
+const chatController = require('../controller/chat')
+const reviewController = require('../controller/review')
+const appointmentController = require('../controller/appointment')
+
 const locationController = require('./location');
 const fitnesscenterController = require('./fitnesscenter')
 const ResponseManager = require('../config/response');
@@ -6,7 +11,8 @@ const STATUS_CODE = require('../config/http_status_code');
 const timeConvert = require('../config/timeConvert');
 const logger = require('../config/winston');
 const { uploadImg } = require('../middleware/multer')
-const { replaceS3toCloudFront } = require('../config/aws_s3')
+const { replaceS3toCloudFront } = require('../config/aws_s3');
+const { app } = require("firebase-admin");
 
 
 
@@ -133,6 +139,26 @@ const userController = {
     }
   },
 
+  userSignOut: async (req, res) => {
+    try {
+      const resultUser = await User.findByIdAndUpdate(req.user.id, { is_deleted: true });
+      const resultPost = await postController.deleteManyPostByUser(req.user.id);
+      const resultChatroom = await chatController.deleteManyChatroomByUser(req.user.id);
+      const resultReview = await reviewController.deleteManyReviewByUser(req.user.id);
+      const resultAppointment = await appointmentController.deleteManyAppointmentByUser(req.user.id);
+      console.log("User : " + resultUser);
+      console.log("Post : " + resultPost);
+      console.log("Chatroom : " + resultChatroom)
+      console.log("Review : " + resultReview)
+      console.log("Appointment : " + resultAppointment)
+
+      return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ resultUser, resultPost, resultChatroom, resultReview }, 'SuccessOK', STATUS_CODE.SuccessOK);
+    } catch (error) {
+      console.log(error);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  }
+
 
 };
 
@@ -151,13 +177,14 @@ const checkDeviceToken = async (user_id, device_token) => {
 
 const checkUserValid = async (firebase_uid) => {
   try {
-    const users = await User.find({ 'social.user_id': firebase_uid });
+    const users = await User.find({ 'social.user_id': firebase_uid, is_deleted: false });
     if (!users[0]) return false;
     return users[0]._id;
   } catch (error) {
     console.log(error)
     return false
   }
+
 };
 
 module.exports = userController;

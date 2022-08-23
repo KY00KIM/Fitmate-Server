@@ -8,7 +8,7 @@ const STATUS_CODE = require('../config/http_status_code');
 const moment = require('moment');
 const fitnesscenterController = require('./fitnesscenter');
 const timeConvert = require('../config/timeConvert');
-const { pushNotificationUser,pushDataUser} = require('./push');
+const { pushNotificationUser, pushDataUser } = require('./push');
 
 const appointmentController = {
   /**
@@ -20,7 +20,7 @@ const appointmentController = {
     try {
       let user_id = req.user.id;
       const appointments = await Appointment.find(
-        { $or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }] });
+        { $or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }], is_deleted: false });
 
       appointments.forEach((appointment) => {
         appointment.appointment_date = timeConvert.addNineHours(appointment.appointment_date);
@@ -87,10 +87,10 @@ const appointmentController = {
       rule.minute = moment(review_date).minute();
       rule.second = moment(review_date).second();
       console.log(rule);
-      
+
       schedule.scheduleJob(rule, () => pushNotificationUser(match_start_id, 'FitMate 리뷰 알림!', `${match_join_user.user_nickname}님과의 운동은 어떠셨나요?`));
       schedule.scheduleJob(rule, () => pushNotificationUser(match_join_user, 'FitMate 리뷰 알림!', `${match_start_user.user_nickname}님과의 운동은 어떠셨나요?`));
-     
+
       // DB에 저장
       await PushSchedule.create({
         pushType: "REVIEW",
@@ -153,7 +153,16 @@ const appointmentController = {
       console.error(error);
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
-  },  
+  },
+  deleteManyAppointmentByUser: async (user_id) => {
+    try {
+      const result = await Appointment.updateMany({ $or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }] }, { is_deleted: true });
+      return result
+    } catch (e) {
+      console.log(e)
+      return (e)
+    }
+  }
 };
 
 module.exports = appointmentController;

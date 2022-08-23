@@ -148,6 +148,16 @@ const postController = {
       console.log(error)
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
+  },
+
+  deleteManyPostByUser: async (user_id) => {
+    try {
+      const result = await Post.updateMany({ user_id: user_id }, { is_deleted: true });
+      return result
+    } catch (e) {
+      console.log(e)
+      return (e)
+    }
   }
 }
 

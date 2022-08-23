@@ -1,5 +1,5 @@
 const { Review } = require('../model/Review');
-const { Appointment} = require('../model/Appointment');
+const { Appointment } = require('../model/Appointment');
 const { ReviewCandidate } = require('../model/ReviewCandidate');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
@@ -44,24 +44,24 @@ const reviewController = {
     try {
 
       console.log("Fine");
-      
+
       const {
         body: { review_recv_id, user_rating, review_body, review_candidates, appointmentId },
       } = req;
 
       const review = await Review.create({
         review_send_id: req.user.id,
-        review_recv_id:review_recv_id,
-        user_rating:user_rating,
-        review_body:review_body,
+        review_recv_id: review_recv_id,
+        user_rating: user_rating,
+        review_body: review_body,
         review_candidates: review_candidates
       });
 
-      await Appointment.updateOne({_id: appointmentId}, {$set: {isReviewed: true}});
+      await Appointment.updateOne({ _id: appointmentId }, { $set: { isReviewed: true } });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
-      
-      console.log('\n',error);
+
+      console.log('\n', error);
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
@@ -85,7 +85,7 @@ const reviewController = {
   * @path {DELETE} http://fitmate.co.kr/v1/reviews/:review_id
   * @description 특정 리뷰를 삭제하는 DELETE Method
   */
-  deleteOneReview: async (req, res) =>{
+  deleteOneReview: async (req, res) => {
     try {
       const {
         params: { review_id },
@@ -94,6 +94,15 @@ const reviewController = {
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+    }
+  },
+  deleteManyReviewByUser: async (user_id) => {
+    try {
+      const result = await Review.updateMany({ $or: [{ 'review_recv_id': user_id }, { 'review_send_id': user_id }] }, { is_deleted: true });
+      return result
+    } catch (e) {
+      console.log(e)
+      return (e)
     }
   }
 };

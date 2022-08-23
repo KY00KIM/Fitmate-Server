@@ -57,6 +57,16 @@ const chatController = {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
         }
     },
+
+    deleteManyChatroomByUser: async (user_id) => {
+        try {
+            const result = await Chatroom.updateMany({ $or: [{ 'chat_start_id': user_id }, { 'chat_join_id': user_id }] }, { is_deleted: true });
+            return result
+        } catch (e) {
+            console.log(e)
+            return e
+        }
+    }
 }
 
 
