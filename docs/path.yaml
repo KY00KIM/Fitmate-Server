@@ -314,11 +314,11 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
-  /posts?page=2:
+  /posts:
     get:
       tags:
         - posts
-      summary: Author:규민, 모든 매칭글 목록 조회
+      summary: Author:규민, 모든 매칭글 목록 조회 - Pagination 구현(page=2)
       description: Author:규민,Response  `array of posts written by user`
       parameters:
         - $ref: '#/components/parameters/authToken'
@@ -549,7 +549,7 @@ paths:
                     format: s3 URL
         '400':
           description: '`ClientErrorBadRequest`'
-  /posts/user/userId:
+  /posts/user/{userId}:
     get:
       tags:
         - posts
