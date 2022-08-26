@@ -63,7 +63,7 @@ const userController = {
       const { userId } = req.params;
       //찾아서 업데이트
       const user = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true });
-
+      user.user_profile_img = replaceS3toCloudFront(user.user_profile_img)
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error)

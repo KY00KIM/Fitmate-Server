@@ -15,26 +15,27 @@ const postController = {
   * @description 사용자와 연관된 모든 매칭글을 조회하는 GET Method
   */
   getAllPosts: async (req, res) => {
-    try {     
+    try {
       let { page, limit = 10 } = req.query;
 
-      if(req.query.page){
-          page = parseInt(req.query.page);
+      if (req.query.page) {
+        page = parseInt(req.query.page);
       }
-      else{
-          page = 1;
+      else {
+        page = 1;
       };
-      
-      const posts = await Post.find({ is_deleted: false, user_id:{ $ne: req.user.id }})      
+
+      const posts = await Post.find({ is_deleted: false, user_id: { $ne: req.user.id } })
         .populate('user_id', 'user_nickname user_profile_img')
         .populate('promise_location')
-        .sort({createdAt: -1})      
+        .sort({ createdAt: -1 })
         .limit(limit * 1)
         .skip((page - 1) * limit)
         .exec();
 
       posts.forEach((post) => {
         post.post_img = replaceS3toCloudFront(post.post_img);
+        post.user_id.user_profile_img = replaceS3toCloudFront(post.user_id.user_profile_img);
         // console.log(post.post_img);
       })
 
@@ -46,11 +47,11 @@ const postController = {
   },
 
   getMyPost: async (req, res) => {
-    try {      
+    try {
       const {
         params: { userId },
       } = req;
-      const posts = await Post.find({is_deleted: false, user_id: userId});
+      const posts = await Post.find({ is_deleted: false, user_id: userId });
       posts.forEach((post) => {
         post.post_img = replaceS3toCloudFront(post.post_img)
       })

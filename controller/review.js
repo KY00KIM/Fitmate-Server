@@ -75,6 +75,10 @@ const reviewController = {
         params: { review_recv_id },
       } = req;
       const review = await Review.find({ "review_recv_id": review_recv_id }).populate('review_send_id').populate('review_candidates');
+      review.forEach((review) => {
+        review.review_send_id.user_profile_img = replaceS3toCloudFront(review.review_send_id.user_profile_img)
+        review.review_recv_id.user_profile_img = replaceS3toCloudFront(review.review_recv_id.user_profile_img)
+      });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.error(error);
