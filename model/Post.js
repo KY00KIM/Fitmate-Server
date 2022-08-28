@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
 const { Types: { ObjectId } } = mongoose.Schema;
 
 
@@ -119,6 +120,7 @@ const postSchema = mongoose.Schema({
 });
 
 
+postSchema.plugin(mongoosePaginate);
 const Post = mongoose.model('Post', postSchema);
 
 module.exports = { Post };
