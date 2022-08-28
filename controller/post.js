@@ -6,7 +6,8 @@ const { uploadImg } = require('../middleware/multer')
 const fitnesscenterController = require('./fitnesscenter');
 const matchController = require('./match');
 const reviewController = require('./review');
-const { replaceS3toCloudFront } = require('../config/aws_s3')
+const { replaceS3toCloudFront } = require('../config/aws_s3');
+const { originAgentCluster } = require('helmet');
 // cloudwatch
 
 const postController = {
@@ -143,8 +144,8 @@ const postController = {
   uploadPostImg: async (req, res) => {
     try {
       const { postId } = req.params
-      const post = await Post.findByIdAndUpdate(postId, { post_img: req.file.location }, { new: true, runValidators: true });
-      return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](req.file.location, 'SuccessOK', STATUS_CODE.SuccessOK);
+      const post = await Post.findByIdAndUpdate(postId, { post_img: replaceS3toCloudFront(req.file.location)},{post_original_img: req.file.location} ,{ new: true, runValidators: true });
+      return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](replaceS3toCloudFront(req.file.location), 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error)
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -154,12 +155,12 @@ const postController = {
   deleteManyPostByUser: async (user_id) => {
     try {
       const result = await Post.updateMany({ user_id: user_id }, { is_deleted: true });
-      return result
+      return result;
     } catch (e) {
       console.log(e)
       return (e)
     }
-  }
+  },
 }
 
 module.exports = postController;

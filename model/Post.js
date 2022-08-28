@@ -100,7 +100,12 @@ const postSchema = mongoose.Schema({
   },
   post_img: {
     type: String,
-    default: ""
+    default: "https://d1cfu69a4bd45f.cloudfront.net/post_image/young-people-runner-running-on-running-road-in-city-park_41380-393.jpeg"
+  },
+  post_original_img:{
+    type: String,
+    select: false,
+    default: "https://fitmate-s3-bucket.s3.ap-northeast-2.amazonaws.com/post_image/young-people-runner-running-on-running-road-in-city-park_41380-393.jpeg"
   },
   post_main_text: {
     type: String,
