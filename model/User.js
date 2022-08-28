@@ -2,9 +2,6 @@ const mongoose = require('mongoose');
 require('mongoose-double')(mongoose);
 const { Types: { ObjectId, Double } } = mongoose.Schema;
 
-
-
-
 const userSchema = mongoose.Schema({
 
   user_name: String,
@@ -20,7 +17,15 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  user_profile_img: String,
+  user_profile_img: {
+    type: String,
+    default: "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022_08_24_12_09_46.png"
+  },
+  user_original_profile_img:{
+    type:String,
+    select: false,
+    default:"https://fitmate-s3-bucket.s3.ap-northeast-2.amazonaws.com/profile_image/62d68b0843aefb57300fe342_2022_08_24_12_09_46.png"
+  },
   // 운동 스케줄 (0 : 아침, 1 : 오후, 2 : 저녁)
   user_schedule_time: Number,
   user_weekday: {

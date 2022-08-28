@@ -15,7 +15,7 @@ const appointmentController = {
    * @path {GET} http://fitmate.co.kr/v1/appointments
    * @description 사용자의 모든 약속을 조회하는 GET Method
    */
-  /// userId 필요
+  
   getAllAppointment: async (req, res) => {
     try {
       let user_id = req.user.id;

@@ -8,7 +8,7 @@ postRouter.get('/', postController.getAllPosts);
 
 postRouter.get('/user/:userId', postController.getMyPost);
 
-postRouter.post('/image/:postId', uploadImg('post_image').single('image'), postController.uploadPostImg)
+postRouter.post('/image/:postId', uploadImg('post_image').single('image'), postController.uploadPostImg);
 
 postRouter.get('/:postId', postController.getOnePost);
 
@@ -18,5 +18,6 @@ postRouter.patch('/:postId', postController.updatePost);
 
 postRouter.delete('/:postId', postController.deletePost);
 
+postRouter.get('/develop/test', postController.makeUserUrl);
 
 module.exports = postRouter;

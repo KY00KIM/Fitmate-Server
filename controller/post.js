@@ -6,7 +6,8 @@ const { uploadImg } = require('../middleware/multer')
 const fitnesscenterController = require('./fitnesscenter');
 const matchController = require('./match');
 const reviewController = require('./review');
-const { replaceS3toCloudFront } = require('../config/aws_s3')
+const { replaceS3toCloudFront } = require('../config/aws_s3');
+const { originAgentCluster } = require('helmet');
 // cloudwatch
 
 const postController = {
@@ -23,23 +24,31 @@ const postController = {
       }
       else {
         page = 1;
+        // Should Change
+        limit = 100;
       };
 
-      const posts = await Post.find({ is_deleted: false, user_id: { $ne: req.user.id } })
-        .populate('user_id', 'user_nickname user_profile_img')
-        .populate('promise_location')
-        .sort({ createdAt: -1 })
-        .limit(limit * 1)
-        .skip((page - 1) * limit)
-        .exec();
-
-      posts.forEach((post) => {
-        post.post_img = replaceS3toCloudFront(post.post_img);
-        post.user_id.user_profile_img = replaceS3toCloudFront(post.user_id.user_profile_img);
-        // console.log(post.post_img);
-      })
-
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
+      const options = {
+        page: page,
+        limit: limit,
+        populate: 
+        [
+          {
+            path : 'user_id',
+            select : {user_nickname : 1, user_profile_img : 1}
+          },
+          {
+            path : 'promise_location',
+          }
+        ],
+        collation: {
+          locale: 'en',
+        },
+        sort: { createdAt: -1 },
+      };
+      await Post.paginate({is_deleted: false, user_id: { $ne: req.user.id }}, options, (err, result)=>{
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result.docs, 'SuccessOK', STATUS_CODE.SuccessOK);
+      });
     } catch (error) {
       console.error(error);
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
@@ -143,8 +152,8 @@ const postController = {
   uploadPostImg: async (req, res) => {
     try {
       const { postId } = req.params
-      const post = await Post.findByIdAndUpdate(postId, { post_img: req.file.location }, { new: true, runValidators: true });
-      return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](req.file.location, 'SuccessOK', STATUS_CODE.SuccessOK);
+      const post = await Post.findByIdAndUpdate(postId, { post_img: replaceS3toCloudFront(req.file.location)},{post_original_img: req.file.location} ,{ new: true, runValidators: true });
+      return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](replaceS3toCloudFront(req.file.location), 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error)
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -154,12 +163,28 @@ const postController = {
   deleteManyPostByUser: async (user_id) => {
     try {
       const result = await Post.updateMany({ user_id: user_id }, { is_deleted: true });
-      return result
+      return result;
     } catch (e) {
       console.log(e)
       return (e)
     }
-  }
+  },
+  makeUserUrl: async (req, res) => {
+    try {
+      const originals = await User.find();
+      originals.forEach(async function(user) {
+        if(!user.user_profile_img){
+          const now = await User.findByIdAndUpdate(user._id, { $set: { user_profile_img: "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022_08_24_12_09_46.png"}});
+          const now2 = await User.findByIdAndUpdate(user._id, { $set: {user_original_profile_img: "https://fitmate-s3-bucket.s3.ap-northeast-2.amazonaws.com/profile_image/62d68b0843aefb57300fe342_2022_08_24_12_09_46.png"} });
+          console.log(user.post_img);
+        }
+      });
+      return ResponseManager.getDefaultResponseHandler(res)['onSuccess']("", 'SuccessOK', STATUS_CODE.SuccessOK);
+    } catch (error) {
+      console.log(error)
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
 }
 
 module.exports = postController;

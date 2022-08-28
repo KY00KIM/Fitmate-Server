@@ -87,7 +87,7 @@ const userController = {
         user_email: req.user.social.email || "",
         user_address: user_address,
         user_nickname: user_nickname,
-        user_profile_img: req.user.social.picture || "",
+        user_profile_img: req.user.social.picture,
         user_schedule_time: user_schedule_time,
         user_weekday: user_weekday || null,
         user_gender: user_gender,
@@ -130,9 +130,8 @@ const userController = {
 
   uploadUserImg: async (req, res) => {
     try {
-      const user = await User.findByIdAndUpdate(req.user.id, { user_profile_img: req.file.location }, { new: true, runValidators: true });
-      user.user_profile_img = replaceS3toCloudFront(user.user_profile_img)
-      return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](req.file.location, 'SuccessOK', STATUS_CODE.SuccessOK);
+      const user = await User.findByIdAndUpdate(req.user.id, { user_profile_img: replaceS3toCloudFront(req.file.location), user_original_profile_img: req.file.location }, { new: true, runValidators: true });
+      return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](replaceS3toCloudFront(req.file.location), 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error)
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
