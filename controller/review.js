@@ -3,7 +3,6 @@ const { Appointment } = require('../model/Appointment');
 const { ReviewCandidate } = require('../model/ReviewCandidate');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
-const { replaceS3toCloudFront } = require('../config/aws_s3');
 const reviewController = {
   /**
    * @path {GET} http://fitmate.co.kr/v1/reviews/candidates
@@ -75,10 +74,6 @@ const reviewController = {
         params: { review_recv_id },
       } = req;
       const review = await Review.find({ "review_recv_id": review_recv_id }).populate('review_send_id').populate('review_candidates');
-      review.forEach((review) => {
-        review.review_send_id.user_profile_img = replaceS3toCloudFront(review.review_send_id.user_profile_img)
-        review.review_recv_id.user_profile_img = replaceS3toCloudFront(review.review_recv_id.user_profile_img)
-      });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.error(error);
