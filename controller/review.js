@@ -3,7 +3,7 @@ const { Appointment } = require('../model/Appointment');
 const { ReviewCandidate } = require('../model/ReviewCandidate');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
-
+const { replaceS3toCloudFront } = require('../config/aws_s3');
 const reviewController = {
   /**
    * @path {GET} http://fitmate.co.kr/v1/reviews/candidates
