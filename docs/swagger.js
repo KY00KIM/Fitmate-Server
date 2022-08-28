@@ -17,6 +17,9 @@ const options = {
             {
                 url: "http://localhost:8000/v1"
             },
+            {
+                url: "https://fitmate.co.kr/v2", // 요청 URL
+            }
         ],
         tags: [
             {
