@@ -27,9 +27,9 @@ const uploadImg = (storePath) => {
                     username:'IMG_URL'
                 });
                 if (storePath == "profile_image"){
-                    cb(null, `${storePath}/${req.user.id || file.originalname}_${moment(Date.now()).format('YYYY_MM_DD_HH_mm_ss')}.${ext || 'jpeg'}`);
+                    cb(null, `${storePath}/${req.user.id || file.originalname}_${moment(Date.now()).format('YYYY_MM_DD_HH_mm_ss')}${ext || 'jpeg'}`);
                 } else {
-                    cb(null, `${storePath}/${req.params.postId || file.originalname}_${moment(Date.now()).format('YYYY_MM_DD_HH_mm_ss')}.${ext || 'jpeg'}`)
+                    cb(null, `${storePath}/${req.params.postId || file.originalname}_${moment(Date.now()).format('YYYY_MM_DD_HH_mm_ss')}${ext || 'jpeg'}`)
                 }
             },
         })
