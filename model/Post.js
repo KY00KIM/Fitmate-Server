@@ -112,13 +112,11 @@ const postSchema = mongoose.Schema({
     type: String,
     default: ""
   }
-
 }, {
   versionKey: false,
   timestamps: true,
   toJSON: { virtuals: true }
 });
-
 
 postSchema.plugin(mongoosePaginate);
 const Post = mongoose.model('Post', postSchema);
