@@ -170,18 +170,11 @@ const postController = {
     }
   },
   makeUserUrl: async (req, res) => {
-    try {
-      const originals = await User.find();
-      originals.forEach(async function(user) {
-        if(!user.user_profile_img){
-          const now = await User.findByIdAndUpdate(user._id, { $set: { user_profile_img: "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022_08_24_12_09_46.png"}});
-          const now2 = await User.findByIdAndUpdate(user._id, { $set: {user_original_profile_img: "https://fitmate-s3-bucket.s3.ap-northeast-2.amazonaws.com/profile_image/62d68b0843aefb57300fe342_2022_08_24_12_09_46.png"} });
-          console.log(user.post_img);
-        }
-      });
-      return ResponseManager.getDefaultResponseHandler(res)['onSuccess']("", 'SuccessOK', STATUS_CODE.SuccessOK);
-    } catch (error) {
-      console.log(error)
+    try{
+      const posts = await Post.find().populate('promise_location');
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
+   
+    }catch(err){
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
