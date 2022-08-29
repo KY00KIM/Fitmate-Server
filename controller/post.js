@@ -151,8 +151,8 @@ const postController = {
 
   uploadPostImg: async (req, res) => {
     try {
-      const { postId } = req.params
-      const post = await Post.findByIdAndUpdate(postId, { post_img: replaceS3toCloudFront(req.file.location)},{post_original_img: req.file.location} ,{ new: true, runValidators: true });
+      const { postId } = req.params;
+      const post = await Post.findByIdAndUpdate(postId, { post_img: replaceS3toCloudFront(req.file.location), post_original_img: req.file.location} ,{ new: true, runValidators: true });
       return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](replaceS3toCloudFront(req.file.location), 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error)
