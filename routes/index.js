@@ -19,6 +19,5 @@ router.get('/fitamte.ipa', (req, res) => {
     res.sendFile(__dirname + "/../ipa/fitmate.ipa");
 })
 router.use('/v1', verifyUser, v1Router);
-// router.use('/v2', verifyUser, v2Router);
 
 module.exports = router
