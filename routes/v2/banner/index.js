@@ -1,6 +1,7 @@
 const express = require('express');
 const bannerRouter = express.Router();
 const bannerController = require('../../../controller/banner');
+const { uploadImg } = require('../../../middleware/multer');
 
 
 bannerRouter.get('/', bannerController.getAllBanners);

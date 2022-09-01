@@ -18,12 +18,14 @@ const bannerController = {
             const {
                 body: { center_url, fitness_center_id, expire_date},
             } = req;
-            const result = await Banner.create({
+
+        const center_id = await fitnesscenterController.getFitnessCenterId(promise_location);
+            const banner = await Banner.create({
                 center_url: center_url,
                 fitness_center_id: fitness_center_id,
                 expire_date: moment(expire_date),
             });
-            ResponseManager.getDefaultResponseHandler(res)['onError'](result, 'Banner Created', STATUS_CODE.SuccessCreated);
+            ResponseManager.getDefaultResponseHandler(res)['onError'](banner, 'Banner Created', STATUS_CODE.SuccessCreated);
         }catch(error){
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'Invalid Banner', STATUS_CODE.ClientErrorBadRequest);
         }
