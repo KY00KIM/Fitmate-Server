@@ -39,6 +39,15 @@ const bannerController = {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'Invalid Banner Image', STATUS_CODE.ClientErrorBadRequest);
         }
     },
+    bannerClicked: async (req, res) =>{
+        try{
+            const { bannerId } = req.params;
+            const banner = await Banner.findByIdAndUpdate(bannerId, { $inc:{click_num: 1}} ,{ new: true, runValidators: true });
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](banner, 'Clicked SuccessOK', STATUS_CODE.SuccessOK);
+        }catch(error){
+            ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'Invalid Banner', STATUS_CODE.ClientErrorBadRequest);
+        }
+    },
 };
 
 

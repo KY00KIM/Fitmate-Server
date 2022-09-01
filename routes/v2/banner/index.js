@@ -10,4 +10,6 @@ bannerRouter.post('/', bannerController.registerBanner);
 
 bannerRouter.get('/image/:bannerId', uploadImg('banner_image').single('image'), bannerController.uploadBannerImg);
 
+bannerRouter.post('/clicked/:bannerId', bannerController.bannerClicked);
+
 module.exports = bannerRouter;

@@ -10,7 +10,7 @@ const { swaggerUi, specs } = require("../../docs/swagger");
 
 v2Router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 v2Router.use("/banner", banner);
-v2Router.use("/post", banner);
+v2Router.use("/post", post);
 v2Router.use("/fitnesscenter", fitnesscenter);
 
 v2Router.get("/", async (req, res) => {

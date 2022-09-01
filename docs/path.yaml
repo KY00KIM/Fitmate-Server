@@ -1,5 +1,5 @@
 paths:
-  /users/login:
+  /v1/users/login:
     get:
       tags:
         - users
@@ -33,7 +33,7 @@ paths:
           description: '`ClientErrorNotFound` firebase 유저이지만 서버 유저목록에서 유저를 찾을 수 없는 경우'
         '400':
           description: '`ClientErrorBadRequest`'
-  /users/oauth:
+  /v1/users/oauth:
     post:
       tags:
         - users
@@ -116,7 +116,7 @@ paths:
                     $ref: '#/components/schemas/user'
         '400':
           description: '`Client Bad Request`'
-  /users:
+  /v1/users:
     get:
       tags:
         - users
@@ -221,7 +221,7 @@ paths:
                             type: number
         '400':
           description: '`ClientErrorBadRequest`'
-  /users/{userId}:
+  /v1/users/{userId}:
     get:
       tags:
         - users
@@ -278,7 +278,7 @@ paths:
                     $ref: '#/components/schemas/user'
         '400':
           description: ClientErrorBadRequest
-  /users/image:
+  /v1/users/image:
     post:
       tags:
         - users
@@ -314,7 +314,7 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
-  /posts:
+  /v1/posts:
     get:
       tags:
         - posts
@@ -411,7 +411,7 @@ paths:
                       $ref: '#/components/schemas/post'
         '400':
           description: '`ClientErrorBadRequest`'
-  /posts/{postId}:
+  /v1/posts/{postId}:
     get:
       tags:
         - posts
@@ -514,7 +514,7 @@ paths:
           description: '`SUCCESS_OK`'
         '400':
           description: ClientErrorBadRequest
-  /posts/image/{postId}:
+  /v1/posts/image/{postId}:
     post:
       tags:
         - posts
@@ -549,7 +549,7 @@ paths:
                     format: s3 URL
         '400':
           description: '`ClientErrorBadRequest`'
-  /posts/user/{userId}:
+  /v1/posts/user/{userId}:
     get:
       tags:
         - posts
@@ -578,7 +578,7 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
-  /matching/{appointmentId}:
+  /v1/matching/{appointmentId}:
     post:
       tags:
         - matching
@@ -636,7 +636,7 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
-  /reviews/candidates:
+  /v1/reviews/candidates:
     get:
       summary: 'Author:기호, 리뷰 후보 데이터 전체조회'
       description: 'Author:기호,GET 방식으로 리뷰 후보 등록'
@@ -712,7 +712,7 @@ paths:
                     $ref: '#/components/schemas/reviewCandidate'
         '400':
           description: '`ClientErrorBadRequest`'
-  /reviews:
+  /v1/reviews:
     post:
       summary: 'Author:기호, 사용자 리뷰 등록'
       description: 'Author:기호,Post 방식으로 리뷰 등록'
@@ -761,7 +761,7 @@ paths:
                     $ref: '#/components/schemas/review'
         '400':
           description: '`ClientErrorBadRequest`'
-  /reviews/{userId}:
+  /v1/reviews/{userId}:
     get:
       summary: 'Author:기호특정 사용자가 받은 리뷰를 조회'
       description: 'Author:기호, GET 방식으로 특정 사용자가 받은 리뷰 조회'
@@ -788,7 +788,7 @@ paths:
                       type: object
                       $ref: '#/components/schemas/review'
 
-  /push/chat/{userId}:
+  /v1/push/chat/{userId}:
     post:
       summary: 'Author:기호채팅 답변 알림 푸시'
       description: 'Author:기호, Post 방식으로 특정 사용자의 채팅 답변 알림 푸시'
@@ -812,7 +812,7 @@ paths:
                   data:
                     type: string
                     default: 'title: ~~, body: ~~'
-  /push/popup:
+  /v1/push/popup:
     post:
       summary: 'Author:기호,전체 공지 알림 푸시'
       description: 'Author:기호, Post 방식으로 전체 사용자 공지 알림 푸시'
@@ -845,7 +845,7 @@ paths:
                   data:
                     type: string
                     default: 'notification: notification, Type: NOTICE'
-  /push/test:
+  /v1/push/test:
     post:
       summary: 'Author:기호, Data 푸시 테스트'
       description: 'Author:기호, Post 방식으로 특정 사용자의 푸시 테스트'
@@ -879,7 +879,7 @@ paths:
                     type: string
                     default: 'notification: TEST,Type: TEST'
 
-  /locations:
+  /v1/locations:
     get:
       summary: 'Author:기호모든 지역 목록 조회'
       description: 'GET 방식으로 모든 지역 목록 조회'
@@ -906,7 +906,7 @@ paths:
                       $ref: '#/components/schemas/location'
         '400':
           description: '`ClientErrorBadRequest`'
-  /locations/{locId}:
+  /v1/locations/{locId}:
     get:
       summary: 'Author:기호, 특정 지역 조회'
       description: 'GET 방식으로 특정 지역 조회'
@@ -932,7 +932,7 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
-  /fitnesscenters:
+  /v1/fitnesscenters:
     get:
       summary: 'Author:기호, 모든 피트니스 센터 목록 조회'
       description: 'Author:기호, GET 방식으로 모든 피트니스센터 목록 조회'
@@ -997,7 +997,7 @@ paths:
                     $ref: '#/components/schemas/fitnessCenter'
         '400':
           description: '`ClientErrorBadRequest`'
-  /fitnesscenters/{fitnesscenterId}:
+  /v1/fitnesscenters/{fitnesscenterId}:
     get:
       summary: 'Author:기호,특정 피트니스 센터 정보 조회'
       description: 'Author:기호, GET 방식으로 특정 피트니스 센터 정보 조회'
@@ -1023,7 +1023,7 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
-  /fitnesspart:
+  /v1/fitnesspart:
     get:
       tags:
         - fitnesspart
@@ -1051,7 +1051,7 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
-  /appointments:
+  /v1/appointments:
     get:
       summary: 'Author:기호,사용자와 관련된 약속 데이터 전체조회'
       description: 'Author:기호, Get 방식으로 사용자와 관련된 모든 약속 조회'
@@ -1130,7 +1130,7 @@ paths:
                     $ref: '#/components/schemas/appointment'
         '404':
           description: '`ClientErrorNotFound`'
-  /appointments/{appointmentId}:
+  /v1/appointments/{appointmentId}:
     get:
       summary: 'Author:기호,특정 약속 데이터 조회'
       description: 'Author:기호, Get 방식으로 특정 약속 조회'
@@ -1157,7 +1157,7 @@ paths:
         '404':
           description: '`ClientErrorNotFound`'
 
-  /chats:
+  /v1/chats:
     get:
       summary: 'Author:규민, 사용자와 관련된 채팅목록 전체조회'
       description: 'Get 방식으로 사용자와 관련된 모든 약속 조회'
@@ -1218,7 +1218,7 @@ paths:
                     $ref: '#/components/schemas/chatroom'
         '400':
           description: '`ClientErrorBadRequest`'
-  /chats/{chatroomId}:
+  /v1/chats/{chatroomId}:
     get:
       summary: 'Author:규민, 특정 채팅방 조회'
       description: 'Get 방식으로 특정 채팅방 조회'
@@ -1270,7 +1270,7 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
-  /chats/info:
+  /v1/chats/info:
     get:
       summary: 'Author:규민, 사용자와 관련된 채팅목록 사용자 상세정보 포함 전체조회'
       description: 'Get 방식으로 사용자와 관련된 모든 약속 조회'
@@ -1296,7 +1296,7 @@ paths:
                       $ref: '#/components/schemas/chatroom'
         '400':
           description: '`ClientErrorBadRequest`'
-  /chats/info/{chatroomId}:
+  /v1/chats/info/{chatroomId}:
     get:
       summary: 'Author:규민, 특정 채팅방 사용자 상세정보 포함 조회'
       description: 'Get 방식으로 특정 채팅방 조회'
@@ -1323,7 +1323,7 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
-  /report/{postId}:
+  /v1/report/{postId}:
     post:
       summary: 'Author:기호, 모집글 신고'
       description: 'Author:기호, Post 방식으로 특정 모집글 신고, PostId를 통해 모집글 신고, request body 없음'
@@ -1356,7 +1356,7 @@ paths:
                     $ref: '#/components/schemas/reportedPost'
         '404':
           description: '`ClientErrorNotFound`'
-  /report/user:
+  /v1/report/user:
     post:
       summary: 'Author:기호, 사용자 신고'
       description: 'Author:기호,Post 방식으로 사용자를 신고합니다.'
@@ -1396,7 +1396,7 @@ paths:
                     $ref: '#/components/schemas/reportedUser'
         '404':
           description: '`ClientErrorNotFound`'
-  /report/users:
+  /v1/report/users:
     get:
       summary: 'Author:기호, 신고된 사용자 내역 조회'
       description: 'Author:기호, GET 방식으로 모든 사용자를 신고 내역 조회합니다.'
@@ -1428,7 +1428,7 @@ paths:
                     $ref: '#/components/schemas/reportedUser'
         '404':
           description: '`ClientErrorNotFound`'
-  /report/posts:
+  /v1/report/posts:
     get:
       summary: 'Author:기호, 신고된 모집글 내역 조회'
       description: 'Author:기호, GET 방식으로 모든 신고된 모집글 내역 조회합니다.'
@@ -1461,7 +1461,7 @@ paths:
         '404':
           description: '`ClientErrorNotFound`'
 
-  /trace:
+  /v1/trace:
     post:
       summary: 'Author:규민, 사용자 위치 정보'
       description: 'Author:규민, POST 방식으로 특정 사용자 위치 정보 등록'
@@ -1499,5 +1499,127 @@ paths:
                     type: string
                   data:
                     $ref: '#/components/schemas/userTrace'
+        '404':
+          description: '`ClientErrorNotFound`'
+
+  /v2/banner:
+    get:
+      summary: 'Author:기호, 배너 정보 조회'
+      description: 'Author:기호, GET 방식으로 배너 정보 조회'
+      tags:
+        - banner
+      responses:
+        '201':
+          description: '`SuccessCreated` 사용자 위치 정보 등록 완료'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/banner'
+        '404':
+          description: '`ClientErrorNotFound`'
+    post:
+      summary: 'Author:기호, 배너 정보 등록(생성)'
+      description: 'Author:기호, POST 방식으로 배너 정보 조회'
+      tags:
+        - banner
+      requestBody:
+        description: POST 방식으로 배너 정보 등록
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                connect_url:
+                  type: string
+                  format: double
+                  description: 배너 클릭 이동 url
+                fitness_center_id:
+                  type: string
+                  format: double
+                  description: 피트니스 센터
+                expire_date:
+                  type: string
+                  format: date
+      responses:
+        '201':
+          description: '`SuccessCreated` 사용자 위치 정보 등록 완료'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/banner'
+        '404':
+          description: '`ClientErrorNotFound`'
+  /v2/banner/image/{bannerId}:
+    post:
+      tags:
+        - banner
+      summary: Author:기호, 배너 이미지 등록
+      description: Author:기호, 배너의 사진을 등록/변경합니다. `AWS-s3 URL of image stored`
+      # parameters:
+      #   - $ref: '#/components/parameters/authToken'
+      #   - $ref: '#/components/parameters/postId'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: string
+                    format: s3 URL
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /v2/banner/clicked/{bannerId}:
+    post:
+      tags:
+        - banner
+      summary: Author:기호, 배너 이미지 클릭 시 클릭 수 증가
+      description: Author:기호, 배너의 사진의 클릭 수를 증가합니다.
+      parameters:
+        - $ref: '#/components/parameters/bannerId'
+      responses:
+        '200':
+          description: '`SuccessCreated` 배너 클릭 수 증가'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/banner'
         '404':
           description: '`ClientErrorNotFound`'

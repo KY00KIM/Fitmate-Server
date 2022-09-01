@@ -1,5 +1,5 @@
-const swaggerUi = require("swagger-ui-express")
-const swaggereJsdoc = require("swagger-jsdoc")
+const swaggerUi = require("swagger-ui-express");
+const swaggereJsdoc = require("swagger-jsdoc");
 
 const options = {
     swaggerDefinition: {
@@ -12,13 +12,10 @@ const options = {
         },
         servers: [
             {
-                url: "https://fitmate.co.kr/v1", // 요청 URL
+                url: "https://fitmate.co.kr", // 요청 URL
             },
             {
-                url: "http://localhost:8000/v1"
-            },
-            {
-                url: "https://fitmate.co.kr/v2", // 요청 URL
+                url: "http://localhost:8000"
             }
         ],
         tags: [

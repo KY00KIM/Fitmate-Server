@@ -73,7 +73,6 @@ const postController = {
   * @path {GET} http://localhost:8000/v1/posts/:postId
   * @description 사용자와 연관된 특정 매칭글을 조회하는 GET Method
   */
-  // user_id 추가
   getOnePost: async (req, res) => {
     try {
       const {
@@ -109,7 +108,6 @@ const postController = {
         post_img,
         post_main_text
       });
-
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -157,7 +155,7 @@ const postController = {
     } catch (error) {
       console.log(error)
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
-    }
+    };
   },
 
   deleteManyPostByUser: async (user_id) => {
@@ -178,6 +176,51 @@ const postController = {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
+
+    /**
+  * @path {GET} http://localhost:8000/v1/posts/
+  * @description 사용자와 연관된 모든 매칭글을 조회하는 GET Method
+  */
+     getAllPostsWithNoLogin: async (req, res) => {
+      try {
+        let { page, limit = 10 } = req.query;
+  
+        if (req.query.page) {
+          page = parseInt(req.query.page);
+        }
+        else {
+          page = 1;
+          // Should Change
+          limit = 100;
+        };
+  
+        const options = {
+          page: page,
+          limit: limit,
+          populate: 
+          [
+            {
+              path : 'user_id',
+              select : {user_nickname : 1, user_profile_img : 1}
+            },
+            {
+              path : 'promise_location',
+            }
+          ],
+          collation: {
+            locale: 'en',
+          },
+          sort: { createdAt: -1 },
+        };
+        await Post.paginate({is_deleted: false}, options, (err, result)=>{
+          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result.docs, 'SuccessOK', STATUS_CODE.SuccessOK);
+        });
+      } catch (error) {
+        console.error(error);
+        ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+      }
+    },
+  
 }
 
 module.exports = postController;

@@ -380,6 +380,30 @@ components:
         updatedAt:
           type: string
           format: date
+    banner:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        banner_image_url:
+          type: string
+        connect_url:
+          type: string
+          description: 배너 누를 시 연결되는 url
+        fitness_center_id:
+          type: string
+          format: ObjectId
+          description: references FitnessCenter
+        expire_date:
+          type: string
+          format: date
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
 
   parameters:
     deviceToken:
