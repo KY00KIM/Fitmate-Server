@@ -91,8 +91,8 @@ const customTokenController = async (req, res) => {
     }
 
     const token = await admin.auth().createCustomToken(uid);
-    console.log(token)
-    return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](token, "SuccessOK", STATUS_CODE.SuccessOK);
+    console.log("Custom Token : " + token)
+    return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ custom_token: token }, "SuccessOK", STATUS_CODE.SuccessOK);
 
 }
 
