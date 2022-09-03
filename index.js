@@ -17,7 +17,7 @@ const morganFormat = process.env.NODE_ENV !== "production" ? "dev" : combined;
 // NOTE: morgan 출력 형태 server.env에서 NODE_ENV 설정 production : 배포 dev : 개발
 console.log(morganFormat);
 
-const connect = require('./connection');
+const connect = require('./utils/connection');
 const router = require('./routes');
 
 const cors = require('cors');

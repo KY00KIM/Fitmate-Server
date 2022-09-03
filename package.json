@@ -31,6 +31,7 @@
     "multer-s3": "^2.10.0",
     "node-schedule": "^2.1.0",
     "nodemon": "^2.0.18",
+    "passport": "^0.6.0",
     "qrcode": "^1.5.1",
     "slack-notify": "^2.0.2",
     "status-code-enum": "^1.0.0",

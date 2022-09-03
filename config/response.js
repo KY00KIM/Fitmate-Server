@@ -9,10 +9,12 @@ require("dotenv").config();
 const SlackNotify = require('slack-notify');
 const MY_SLACK_WEBHOOK_URL = process.env.MY_SLACK_WEBHOOK_URL;
 const slack = SlackNotify(MY_SLACK_WEBHOOK_URL);
+const {generateRefreshToken, generateAccessToken} = require('../utils/util');
 
 const BasicResponse ={
     "success" : false,
     "message" : "",
+    "refresh": "",
     "data" : {}
 };
 const logger = require('./winston');
@@ -24,7 +26,9 @@ class ResponseManager {
     }
     static getDefaultResponseHandler (res) {
         return {
-            onSuccess: function ( data, message, code) {    
+            onSuccess: function (user_id, data, message, code) {
+                const newAccessToken = generateAccessToken(user_id);
+                res.header('Authorization', newAccessToken);
                 ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
             },
             onError : function (error, message, code ) {
@@ -40,7 +44,9 @@ class ResponseManager {
     }
     static getDefaulterResponseHandlerData (res) {
         return {
-            onSuccess : function ( data, message, code){
+            onSuccess : function (user_id, data, message, code){
+                const newAccessToken = generateAccessToken(user_id);
+                res.header('Authorization', newAccessToken);
                 ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
             },
             onError :function (error, message, code ) {
@@ -92,6 +98,7 @@ class ResponseManager {
         response.success = true;
         response.message = message;
         response.data = data;
+        response.refresh = generateRefreshToken();
         res.status(code).json(response);
     }
     static respondWithErrorData (res, error, errorCode, message="", data="") {

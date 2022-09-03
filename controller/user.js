@@ -10,7 +10,7 @@ const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const timeConvert = require('../config/timeConvert');
 const logger = require('../config/winston');
-const { uploadImg } = require('../middleware/multer')
+const {generateRefreshToken, generateAccessToken} = require('../utils/util');
 const { replaceS3toCloudFront } = require('../config/aws_s3');
 const { app } = require("firebase-admin");
 
@@ -103,28 +103,28 @@ const userController = {
           firebase_info: JSON.parse(JSON.stringify(req.user.social))
         }
       });
-      user.user_profile_img = replaceS3toCloudFront(user.user_profile_img)
+      user.user_profile_img = replaceS3toCloudFront(user.user_profile_img);
       return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
-
   loginUser: async (req, res) => {
     try {
-      const uid = req.user.social.uid
-      const user_id = await checkUserValid(uid)
-      if (user_id) {
-        const device_token = req.header('Device')
-        const deviceRes = await checkDeviceToken(user_id, device_token)
-        return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ user_id, device_set: deviceRes }, 'SuccessOK', STATUS_CODE.SuccessOK);
+      const user_id = req.user.id;
+      if(!req.header('devicetoken')){
+        return ResponseManager.getDefaultResponseHandler(res)['onError']("",'DeviceTokenNotFound', STATUS_CODE.ClientErrorNotFound);
+      }else {
+        const device_token = req.header('devicetoken');
+        const deviceRes = await checkDeviceToken(user_id, device_token);    
+
+        return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user_id, {}, 'SuccessOK', STATUS_CODE.SuccessOK);
       }
 
-      return ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     } catch (error) {
       console.log(error)
-      return ResponseManager.getDefaultResponseHandler(res)['onError'](error, STATUS_CODE.ClientErrorBadRequest);
+      return ResponseManager.getDefaultResponseHandler(res)['onError'](error, "ClientErrorNotFound",STATUS_CODE.ClientErrorBadRequest);
     }
   },
 
@@ -156,6 +156,9 @@ const userController = {
       console.log(error);
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
+  },
+  refreshRefreshToken: async(req, res)=>{
+
   }
 
 
@@ -163,14 +166,17 @@ const userController = {
 
 const checkDeviceToken = async (user_id, device_token) => {
   try {
+    // 디바이스 토큰 3개로 제한 
     const user = await User.findById(user_id);
     if (device_token && !user.social.device_token.includes(device_token)) {
-      const updateduser = await User.findByIdAndUpdate(user_id, { $push: { "social.device_token": device_token } }, { new: true, runValidators: true })
-      return true
+      await User.findByIdAndUpdate(user_id, {$pop:{"social.device_token": -1}}, { new: true, runValidators: true })
+      const updateduser = await User.findByIdAndUpdate(user_id, {$push: { "social.device_token": device_token } }, { new: true, runValidators: true })
+      console.log(updateduser);
+      return true;
     }
-    return false
+    return false;
   } catch (e) {
-    return false
+    return false;
   }
 };
 
@@ -181,9 +187,8 @@ const checkUserValid = async (firebase_uid) => {
     return users[0]._id;
   } catch (error) {
     console.log(error)
-    return false
-  }
-
+    return false;
+  };
 };
 
 module.exports = userController;
