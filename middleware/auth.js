@@ -26,7 +26,7 @@ const verifyUser = async (req, res, next) => {
             if (user) {
                 req.user.id = user._id;
                 return next();
-            } else if (req.originalUrl == "/v1/users/oauth" || req.originalUrl == "/v1/users/login") {
+            } else if (req.originalUrl == "/v1/users/oauth" || req.originalUrl == "/v1/users/login" || req.originalUrl == "/v1/users/oauth/kakao") {
                 //회원가입을 위한 요청일 경우
                 return next();
             }
@@ -65,5 +65,36 @@ const checkGetTokenURL = (url) => {
 }
 
 
+const customTokenController = async (req, res) => {
+    const user = req.body;
 
-module.exports = { verifyUser };
+    const uid = `kakao:${user.uid}`;
+    const updateParams = {
+        email: user.email,
+        photoURL: user.photoURL,
+        displayName: user.displayName,
+    };
+
+    try {
+        await admin.auth().updateUser(uid, updateParams);
+    } catch (error) {
+        updateParams["uid"] = uid;
+
+        console.log("error from Firebase update : " + error)
+        try {
+            await admin.auth().createUser(updateParams);
+        } catch (error) {
+            console.log("error from Firebase create : " + error)
+            return ResponseManager.getDefaultResponseHandler(res)['onError'](error, "ClientErrorBadRequest", STATUS_CODE.ClientErrorBadRequest);
+
+        }
+    }
+
+    const token = await admin.auth().createCustomToken(uid);
+    console.log(token)
+    return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](token, "SuccessOK", STATUS_CODE.SuccessOK);
+
+}
+
+
+module.exports = { verifyUser, customTokenController };
