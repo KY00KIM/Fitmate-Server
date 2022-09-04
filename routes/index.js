@@ -3,6 +3,7 @@ const v1Router = require('./v1');
 const v2Router = require('./v2');
 const path = require('path');
 const { replaceS3toCloudFront } = require('../config/aws_s3');
+const { verifyUser, customTokenController } = require("..//middleware/auth");
 const { UserTrace } = require('../model/UserTrace')
 const { Appointment } = require('../model/Appointment')
 
@@ -17,7 +18,10 @@ router.get('/fitamte.ipa', (req, res) => {
     res.setHeader("Content-Type", 'application/png');
     res.sendFile(__dirname + "/../ipa/fitmate.ipa");
 });
+
+router.post('/v1/users/oauth/kakao', customTokenController);
+
 router.use('/v2', v2Router);
-router.use('/v1', v1Router);
+router.use('/v1', verifyUser, v1Router);
 
 module.exports = router

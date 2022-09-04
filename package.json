@@ -33,6 +33,7 @@
     "nodemon": "^2.0.18",
     "passport": "^0.6.0",
     "qrcode": "^1.5.1",
+    "redis": "^4.3.0",
     "slack-notify": "^2.0.2",
     "status-code-enum": "^1.0.0",
     "swagger-ui-express": "^4.5.0",

@@ -112,14 +112,31 @@ const userController = {
   },
   loginUser: async (req, res) => {
     try {
+      const uid = req.user.social.uid
+      const user_id = await checkUserValid(uid)
+      if (user_id) {
+        const device_token = req.header('Device')
+        const deviceRes = await checkDeviceToken(user_id, device_token)
+        return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ user_id, device_set: deviceRes }, 'SuccessOK', STATUS_CODE.SuccessOK);
+      }
+
+      return ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+    } catch (error) {
+      console.log(error)
+      return ResponseManager.getDefaultResponseHandler(res)['onError'](error, STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
+  loginUserbyJWT: async (req, res) => {
+    try {
       const user_id = req.user.id;
-      if(!req.header('devicetoken')){
+      if(!req.header('Device')){
         return ResponseManager.getDefaultResponseHandler(res)['onError']("",'DeviceTokenNotFound', STATUS_CODE.ClientErrorNotFound);
       }else {
-        const device_token = req.header('devicetoken');
+        // 가독성
+        const device_token = req.header('Device');
         const deviceRes = await checkDeviceToken(user_id, device_token);    
 
-        return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user_id, {}, 'SuccessOK', STATUS_CODE.SuccessOK);
+        return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({}, 'SuccessOK', STATUS_CODE.SuccessOK);
       }
 
     } catch (error) {

@@ -8,7 +8,7 @@ const generateAccessToken = (user_id) => {
   };
   return jwt.sign(payload, process.env.ACCESS_SECRET_KEY, {
     algorithm: 'HS256', 
-    expiresIn: '1h', 
+    expiresIn: '4h', 
   });
 };
 

@@ -26,10 +26,14 @@ class ResponseManager {
     }
     static getDefaultResponseHandler (res) {
         return {
-            onSuccess: function (user_id, data, message, code) {
-                const newAccessToken = generateAccessToken(user_id);
-                res.header('Authorization', newAccessToken);
-                ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
+            onSuccess: function (data, message, code, user_id) {
+                if(user_id){
+                    const newAccessToken = generateAccessToken(user_id);
+                    res.header('Authorization', newAccessToken);
+                    ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
+                }else{
+                    ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
+                };
             },
             onError : function (error, message, code ) {
                 console.log('ResponseManager respondWithErrorData');
@@ -44,10 +48,14 @@ class ResponseManager {
     }
     static getDefaulterResponseHandlerData (res) {
         return {
-            onSuccess : function (user_id, data, message, code){
-                const newAccessToken = generateAccessToken(user_id);
-                res.header('Authorization', newAccessToken);
-                ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
+            onSuccess : function (data, message, code, user_id){
+                if(user_id){
+                    const newAccessToken = generateAccessToken(user_id);
+                    res.header('Authorization', newAccessToken);
+                    ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
+                }else{
+                    ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
+                };
             },
             onError :function (error, message, code ) {
                 console.log('ResponseManager respondWithErrorData');

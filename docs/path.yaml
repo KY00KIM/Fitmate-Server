@@ -7,7 +7,7 @@ paths:
       description: Author:규민, Response  `user_id`
       parameters:
         - $ref: '#/components/parameters/authToken'
-        - $ref: '#/components/parameters/deviceToken'
+        - $ref: '#/components/parameters/Device'
       responses:
         '200':
           description: '`SUCCESS OK`'
@@ -19,6 +19,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: object
@@ -112,6 +114,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/user'
         '400':
@@ -135,6 +139,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: array
@@ -161,6 +167,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: object
@@ -242,6 +250,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/user'
         '400':
@@ -273,6 +283,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     $ref: '#/components/schemas/user'
@@ -308,6 +320,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     type: string
                     format: s3 URL
@@ -333,6 +347,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: array
@@ -404,6 +420,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     type: array
                     items:
@@ -432,6 +450,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: array
@@ -498,6 +518,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/post'
         '400':
@@ -544,6 +566,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     type: string
                     format: s3 URL
@@ -569,6 +593,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: array
@@ -631,6 +657,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/appointment'
         '400':
@@ -655,6 +683,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: array
@@ -708,6 +738,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/reviewCandidate'
         '400':
@@ -757,6 +789,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/review'
         '400':
@@ -781,6 +815,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: array
@@ -808,6 +844,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: string
@@ -842,6 +880,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     type: string
                     default: 'notification: notification, Type: NOTICE'
@@ -875,6 +915,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     type: string
                     default: 'notification: TEST,Type: TEST'
@@ -898,6 +940,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: array
@@ -927,6 +971,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/location'
         '400':
@@ -951,6 +997,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: array
@@ -993,6 +1041,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/fitnessCenter'
         '400':
@@ -1018,6 +1068,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/fitnessCenter'
         '400':
@@ -1042,6 +1094,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: array
@@ -1070,6 +1124,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: array
@@ -1126,6 +1182,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/appointment'
         '404':
@@ -1150,6 +1208,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: object
@@ -1176,6 +1236,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: array
@@ -1214,6 +1276,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/chatroom'
         '400':
@@ -1239,6 +1303,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     type: object
                     $ref: '#/components/schemas/chatroom'
@@ -1263,6 +1329,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: object
@@ -1290,6 +1358,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     type: array
                     items:
@@ -1316,6 +1386,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     type: object
@@ -1351,6 +1423,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     $ref: '#/components/schemas/reportedPost'
@@ -1392,6 +1466,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/reportedUser'
         '404':
@@ -1424,6 +1500,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/reportedUser'
         '404':
@@ -1455,6 +1533,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     $ref: '#/components/schemas/reportedPost'
@@ -1497,6 +1577,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/userTrace'
         '404':
@@ -1519,6 +1601,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     $ref: '#/components/schemas/banner'
@@ -1560,6 +1644,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     $ref: '#/components/schemas/banner'
         '404':
@@ -1594,6 +1680,8 @@ paths:
                     type: boolean
                   message:
                     type: string
+                  refresh:
+                    type: string
                   data:
                     type: string
                     format: s3 URL
@@ -1618,6 +1706,8 @@ paths:
                   success:
                     type: boolean
                   message:
+                    type: string
+                  refresh:
                     type: string
                   data:
                     $ref: '#/components/schemas/banner'

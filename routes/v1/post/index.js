@@ -1,7 +1,7 @@
 const express = require('express');
 const postRouter = express.Router();
 const postController = require('../../../controller/post');
-const { uploadImg } = require('../../../middleware/multer');
+const { uploadImg } = require('../../../middleware/multer')
 
 
 postRouter.get('/', postController.getAllPosts);

@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const { registerPush } = require('./controller/push');
 require("dotenv").config();
 const { swaggerUi, specs } = require("./docs/swagger");
-
+const redisCli = require('./utils/redis');
 
 const helmet = require('helmet');
 const combined = ':remote-addr - :remote-user ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'
@@ -39,7 +39,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 connect();
 registerPush();
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', router)
+app.use('/', router);
+
+// Redis 연결
+
 
 const port = process.env.PORT || 8000
 
@@ -54,4 +57,4 @@ process.on('SIGINT', function () {
         console.log('server closed');
         process.exit(0)
     })
-})
+});

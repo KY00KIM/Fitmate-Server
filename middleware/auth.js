@@ -19,12 +19,12 @@ const verifyToken = (req, res, next) => {
       return ResponseManager.getDefaultResponseHandler(res)['onError'](error, '유효하지 않은 토큰입니다', STATUS_CODE.ClientErrorUnauthorized);
     }
   };
-const checkTokens = async (req, res, next) =>{
+const checkJWTTokens = async (req, res, next) =>{
     	/**
          * access token 자체가 없는 경우엔 에러(401)를 반환
          * 클라이언트측에선 401을 응답받으면 로그인 페이지로 이동시킴
          */
-        if (req.cookies.access === undefined) throw Error('API 사용 권한이 없습니다.'); 
+        // if (req.cookies.access === undefined) throw Error('API 사용 권한이 없습니다.'); 
         
         const accessToken = verifyToken(req.cookies.access);
         const refreshToken = verifyToken(req.cookies.refresh); // *실제로는 DB 조회
@@ -46,7 +46,7 @@ const checkTokens = async (req, res, next) =>{
                 /**
                  * DB에 새로 발급된 refresh token 삽입하는 로직 (login과 유사)
                  */
-                const newRefreshToken = generateAccessToken();
+                const newRefreshToken = generateRefreshToken();
                 res.body('refresh', newRefreshToken);
                 req.body.refresh = newRefreshToken;
                 next();
@@ -55,7 +55,7 @@ const checkTokens = async (req, res, next) =>{
             }
         }
 };
-const verifyUser = async (req, res, next) => {
+const verifyUserbyJWT = async (req, res, next) => {
     try {
         const token = req.header('Authorization').split(' ')[1];
         const decodeToken = await admin.auth().verifyIdToken(token);
@@ -83,6 +83,32 @@ const verifyUser = async (req, res, next) => {
 
 };
 
+const verifyUser = async (req, res, next) => {
+
+    try {
+        const token = req.header('Authorization').split(' ')[1];
+        const decodeToken = await admin.auth().verifyIdToken(token);
+        //토큰이 정상 복호화된 경우
+        if (decodeToken) {
+            req.user = { social: decodeToken }
+            //DB에 등록되어 있고 활성화된 유저일 경우
+            const user = await getUserValidByToken(decodeToken)
+            if (user) {
+                req.user.id = user._id;
+                return next();
+            } else if (req.originalUrl == "/v1/users/oauth" || req.originalUrl == "/v1/users/login" || req.originalUrl == "/v1/users/oauth/kakao") {
+                //회원가입을 위한 요청일 경우
+                return next();
+            }
+        }
+        return ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorUnauthorized', STATUS_CODE.ClientErrorUnauthorized);
+    } catch (error) {
+        //firebase 토큰 인증 메서드 오류
+        console.log(error);
+        return ResponseManager.getDefaultResponseHandler(res)['onError'](error, "ClientErrorBadRequest", STATUS_CODE.ClientErrorBadRequest);
+    }
+
+};
 
 
 /**
@@ -109,6 +135,36 @@ const checkGetTokenURL = (url) => {
     return (process.env.NODE_ENV != 'production') && url.startsWith("/v1/users/token/")
 };
 
+const customTokenController = async (req, res) => {
+    const user = req.body;
+
+    const uid = `kakao:${user.uid}`;
+    const updateParams = {
+        email: user.email,
+        photoURL: user.photoURL,
+        displayName: user.displayName,
+    };
+
+    try {
+        await admin.auth().updateUser(uid, updateParams);
+    } catch (error) {
+        updateParams["uid"] = uid;
+
+        console.log("error from Firebase update : " + error);
+        try {
+            await admin.auth().createUser(updateParams);
+        } catch (error) {
+            console.log("error from Firebase create : " + error)
+            return ResponseManager.getDefaultResponseHandler(res)['onError'](error, "ClientErrorBadRequest", STATUS_CODE.ClientErrorBadRequest);
+
+        };
+    }
+
+    const token = await admin.auth().createCustomToken(uid);
+    console.log("Custom Token : " + token);
+    return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ custom_token: token }, "SuccessOK", STATUS_CODE.SuccessOK);
+
+}
 
 
-module.exports = { verifyUser };
+module.exports = { verifyUser, checkJWTTokens, customTokenController };
