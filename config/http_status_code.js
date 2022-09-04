@@ -24,6 +24,7 @@ const STATUS_CODE = {
     // Not Found 404
     ClientErrorNotFound:  StatusCode.ClientErrorNotFound,
 
+    
     // SERVER ERROR 500
     ServerErrorInternal: StatusCode.ServerErrorInternal
 }
