@@ -6,7 +6,7 @@ const chatController = {
     getAllChatroom: async (req, res) => {
         try {
             let user_id = req.user.id;
-            const ChatroomList = await Chatroom.find({ $or: [{ 'chat_start_id': user_id }, { 'chat_join_id': user_id }], is_deleted: false });
+            const ChatroomList = await Chatroom.find({ $or: [{ 'chat_start_id': user_id }, { 'chat_join_id': user_id }], is_deleted: false }).sort({createdAt: -1});
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](ChatroomList, 'SuccessOK', STATUS_CODE.SuccessOK);
         } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);

@@ -2,60 +2,6 @@ const mongoose = require('mongoose');
 const mongoosePaginate = require('mongoose-paginate-v2');
 const { Types: { ObjectId } } = mongoose.Schema;
 
-
-/**
- * @swagger
- * components:
- *    schemas:
- *      post:
- *       type: object
- *       properties:
- *         user_id:
- *           type: string
- *           format: ObjectId
- *           description: references user
- *         location_id:
- *           type: string
- *           format: ObjectId
- *           description: references location
- *         post_fitness_part:
- *           type: array
- *           items:
- *             type: string
- *             format: Object_id
- *             description: references fitness part
- *         post_title:
- *           type: string
- *         post_readNo:
- *           type: integer
- *           default: 0
- *         post_hit:
- *           type: integer
- *           default: 0
- *         promise_location:
- *           type: string
- *           format: ObjectId
- *           description: references fitness center
- *         promise_date:
- *           type: string
- *           format: date
- *         post_img:
- *           type: string
- *           default: ''
- *         post_main_text:
- *           type: string
- *           default: ''
- *         is_deleted:
- *           type: boolean
- *           default: false
- *         createdAt:
- *           type: string
- *           format : date
- *         updatedAt:
- *           type: string
- *           format : date
-  */
-
 const postSchema = mongoose.Schema({
   user_id: {
     type: ObjectId,

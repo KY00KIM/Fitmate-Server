@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const { registerPush } = require('./controller/push');
 require("dotenv").config();
 const { swaggerUi, specs } = require("./docs/swagger");
-
+const redisCli = require('./utils/redis');
 
 const helmet = require('helmet');
 const combined = ':remote-addr - :remote-user ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"'
@@ -17,7 +17,7 @@ const morganFormat = process.env.NODE_ENV !== "production" ? "dev" : combined;
 // NOTE: morgan 출력 형태 server.env에서 NODE_ENV 설정 production : 배포 dev : 개발
 console.log(morganFormat);
 
-const connect = require('./connection');
+const connect = require('./utils/connection');
 const router = require('./routes');
 
 const cors = require('cors');
@@ -39,7 +39,10 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 connect();
 registerPush();
 app.use(express.static(path.join(__dirname, 'public')));
-app.use('/', router)
+app.use('/', router);
+
+// Redis 연결
+
 
 const port = process.env.PORT || 8000
 
@@ -54,4 +57,4 @@ process.on('SIGINT', function () {
         console.log('server closed');
         process.exit(0)
     })
-})
+});

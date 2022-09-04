@@ -5,7 +5,6 @@ const timeConvert = require('../config/timeConvert');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const { User } = require("../model/User");
-
 const { PushSchedule } = require('../model/PushSchedule');
 
 async function pushNotificationUser(userId, TITLE, BODY){
@@ -121,7 +120,7 @@ async function pushPopup(req, res){
       } catch (error) {
         ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
       }
-}
+};
 
 async function pushTest(req, res){
     try {
@@ -144,5 +143,16 @@ async function pushTest(req, res){
         console.error(error);
         ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
       }
-}
+};
+
+async function clearPush(req, res){
+    try {
+        await PushSchedule.deleteMany();
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess']([], 'Clear Success', STATUS_CODE.SuccessOK);
+      } catch (error) {
+
+        console.error(error);
+        ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      }
+};
 module.exports = {pushNotificationUser, pushDataUser, pushChat, registerPush, pushPopup, pushTest};
