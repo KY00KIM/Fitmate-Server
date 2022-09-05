@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const {generateAccessToken, generateRefreshToken} = require('../utils/util');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
+const {redisCli} = require('../utils/redis');
 const { User } = require("../model/User");
 require("dotenv").config();
 
@@ -55,25 +56,29 @@ const checkJWTTokens = async (req, res, next) =>{
             }
         }
 };
-const verifyUserbyJWT = async (req, res, next) => {
+const verifyUserByJWT = async (req, res, next) => {
     try {
         const token = req.header('Authorization').split(' ')[1];
-        const decodeToken = await admin.auth().verifyIdToken(token);
+        const decodedToken = await admin.auth().verifyIdToken(token);
         //토큰이 정상 복호화된 경우
-        if (decodeToken) {
-            req.user = { social: decodeToken };
+        if (decodedToken) {
+            req.user = { social: decodedToken };
             //DB에 등록되어 있고 활성화된 유저일 경우
-            const user = await getUserValidByToken(decodeToken);
+            const user = await getUserValidByToken(decodedToken);
             if (user) {
                 req.user.id = user._id;
+                const refreshToken = generateRefreshToken(req.user.id);
+                await redisCli.set(req.user.id.toString(), refreshToken);
                 return next();
             } else{
                 //회원가입을 위한 요청일 경우
-                const user = await User.create();
-                req.user.id = user._id;
+                const newUser = await User.create();
+                req.user.id = newUser._id;
+                const refreshToken = generateRefreshToken(req.user.id);
+                await redisCli.set(req.user.id.toString(), refreshToken);
                 return next();
             };
-        }
+        };
         return ResponseManager.getDefaultResponseHandler(res)['onError']('','VerifyUserError Or Auth Error', STATUS_CODE.ClientErrorUnauthorized);
     } catch (error) {
         //firebase 토큰 인증 메서드 오류
@@ -137,7 +142,6 @@ const checkGetTokenURL = (url) => {
 
 const customTokenController = async (req, res) => {
     const user = req.body;
-
     const uid = `kakao:${user.uid}`;
     const updateParams = {
         email: user.email,
@@ -167,4 +171,4 @@ const customTokenController = async (req, res) => {
 }
 
 
-module.exports = { verifyUser, checkJWTTokens, customTokenController };
+module.exports = { verifyUser,verifyUserByJWT, checkJWTTokens, customTokenController };

@@ -9,13 +9,15 @@ const generateAccessToken = (user_id) => {
   return jwt.sign(payload, process.env.ACCESS_SECRET_KEY, {
     algorithm: 'HS256', 
     expiresIn: '4h', 
+    issuer : "FitMate"
   });
 };
 
 const generateRefreshToken = () => {
   return jwt.sign({  }, process.env.REFRESH_SECRET_KEY, {
       algorithm: 'HS256',
-      expiresIn: "180 days",
+      expiresIn: "30 days",
+      issuer : "FitMate"
   });
 };
 

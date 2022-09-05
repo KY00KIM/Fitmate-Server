@@ -9,7 +9,8 @@ require("dotenv").config();
 const SlackNotify = require('slack-notify');
 const MY_SLACK_WEBHOOK_URL = process.env.MY_SLACK_WEBHOOK_URL;
 const slack = SlackNotify(MY_SLACK_WEBHOOK_URL);
-const {generateRefreshToken, generateAccessToken} = require('../utils/util');
+const {generateAccessToken} = require('../utils/util');
+const {redisCli} = require('../utils/redis');
 
 const BasicResponse ={
     "success" : false,
@@ -28,9 +29,9 @@ class ResponseManager {
         return {
             onSuccess: function (data, message, code, user_id) {
                 if(user_id){
-                    const newAccessToken = generateAccessToken(user_id);
-                    res.header('Authorization', newAccessToken);
-                    ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
+                    const AccessToken = generateAccessToken(user_id);
+                    res.header('Authorization', AccessToken);
+                    ResponseManager.respondWithJWTSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message, user_id);
                 }else{
                     ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
                 };
@@ -52,7 +53,7 @@ class ResponseManager {
                 if(user_id){
                     const newAccessToken = generateAccessToken(user_id);
                     res.header('Authorization', newAccessToken);
-                    ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
+                    ResponseManager.respondWithJWTSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message, user_id);
                 }else{
                     ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
                 };
@@ -77,7 +78,7 @@ class ResponseManager {
                 console.log('ResponseManager respondWithErrorData');
                 slack.send({
                     channel: '#error',
-                    text: `ERROR: ${JSON.stringify(error)} \nMessage: ${message} \nCode: ${code}`,
+                    text: `Message: ${message} \nCode: ${code}`,
                     username:'nodejs'
                 });
                 ResponseManager.respondWithError(res, code || 400, message || 'Unknown error');
@@ -101,12 +102,19 @@ class ResponseManager {
             rel:rel
         }
     }
+    static async respondWithJWTSuccess (res, code, data, message="", user_id){
+        let response = Object.assign({}, BasicResponse);
+        response.success = true;
+        response.message = message;
+        response.data = data;
+        response.refresh = await redisCli.get(user_id.toString());
+        res.status(code).json(response);
+    }
     static respondWithSuccess ( res, code, data, message="" ){
         let response = Object.assign({}, BasicResponse);
         response.success = true;
         response.message = message;
         response.data = data;
-        response.refresh = generateRefreshToken();
         res.status(code).json(response);
     }
     static respondWithErrorData (res, error, errorCode, message="", data="") {

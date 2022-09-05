@@ -19,8 +19,6 @@ router.get('/fitamte.ipa', (req, res) => {
     res.sendFile(__dirname + "/../ipa/fitmate.ipa");
 });
 
-router.post('/v1/users/oauth/kakao', customTokenController);
-
 router.use('/v2', v2Router);
 router.use('/v1', verifyUser, v1Router);
 
