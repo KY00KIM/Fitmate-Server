@@ -9,12 +9,12 @@ require("dotenv").config();
 const SlackNotify = require('slack-notify');
 const MY_SLACK_WEBHOOK_URL = process.env.MY_SLACK_WEBHOOK_URL;
 const slack = SlackNotify(MY_SLACK_WEBHOOK_URL);
-const {generateRefreshToken, generateAccessToken} = require('../utils/util');
+const {generateAccessToken} = require('../utils/util');
+const {redisCli} = require('../utils/redis');
 
 const BasicResponse ={
     "success" : false,
     "message" : "",
-    "refresh": "",
     "data" : {}
 };
 const logger = require('./winston');
@@ -24,16 +24,10 @@ class ResponseManager {
     static get HTTP_STATUS () {
         return HttpStatus;
     }
-    static getDefaultResponseHandler (res) {
+    static  getDefaultResponseHandler (res) {
         return {
-            onSuccess: function (data, message, code, user_id) {
-                if(user_id){
-                    const newAccessToken = generateAccessToken(user_id);
-                    res.header('Authorization', newAccessToken);
+            onSuccess: function (data, message, code) {
                     ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
-                }else{
-                    ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
-                };
             },
             onError : function (error, message, code ) {
                 console.log('ResponseManager respondWithErrorData');
@@ -48,14 +42,8 @@ class ResponseManager {
     }
     static getDefaulterResponseHandlerData (res) {
         return {
-            onSuccess : function (data, message, code, user_id){
-                if(user_id){
-                    const newAccessToken = generateAccessToken(user_id);
-                    res.header('Authorization', newAccessToken);
-                    ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
-                }else{
-                    ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
-                };
+            onSuccess : function (data, message, code){
+                ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
             },
             onError :function (error, message, code ) {
                 console.log('ResponseManager respondWithErrorData');
@@ -77,7 +65,7 @@ class ResponseManager {
                 console.log('ResponseManager respondWithErrorData');
                 slack.send({
                     channel: '#error',
-                    text: `ERROR: ${JSON.stringify(error)} \nMessage: ${message} \nCode: ${code}`,
+                    text: `Message: ${message} \nCode: ${code}`,
                     username:'nodejs'
                 });
                 ResponseManager.respondWithError(res, code || 400, message || 'Unknown error');
@@ -106,7 +94,6 @@ class ResponseManager {
         response.success = true;
         response.message = message;
         response.data = data;
-        response.refresh = generateRefreshToken();
         res.status(code).json(response);
     }
     static respondWithErrorData (res, error, errorCode, message="", data="") {

@@ -115,8 +115,8 @@ const userController = {
       const uid = req.user.social.uid
       const user_id = await checkUserValid(uid)
       if (user_id) {
-        const device_token = req.header('Device')
-        const deviceRes = await checkDeviceToken(user_id, device_token)
+        const device_token = req.header('Device');
+        const deviceRes = await checkDeviceToken(user_id, device_token);
         return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ user_id, device_set: deviceRes }, 'SuccessOK', STATUS_CODE.SuccessOK);
       }
 
@@ -135,8 +135,8 @@ const userController = {
         // 가독성
         const device_token = req.header('Device');
         const deviceRes = await checkDeviceToken(user_id, device_token);    
-
-        return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({}, 'SuccessOK', STATUS_CODE.SuccessOK);
+        const user = await User.findById(user_id);
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessOK', STATUS_CODE.SuccessOK, user_id);
       }
 
     } catch (error) {
@@ -174,8 +174,12 @@ const userController = {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
-  refreshRefreshToken: async(req, res)=>{
+  refreshTokens: async(req, res)=>{
+    try{
 
+    }catch(error){
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'Token', STATUS_CODE.ClientErrorBadRequest);
+    }
   }
 
 

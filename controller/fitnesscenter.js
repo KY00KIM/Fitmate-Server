@@ -32,6 +32,16 @@ const fitnesscenterController = {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
+  getFitnessCenterByAddress: async (req, res) => {
+    try{
+      const address = req.body.address;
+      const fitness_centers = await FitnessCenter.find({"center_address":address});
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitness_centers, 'SuccessOK', STATUS_CODE.SuccessOK);
+    }catch(error){
+      console.log(error);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
 
   writeOneFitnessCenter: async (req, res) => {
     try {

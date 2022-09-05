@@ -176,51 +176,6 @@ const postController = {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
-
-    /**
-  * @path {GET} http://localhost:8000/v1/posts/
-  * @description 사용자와 연관된 모든 매칭글을 조회하는 GET Method
-  */
-     getAllPostsWithNoLogin: async (req, res) => {
-      try {
-        let { page, limit = 10 } = req.query;
-  
-        if (req.query.page) {
-          page = parseInt(req.query.page);
-        }
-        else {
-          page = 1;
-          // Should Change
-          limit = 100;
-        };
-  
-        const options = {
-          page: page,
-          limit: limit,
-          populate: 
-          [
-            {
-              path : 'user_id',
-              select : {user_nickname : 1, user_profile_img : 1}
-            },
-            {
-              path : 'promise_location',
-            }
-          ],
-          collation: {
-            locale: 'en',
-          },
-          sort: { createdAt: -1 },
-        };
-        await Post.paginate({is_deleted: false}, options, (err, result)=>{
-          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result.docs, 'SuccessOK', STATUS_CODE.SuccessOK);
-        });
-      } catch (error) {
-        console.error(error);
-        ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
-      }
-    },
-  
 }
 
 module.exports = postController;

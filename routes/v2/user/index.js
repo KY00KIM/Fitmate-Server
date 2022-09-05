@@ -1,26 +1,24 @@
 const express = require('express');
 const userRouter = express.Router();
 const userController = require('../../../controller/user');
-const { verifyUser } = require("../../../middleware/auth");
+const { verifyUser, customTokenController } = require("../../../middleware/auth");
 const { uploadImg } = require('../../../middleware/multer');
 
-userRouter.get('/login',verifyUser, userController.loginUser);
+userRouter.get('/login',verifyUser, userController.loginUserbyJWT);
 
-userRouter.get('/', userController.getAllUsers);
+userRouter.get('/',verifyUser, userController.getAllUsers);
 
-userRouter.get('/:userId', userController.getOneUser);
+userRouter.get('/:userId',verifyUser, userController.getOneUser);
 
-userRouter.patch('/:userId', userController.updateUserInfo);
+userRouter.patch('/:userId',verifyUser, userController.updateUserInfo);
 
-userRouter.post('/oauth/refresh', userController.assignUser);
+userRouter.post('/oauth/kakao', customTokenController);
 
-userRouter.post('/oauth', userController.assignUser);
+userRouter.post('/oauth',verifyUser,  userController.assignUser);
 
-// userRouter.post('/signup', userController.assignUser);
+userRouter.post('/image',verifyUser,  uploadImg('profile_image').single('image'), userController.uploadUserImg);
 
-userRouter.post('/image', uploadImg('profile_image').single('image'), userController.uploadUserImg);
-
-userRouter.delete('/', userController.userSignOut);
+userRouter.delete('/',verifyUser,  userController.userSignOut);
 
 
 module.exports = userRouter;
