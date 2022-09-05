@@ -12,4 +12,6 @@ fitnesscenterRouter.get('/users', fitnesscenterController.countAllUsersbyFitenes
 
 fitnesscenterRouter.get('/posts/unmatched', fitnesscenterController.countUnMatchedPostsbyFitenessCenter);
 
+fitnesscenterRouter.get('/address', fitnesscenterController.getFitnessCenterByAddress);
+
 module.exports = fitnesscenterRouter; 

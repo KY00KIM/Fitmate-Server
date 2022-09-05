@@ -4,22 +4,13 @@ paths:
       tags:
         - users
       summary: Author:기호, 유저 user_id 조회 및 회원가입 여부 조회 및 디바이스 토큰 등록
-      description: Author:규민, Response  `user`, user내에 정보가 없을 경우 회원가입 필요
+      description: Author:기호, Response  `user`, user내에 정보가 없을 경우 회원가입 필요
       parameters:
         - $ref: '#/components/parameters/authToken'
         - $ref: '#/components/parameters/Device'
       responses:
         '200':
           description: '`SUCCESS OK`'
-          headers:
-            Authorization:
-              schema:
-                type: string
-              description: Access Token
-            refresh:
-              schema:
-                type: string
-              description: Refresh Token
           content:
             application/json:
               schema:
@@ -708,7 +699,7 @@ paths:
       summary: Author:기호, 모든 매칭글 목록 조회 - Pagination 구현(page=2)
       description: Author:규민,Response  `array of posts written by user`
       parameters:
-        - $ref: '#/components/parameters/Authorization'
+        - $ref: '#/components/parameters/authToken'
       responses:
         '200':
           description: '`SUCCESS OK`'
@@ -1717,7 +1708,7 @@ paths:
           description: '`ClientErrorBadRequest`'
     post:
       summary: '피트니스 센터 등록'
-      description: 'GET 방식으로 모든 피트니스센터 목록 조회'
+      description: 'POST 방식으로 모든 피트니스센터 목록 조회'
       tags:
         - fitnesscenter
       parameters:
@@ -1757,6 +1748,103 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
   /v1/fitnesscenters/{fitnesscenterId}:
+    get:
+      summary: 'Author:기호,특정 피트니스 센터 정보 조회'
+      description: 'Author:기호, GET 방식으로 특정 피트니스 센터 정보 조회'
+      tags:
+        - fitnesscenter
+      parameters:
+        - $ref: '#/components/parameters/fitnesscenterId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/fitnessCenter'
+        '400':
+          description: '`ClientErrorBadRequest`'
+
+  /v2/fitnesscenters:
+    get:
+      summary: 'Author:기호, 모든 피트니스 센터 목록 조회'
+      description: 'Author:기호, GET 방식으로 모든 피트니스센터 목록 조회'
+      tags:
+        - fitnesscenter
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/fitnessCenter'
+        '400':
+          description: '`ClientErrorBadRequest`'
+    post:
+      summary: '피트니스 센터 등록'
+      description: 'POST 방식으로 모든 피트니스센터 목록 조회'
+      tags:
+        - fitnesscenter
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: fitness center object to be posted
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                center_name:
+                  type: string
+                center_address:
+                  type: string
+                center_longitude:
+                  type: number
+                center_latitude:
+                  type: number
+      responses:
+        '201':
+          description: '`SUCCESS Created`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/fitnessCenter'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /v2/fitnesscenters/{fitnesscenterId}:
     get:
       summary: 'Author:기호,특정 피트니스 센터 정보 조회'
       description: 'Author:기호, GET 방식으로 특정 피트니스 센터 정보 조회'
@@ -2422,3 +2510,65 @@ paths:
                     $ref: '#/components/schemas/banner'
         '404':
           description: '`ClientErrorNotFound`'
+
+  /v2/visitor/posts:
+    get:
+      summary: 'Author:기호, 로그인 없이 둘러보기 모집글'
+      description: 'Author:기호, GET 방식으로 로그인 없이 둘러보기 모집글 조회'
+      tags:
+        - visitor
+      responses:
+        '201':
+          description: '`SuccessCreated` 사용자 위치 정보 등록 완료'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/banner'
+        '404':
+          description: '`ClientErrorNotFound`'
+  /v2/visitor/fitnesscenter:
+    get:
+      tags:
+        - visitor
+      summary: Author:기호, 로그인 없이 둘어보기 피트니스 센터
+      description: Author:기호, 로그인 없이 둘어보기 피트니스 센터를 조회합니다.
+      # parameters:
+      #   - $ref: '#/components/parameters/authToken'
+      #   - $ref: '#/components/parameters/postId'
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: string
+                    format: s3 URL
+        '400':
+          description: '`ClientErrorBadRequest`'

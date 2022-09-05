@@ -3,7 +3,7 @@ const v1Router = require('./v1');
 const v2Router = require('./v2');
 const path = require('path');
 const { replaceS3toCloudFront } = require('../config/aws_s3');
-const { verifyUser, customTokenController } = require("..//middleware/auth");
+const { verifyUser, customTokenController } = require("../middleware/auth");
 const { UserTrace } = require('../model/UserTrace')
 const { Appointment } = require('../model/Appointment')
 
