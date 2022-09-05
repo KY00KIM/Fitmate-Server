@@ -1,10 +1,10 @@
 const express = require('express');
 const userRouter = express.Router();
 const userController = require('../../../controller/user');
-const { verifyUserByJWT, customTokenController } = require("../../../middleware/auth");
+const { customTokenController } = require("../../../middleware/auth");
 const { uploadImg } = require('../../../middleware/multer');
 
-userRouter.get('/login',verifyUserByJWT, userController.loginUserbyJWT);
+userRouter.get('/login', userController.loginUserbyJWT);
 
 userRouter.get('/', userController.getAllUsers);
 
@@ -14,7 +14,6 @@ userRouter.patch('/:userId', userController.updateUserInfo);
 
 userRouter.post('/oauth/kakao', customTokenController);
 
-userRouter.post('/oauth/refresh', userController.assignUser);
 
 userRouter.post('/oauth', userController.assignUser);
 

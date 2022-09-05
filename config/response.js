@@ -15,7 +15,6 @@ const {redisCli} = require('../utils/redis');
 const BasicResponse ={
     "success" : false,
     "message" : "",
-    "refresh": "",
     "data" : {}
 };
 const logger = require('./winston');
@@ -25,13 +24,16 @@ class ResponseManager {
     static get HTTP_STATUS () {
         return HttpStatus;
     }
-    static getDefaultResponseHandler (res) {
+    static  getDefaultResponseHandler (res) {
         return {
-            onSuccess: function (data, message, code, user_id) {
+            onSuccess: async function (data, message, code, user_id) {
                 if(user_id){
                     const AccessToken = generateAccessToken(user_id);
-                    res.header('Authorization', AccessToken);
-                    ResponseManager.respondWithJWTSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message, user_id);
+                    res.header('Authorization', "Bearer "+ AccessToken);
+                    res.header('refresh',await redisCli.get(user_id.toString()));
+                    console.log("header", res.header);
+                    console.log("header", res.headers);
+                    ResponseManager.respondWithJWTSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
                 }else{
                     ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
                 };
@@ -49,11 +51,12 @@ class ResponseManager {
     }
     static getDefaulterResponseHandlerData (res) {
         return {
-            onSuccess : function (data, message, code, user_id){
+            onSuccess :async function (data, message, code, user_id){
                 if(user_id){
-                    const newAccessToken = generateAccessToken(user_id);
-                    res.header('Authorization', newAccessToken);
-                    ResponseManager.respondWithJWTSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message, user_id);
+                    const AccessToken = generateAccessToken(user_id);
+                    res.header('Authorization',"Bearer "+ AccessToken);
+                    res.header('refresh',await redisCli.get(user_id.toString()));
+                    ResponseManager.respondWithJWTSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
                 }else{
                     ResponseManager.respondWithSuccess(res, code || ResponseManager.HTTP_STATUS.OK, data, message);
                 };
@@ -102,12 +105,11 @@ class ResponseManager {
             rel:rel
         }
     }
-    static async respondWithJWTSuccess (res, code, data, message="", user_id){
+    static respondWithJWTSuccess (res, code, data, message=""){
         let response = Object.assign({}, BasicResponse);
         response.success = true;
         response.message = message;
         response.data = data;
-        response.refresh = await redisCli.get(user_id.toString());
         res.status(code).json(response);
     }
     static respondWithSuccess ( res, code, data, message="" ){

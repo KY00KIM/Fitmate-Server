@@ -174,8 +174,12 @@ const userController = {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
-  refreshRefreshToken: async(req, res)=>{
+  refreshTokens: async(req, res)=>{
+    try{
 
+    }catch(error){
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'Token', STATUS_CODE.ClientErrorBadRequest);
+    }
   }
 
 

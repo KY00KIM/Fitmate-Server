@@ -47,6 +47,7 @@ const postController = {
         sort: { createdAt: -1 },
       };
       await Post.paginate({is_deleted: false, user_id: { $ne: req.user.id }}, options, (err, result)=>{
+        console.log(result);
         ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result.docs, 'SuccessOK', STATUS_CODE.SuccessOK);
       });
     } catch (error) {

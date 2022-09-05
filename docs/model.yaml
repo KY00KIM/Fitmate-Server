@@ -419,6 +419,20 @@ components:
       schema:
         type: string
         format: JWT
+    Authorization:
+      name: Authorization
+      in: header
+      description: Bearer authorization for Access Token
+      schema:
+        type: string
+        format: JWT
+    refresh:
+      name: refresh
+      in: header
+      description: Bearer authorization for Refresh Token
+      schema:
+        type: string
+        format: JWT
     userId:
       name: userId
       in: path

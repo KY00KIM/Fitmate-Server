@@ -11,6 +11,15 @@ paths:
       responses:
         '200':
           description: '`SUCCESS OK`'
+          headers:
+            Authorization:
+              schema:
+                type: string
+              description: Access Token
+            refresh:
+              schema:
+                type: string
+              description: Refresh Token
           content:
             application/json:
               schema:
@@ -696,10 +705,10 @@ paths:
     get:
       tags:
         - posts
-      summary: Author:규민, 모든 매칭글 목록 조회 - Pagination 구현(page=2)
+      summary: Author:기호, 모든 매칭글 목록 조회 - Pagination 구현(page=2)
       description: Author:규민,Response  `array of posts written by user`
       parameters:
-        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/Authorization'
       responses:
         '200':
           description: '`SUCCESS OK`'
