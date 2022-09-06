@@ -56,7 +56,7 @@ const fitnesscenterController = {
           center_location: locId,
           fitness_longitude: fitness_center.fitness_longitude,
           fitness_latitude: fitness_center.fitness_latitude,
-          kakao_url: fitness_center.place_url || ""
+          kakao_url: fitness_center.place_url
         });
         return newCenter._id
       }
@@ -69,7 +69,7 @@ const fitnesscenterController = {
     try {
       console.log(req.body);
       const results = await FitnessCenter.find({'center_address':req.body.center_address});
-      if(results.len < 1){
+      if(results.len >= 1){
         // 주소로 검색했을때 존재
         ResponseManager.getDefaultResponseHandler(res)['onSuccess'](results, 'Duplicated', STATUS_CODE.SuccessCreated);
 
