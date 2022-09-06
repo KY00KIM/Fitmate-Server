@@ -67,6 +67,7 @@ const fitnesscenterController = {
   },
   writeOneFitnessCenter: async (req, res) => {
     try {
+      console.log(req.body);
       const results = await FitnessCenter.find({'center_address':req.body.center_address});
       if(results.len < 1){
         // 주소로 검색했을때 존재

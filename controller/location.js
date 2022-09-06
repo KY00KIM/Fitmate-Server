@@ -36,8 +36,9 @@ const locationController = {
   * @description 주소를 지역(구) 단위를 조회하여 ObjectId반환
   */
   parseAddress: async (address) => {
-    let words = address.split(' ')
-    let key = "서울특별시"
+    let words = address.split(' ');
+    console.log(address);
+    let key = "서울특별시";
     if (words.length > 2) {
       key = words[1];
     } else {
