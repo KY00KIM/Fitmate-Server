@@ -489,6 +489,13 @@ components:
       schema:
         type: string
         format: ObjectId
+    user_nickname:
+      name: user_nickname
+      in: path
+      description: string of user nickname to operate upon
+      required: true
+      schema:
+        type: string
 
   securitySchemes:
     tokenAuth:
