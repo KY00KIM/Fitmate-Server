@@ -65,10 +65,28 @@ paths:
     get:
       tags:
         - users
-      summary: Author:규민, 카카오 인증 정보 이용한 파이어베이스 커스텀토큰 발급
-      description: Author:규민, Response with `custom_token` signed by FitMate Firebase Project
+      summary: Author:규민, 파이어베이스 커스텀토큰 발급 및 파이어베이스 유저 등록
+      description: Author:규민, Upsert user to Firebase, Response with `custom_token` signed by FitMate Firebase Project
       parameters:
         - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: User object to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                displayName:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                photoURL:
+                  type: string
+                  format: URL
       responses:
         '200':
           description: '`SUCCESS OK`'
@@ -89,9 +107,6 @@ paths:
                       custom_token:
                         type: string
                         format: JWT
-
-        '404':
-          description: '`ClientErrorNotFound` firebase 유저이지만 서버 유저목록에서 유저를 찾을 수 없는 경우'
         '400':
           description: '`ClientErrorBadRequest`'
   /v2/users/oauth:
