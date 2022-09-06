@@ -22,6 +22,10 @@ const fitnessCenterSchema = mongoose.Schema({
   },
   fitness_latitude: {
     type: Double
+  },
+  kakao_url: {
+    type: String,
+    default: ""
   }
 }, {
   versionKey: false,
