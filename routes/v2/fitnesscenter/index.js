@@ -5,6 +5,8 @@ const fitnesscenterController = require('../../../controller/fitnesscenter');
 
 fitnesscenterRouter.get('/delete/:keyWord', fitnesscenterController.deleteFitnessCenterByKeyWord);
 
+fitnesscenterRouter.get('/search/:keyWord', fitnesscenterController.searchFitnessCenter);
+
 fitnesscenterRouter.get('/', fitnesscenterController.countUsersByFitnessCenter);
 
 fitnesscenterRouter.post('/', fitnesscenterController.writeOneFitnessCenter);

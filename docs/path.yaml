@@ -1825,6 +1825,42 @@ paths:
         - fitnesscenter
       parameters:
         - $ref: '#/components/parameters/authToken'
+        - name: page
+          in: query
+          description: page to get
+          schema:
+            type: number
+            format: integer
+        - name: limit
+          in: query
+          description: 한 페이지에 가져올 피트니스 센터 개수
+          schema:
+            type: number
+            format: integer
+        - name: first_longitude
+          in: query
+          description: minimum longitude
+          schema:
+            type: number
+            format: double
+        - name: first_latitude
+          in: query
+          description: minimum latitude
+          schema:
+            type: number
+            format: double
+        - name: second_longitude
+          in: query
+          description: maximum longitude
+          schema:
+            type: number
+            format: double
+        - name: second_latitude
+          in: query
+          description: maximum latitude
+          schema:
+            type: number
+            format: double
       responses:
         '200':
           description: '`SUCCESS OK`'
@@ -1837,12 +1873,35 @@ paths:
                     type: boolean
                   message:
                     type: string
-                  refresh:
-                    type: string
                   data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/fitnessCenter'
+                    type: object
+                    properties:
+                      docs:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/fitnessCenter'
+                      totalDocs:
+                        type: number
+                      limit:
+                        type: number
+                      page:
+                        type: number
+                      totalPages:
+                        type: number
+                      pagingCounter:
+                        type: number
+                      hasPrevPage:
+                        type: number
+                      hasNextPage:
+                        type: number
+                      prevPage:
+                        type: number
+                      nextPage:
+                        type: number
+                      userCount:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/userCount'
         '400':
           description: '`ClientErrorBadRequest`'
     post:
