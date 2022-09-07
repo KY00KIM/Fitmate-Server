@@ -113,32 +113,45 @@ const fitnesscenterController = {
 
         { "$sort": { "userCount": -1 } }
       ]);
-      console.log("aggregate", aggregate);
-      console.log(aggregate.find(o => o._id == '6316f3445f3a825466f07bda'));
       if(req.query.first_longitude && req.query.first_latitude && req.query.second_longitude && req.query.second_latitude){
         const first_longitude = parseInt(req.query.first_longitude);
         const second_longitude = parseInt(req.query.second_longitude);
         const first_latitude = parseInt(req.query.first_latitude);
         const second_latitude = parseInt(req.query.second_latitude);
 
-        await FitnessCenter.aggregatePaginate({$and: [
+        const result = await FitnessCenter.aggregatePaginate({$and: [
             {"fitness_longitude": {"gte":first_longitude}},
             {"fitness_longitude": {"lte":second_longitude}},
             {"fitness_latitude": {"gte":first_latitude}},
             {"fitness_latitude": {"lte":second_latitude}}
-          ]}, options, (err, result)=>{
-          let data = {'centers': result.docs};
-          result.docs.forEach((fitnessCenter) => {
-            console.log(fitnessCenter._id);
-          });
-          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](data, 'SuccessOK', STATUS_CODE.SuccessOK);
+          ]}, options);
+
+        let data = {'centers': result.docs};
+        data.userCount= [];
+
+        result.docs.forEach((fitnessCenter) => {
+          const searchResult = aggregate.find(o => o._id == fitnessCenter._id);
+          if(searchResult){
+            data.userCount.push({'centerId':searchResult['_id'], 'counts':searchResult['userCount']});
+          }else{
+            data.userCount.push({'centerId': fitnessCenter._id, 'counts': 0})
+          }
         });
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](data, 'SuccessOK', STATUS_CODE.SuccessOK);
       }else{
-        await FitnessCenter.aggregatePaginate(aggregate, options, (err, result)=>{
-          let data = {'centers':result.docs};
-          console.log(data);
-          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](data, 'SuccessOK', STATUS_CODE.SuccessOK);
+        const result = await FitnessCenter.aggregatePaginate(aggregate, options);
+        let data = {'centers': result.docs};
+        data.userCount= [];
+
+        result.docs.forEach((fitnessCenter) => {
+          const searchResult = aggregate.find(o => o._id == fitnessCenter._id);
+          if(searchResult){
+            data.userCount.push({'centerId':searchResult['_id'], 'counts':searchResult['userCount']});
+          }else{
+            data.userCount.push({'centerId': fitnessCenter._id, 'counts': 0})
+          }
         });
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](data, 'SuccessOK', STATUS_CODE.SuccessOK);
        }
     }catch (error) {
       console.log(error);
