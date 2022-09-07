@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const mongoosePaginate = require('mongoose-paginate-v2');
+const aggregatePaginate = require("mongoose-aggregate-paginate-v2");
 require('mongoose-double')(mongoose);
 const { Types: { ObjectId, Double } } = mongoose.Schema;
 
@@ -33,7 +35,7 @@ const fitnessCenterSchema = mongoose.Schema({
   toJSON: { virtuals: true }
 });
 
-
+fitnessCenterSchema.plugin(aggregatePaginate);
 const FitnessCenter = mongoose.model('FitnessCenter', fitnessCenterSchema);
 
 module.exports = { FitnessCenter };

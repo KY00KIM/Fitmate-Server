@@ -134,6 +134,9 @@ paths:
                 user_schedule_time:
                   type: integer
                   description: '0 : 오전, 1 : 오후, 2 : 저녁'
+                user_introduce:
+                  type: string
+                  description: 소개
                 user_weekday:
                   type: object
                   default: false

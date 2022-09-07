@@ -1,38 +1,6 @@
 const mongoose = require('mongoose');
 const { Types: { ObjectId } } = mongoose.Schema;
 
-/**
- * @swagger
- * components:
- *  schemas:
- *    review:
- *      type: object
- *      properties: 
- *        review_send_id : 
- *          type: string
- *          format : ObjectId
- *        review_recv_id: 
- *          type: string
- *          format : ObjectId
- *        review_body: 
- *           type: string,
- *           default: ""
- *        user_rating: 
- *           type: Number
- *           default: 3
- *        review_candidate:
- *           type: array
- *           items:
- *             type: string
- *             format: ObjectId
- *        createdAt:
- *            type: string
- *            format : date
- *        updatedAt:
- *            type: string
- *            format : date
-  */
-
 const reviewSchema = mongoose.Schema({
   review_send_id: {
     type: ObjectId,

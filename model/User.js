@@ -37,7 +37,10 @@ const userSchema = mongoose.Schema({
     sat: { type: Boolean, default: false },
     sun: { type: Boolean, default: false }
   },
-  user_introduce: String,
+  user_introduce: {
+    type:String,
+    default: "안녕하세요! 같이 운동해요 :)"
+  },
   user_fitness_part: [{
     type: ObjectId,
     ref: 'FitnessPart'
@@ -58,7 +61,8 @@ const userSchema = mongoose.Schema({
   fitness_center_id: {
     type: ObjectId,
     ref: 'FitnessCenter',
-
+    required:true,
+    default: '62c66fe24b8212e4674dbe2c'
   },
   user_longitude: {
     type: Double,
