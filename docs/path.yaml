@@ -136,7 +136,6 @@ paths:
                   description: '0 : 오전, 1 : 오후, 2 : 저녁'
                 user_weekday:
                   type: object
-                  default: false
                   properties:
                     mon:
                       type: boolean
