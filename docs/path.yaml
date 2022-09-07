@@ -139,7 +139,6 @@ paths:
                   description: 소개
                 user_weekday:
                   type: object
-                  default: false
                   properties:
                     mon:
                       type: boolean
