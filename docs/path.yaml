@@ -53,7 +53,8 @@ paths:
                     type: object
                     properties:
                       user_id:
-                        $ref: '#/components/schemas/user'
+                        type: string
+                        format: ObjectId
                       device_set:
                         type: boolean
                         description: 'true : 새로운 디바이스로 접속 및 토큰 등록됨 / false : 기존 디바이스으로 접속함'
