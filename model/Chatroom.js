@@ -15,7 +15,7 @@ const chatroomSchema = mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
-    }
+    },
 }, {
     versionKey: false,
     timestamps: true,

@@ -39,6 +39,7 @@ const postSchema = mongoose.Schema({
   promise_location: {
     type: ObjectId,
     ref: 'FitnessCenter',
+    default: '62c66fe24b8212e4674dbe2c'
   },
   promise_date: {
     type: Date,

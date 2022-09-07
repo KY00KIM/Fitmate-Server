@@ -1,4 +1,5 @@
 const { User } = require("../model/User");
+const {Post} = require("../model/Post");
 const postController = require('../controller/post')
 const chatController = require('../controller/chat')
 const reviewController = require('../controller/review')
@@ -13,6 +14,8 @@ const logger = require('../config/winston');
 const {generateRefreshToken, generateAccessToken} = require('../utils/util');
 const { replaceS3toCloudFront } = require('../config/aws_s3');
 const { app } = require("firebase-admin");
+const {ObjectId} = require("mongodb");
+const {Appointment} = require("../model/Appointment");
 
 
 
@@ -78,7 +81,7 @@ const userController = {
   */
   assignUser: async (req, res) => {
     try {
-      const { user_nickname, user_gender, user_weekday, user_schedule_time, user_address, user_latitude, user_longitude, fitness_center, device_token } = req.body;
+      const { user_nickname, user_gender, user_weekday, user_schedule_time, user_address, user_latitude, user_longitude, fitness_center, device_token, user_introduce } = req.body;
       const locationId = await locationController.parseAddress(user_address);
       const center = await fitnesscenterController.getFitnessCenterId(fitness_center);
       const user = await User.create({
@@ -91,6 +94,7 @@ const userController = {
         user_schedule_time: user_schedule_time,
         user_weekday: user_weekday || null,
         user_gender: user_gender,
+        user_introduce: user_introduce,
         fitness_center_id: center._id,
         user_latitude: user_latitude,
         user_longitude: user_longitude,
@@ -154,7 +158,6 @@ const userController = {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
-
   userSignOut: async (req, res) => {
     try {
       const resultUser = await User.findByIdAndUpdate(req.user.id, { is_deleted: true });
@@ -182,7 +185,6 @@ const userController = {
     }
   }
 
-
 };
 
 const checkDeviceToken = async (user_id, device_token) => {
@@ -200,6 +202,7 @@ const checkDeviceToken = async (user_id, device_token) => {
     return false;
   }
 };
+
 
 const checkUserValid = async (firebase_uid) => {
   try {

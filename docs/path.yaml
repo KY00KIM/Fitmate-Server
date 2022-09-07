@@ -1,4 +1,31 @@
 paths:
+  /users/valid/{user_nickname}:
+    get:
+      tags:
+        - users
+      summary: Author:규민, 신규 이용자 닉네임 유효성 확인 - 중복체크
+      description: Author:규민, true>가능, false>불가능
+      parameters:
+        - $ref: '#/components/parameters/user_nickname'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      result:
+                        type: boolean
+        '500':
+          description: '`ServerInternalError`'
   /v2/users/login:
     get:
       tags:
@@ -38,11 +65,28 @@ paths:
     get:
       tags:
         - users
-      summary: Author:규민, 카카오 인증 서버
-      description: Author:규민, Response  `user_id`
+      summary: Author:규민, 파이어베이스 커스텀토큰 발급 및 파이어베이스 유저 등록
+      description: Author:규민, Upsert user to Firebase, Response with `custom_token` signed by FitMate Firebase Project
       parameters:
         - $ref: '#/components/parameters/authToken'
-        - $ref: '#/components/parameters/Device'
+      requestBody:
+        description: User object to be added
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uid:
+                  type: string
+                displayName:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                photoURL:
+                  type: string
+                  format: URL
       responses:
         '200':
           description: '`SUCCESS OK`'
@@ -60,14 +104,9 @@ paths:
                   data:
                     type: object
                     properties:
-                      user_id:
+                      custom_token:
                         type: string
-                        format: ObjectId
-                      device_set:
-                        type: boolean
-                        description: 'true : 새로운 디바이스로 접속 및 토큰 등록됨 / false : 기존 디바이스으로 접속함'
-        '404':
-          description: '`ClientErrorNotFound` firebase 유저이지만 서버 유저목록에서 유저를 찾을 수 없는 경우'
+                        format: JWT
         '400':
           description: '`ClientErrorBadRequest`'
   /v2/users/oauth:
@@ -95,9 +134,11 @@ paths:
                 user_schedule_time:
                   type: integer
                   description: '0 : 오전, 1 : 오후, 2 : 저녁'
+                user_introduce:
+                  type: string
+                  description: 소개
                 user_weekday:
                   type: object
-                  default: false
                   properties:
                     mon:
                       type: boolean
@@ -941,8 +982,8 @@ paths:
     get:
       tags:
         - posts
-      summary: Author:기호, 특정 사용자가 쓴 글 조회 
-      description: Author:기호, 특정 사용자가 쓴 글 조회 
+      summary: Author:기호, 특정 사용자가 쓴 글 조회
+      description: Author:기호, 특정 사용자가 쓴 글 조회
       parameters:
         - $ref: '#/components/parameters/authToken'
         - $ref: '#/components/parameters/userId'
@@ -1217,8 +1258,8 @@ paths:
     get:
       tags:
         - posts
-      summary: Author:기호, 특정 사용자가 쓴 글 조회 
-      description: Author:기호, 특정 사용자가 쓴 글 조회 
+      summary: Author:기호, 특정 사용자가 쓴 글 조회
+      description: Author:기호, 특정 사용자가 쓴 글 조회
       parameters:
         - $ref: '#/components/parameters/authToken'
         - $ref: '#/components/parameters/userId'

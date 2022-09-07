@@ -8,6 +8,12 @@ reviewRouter.get('/candidates',verifyUser, reviewController.getReviewCandidates)
 
 reviewRouter.post('/candidates',verifyUser, reviewController.writeReviewCandidate);
 
+reviewRouter.get('/fitnesscenter/:fitnesscenterId', reviewController.getAverageFitnessCenterReview);
+
+reviewRouter.get('/fitnesscenter/user/:fitnesscenterId', reviewController.getFitnessCenterReviewByUser);
+
+reviewRouter.post('/fitnesscenter/:fitnesscenterId', reviewController.writeFitnessCenterReview);
+
 reviewRouter.post('/', verifyUser,reviewController.writeReview);
 
 reviewRouter.get('/:review_recv_id',verifyUser, reviewController.getOneReview);

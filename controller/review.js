@@ -1,6 +1,7 @@
 const { Review } = require('../model/Review');
 const { Appointment } = require('../model/Appointment');
 const { ReviewCandidate } = require('../model/ReviewCandidate');
+const { FitnessCenterReview } = require('../model/FitnessCenterReview');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const reviewController = {
@@ -98,10 +99,33 @@ const reviewController = {
   deleteManyReviewByUser: async (user_id) => {
     try {
       const result = await Review.updateMany({ $or: [{ 'review_recv_id': user_id }, { 'review_send_id': user_id }] }, { is_deleted: true });
-      return result
+      return result;
     } catch (e) {
       console.log(e)
       return (e)
+    }
+  },
+  getAverageFitnessCenterReview: async (req, res) => {
+    try{
+      const reviews = await FitnessCenterReview.find({center_id:req.params.fitnesscenterId}).populate('review_send_id');
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessOK', STATUS_CODE.SuccessOK);
+    }catch(error){
+
+    }
+  },
+  getFitnessCenterReviewByUser: async (req, res) => {
+    try{
+      const reviews = await FitnessCenterReview.find({center_id:req.params.fitnesscenterId}).populate('review_send_id');
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessOK', STATUS_CODE.SuccessOK);
+    }catch(error){
+
+    }
+  },
+  writeFitnessCenterReview: async (req, res) => {
+    try{
+
+    }catch(error){
+
     }
   }
 };
