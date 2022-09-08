@@ -1406,6 +1406,166 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
+  /v2/reviews/candidates:
+    get:
+      summary: 'Author:기호, 리뷰 후보 데이터 전체조회'
+      description: 'Author:기호,GET 방식으로 리뷰 후보 등록'
+      tags:
+        - reviews
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 전체 리뷰 후보 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/reviewCandidate'
+                    example:
+                      [
+                        {
+                          '_id': '62c66ef64b8212e4674dbe20',
+                          'candidate_body': '매너가 좋아요.',
+                          'id': '62c66ef64b8212e4674dbe20',
+                        },
+                        {
+                          '_id': '62c66f0b4b8212e4674dbe21',
+                          'candidate_body': '약속을 잘 지켜요.',
+                          'id': '62c66f0b4b8212e4674dbe21',
+                        },
+                        {
+                          '_id': '62c66f224b8212e4674dbe22',
+                          'candidate_body': '열정적이에요.',
+                          'id': '62c66f224b8212e4674dbe22',
+                        },
+                      ]
+    post:
+      summary: '리뷰 후보 등록'
+      description: 'POST 방식으로 리뷰 후보 등록'
+      tags:
+        - reviews
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 리뷰 후보 등록합니다.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                candidate_body:
+                  type: string
+                  description: '리뷰 후보'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/reviewCandidate'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /v2/reviews:
+    post:
+      summary: 'Author:기호, 사용자 리뷰 등록'
+      description: 'Author:기호,Post 방식으로 리뷰 등록'
+      tags:
+        - reviews
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 리뷰를 등록합니다.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                review_recv_id:
+                  type: string
+                  format: ObjectId
+                review_body:
+                  type: string
+                  default: ''
+                user_rating:
+                  type: number
+                  default: 3
+                review_candidates:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
+                    description: references reviewCandidate
+                appointmentId:
+                  type: string
+      responses:
+        '200':
+          description: 리뷰 후보 등록
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/review'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /v2/reviews/{userId}:
+    get:
+      summary: 'Author:기호특정 사용자가 받은 리뷰를 조회'
+      description: 'Author:기호, GET 방식으로 특정 사용자가 받은 리뷰 조회'
+      tags:
+        - reviews
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: 특정 사용자가 받은 리뷰를 조회
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/review'
+
   /v1/reviews/candidates:
     get:
       summary: 'Author:기호, 리뷰 후보 데이터 전체조회'
@@ -1566,6 +1726,103 @@ paths:
                       type: object
                       $ref: '#/components/schemas/review'
 
+  /v2/push/chat/{userId}:
+    post:
+      summary: 'Author:기호채팅 답변 알림 푸시'
+      description: 'Author:기호, Post 방식으로 특정 사용자의 채팅 답변 알림 푸시'
+      tags:
+        - push
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/userId'
+      responses:
+        '200':
+          description: '`SuccessOK` 특정 사용자의 채팅 답변 알림 푸시'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: string
+                    default: 'title: ~~, body: ~~'
+  /v2/push/popup:
+    post:
+      summary: 'Author:기호,전체 공지 알림 푸시'
+      description: 'Author:기호, Post 방식으로 전체 사용자 공지 알림 푸시'
+      tags:
+        - push
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: 전송할 전체 공지 사항 내용
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notification:
+                  type: string
+      responses:
+        '200':
+          description: '`SuccessOK` 전체 사용자의 공지 알림 푸시'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: string
+                    default: 'notification: notification, Type: NOTICE'
+  /v2/push/test:
+    post:
+      summary: 'Author:기호, Data 푸시 테스트'
+      description: 'Author:기호, Post 방식으로 특정 사용자의 푸시 테스트'
+      tags:
+        - push
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: 유저 아이디
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: string
+      responses:
+        '200':
+          description: '`SuccessOK` 특정 사용자의 채팅 답변 알림 푸시'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: string
+                    default: 'notification: TEST,Type: TEST'
+
   /v1/push/chat/{userId}:
     post:
       summary: 'Author:기호채팅 답변 알림 푸시'
@@ -1663,6 +1920,63 @@ paths:
                     type: string
                     default: 'notification: TEST,Type: TEST'
 
+  /v2/locations:
+    get:
+      summary: 'Author:기호모든 지역 목록 조회'
+      description: 'GET 방식으로 모든 지역 목록 조회'
+      tags:
+        - location
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/location'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /v2/locations/{locId}:
+    get:
+      summary: 'Author:기호, 특정 지역 조회'
+      description: 'GET 방식으로 특정 지역 조회'
+      tags:
+        - location
+      parameters:
+        - $ref: '#/components/parameters/locId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/location'
+        '400':
+          description: '`ClientErrorBadRequest`'
+
   /v1/locations:
     get:
       summary: 'Author:기호모든 지역 목록 조회'
@@ -1717,103 +2031,6 @@ paths:
                     type: string
                   data:
                     $ref: '#/components/schemas/location'
-        '400':
-          description: '`ClientErrorBadRequest`'
-
-  /v1/fitnesscenters:
-    get:
-      summary: 'Author:기호, 모든 피트니스 센터 목록 조회'
-      description: 'Author:기호, GET 방식으로 모든 피트니스센터 목록 조회'
-      tags:
-        - fitnesscenter
-      parameters:
-        - $ref: '#/components/parameters/authToken'
-      responses:
-        '200':
-          description: '`SUCCESS OK`'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  message:
-                    type: string
-                  refresh:
-                    type: string
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/fitnessCenter'
-        '400':
-          description: '`ClientErrorBadRequest`'
-    post:
-      summary: '피트니스 센터 등록'
-      description: 'POST 방식으로 모든 피트니스센터 목록 조회'
-      tags:
-        - fitnesscenter
-      parameters:
-        - $ref: '#/components/parameters/authToken'
-      requestBody:
-        description: fitness center object to be posted
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                center_name:
-                  type: string
-                center_address:
-                  type: string
-                center_longitude:
-                  type: number
-                center_latitude:
-                  type: number
-      responses:
-        '201':
-          description: '`SUCCESS Created`'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  message:
-                    type: string
-                  refresh:
-                    type: string
-                  data:
-                    $ref: '#/components/schemas/fitnessCenter'
-        '400':
-          description: '`ClientErrorBadRequest`'
-  /v1/fitnesscenters/{fitnesscenterId}:
-    get:
-      summary: 'Author:기호,특정 피트니스 센터 정보 조회'
-      description: 'Author:기호, GET 방식으로 특정 피트니스 센터 정보 조회'
-      tags:
-        - fitnesscenter
-      parameters:
-        - $ref: '#/components/parameters/fitnesscenterId'
-        - $ref: '#/components/parameters/authToken'
-      responses:
-        '200':
-          description: '`SUCCESS OK`'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                  message:
-                    type: string
-                  refresh:
-                    type: string
-                  data:
-                    $ref: '#/components/schemas/fitnessCenter'
         '400':
           description: '`ClientErrorBadRequest`'
 
@@ -2048,6 +2265,133 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
+  /v1/fitnesscenters:
+    get:
+      summary: 'Author:기호, 모든 피트니스 센터 목록 조회'
+      description: 'Author:기호, GET 방식으로 모든 피트니스센터 목록 조회'
+      tags:
+        - fitnesscenter
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/fitnessCenter'
+        '400':
+          description: '`ClientErrorBadRequest`'
+    post:
+      summary: '피트니스 센터 등록'
+      description: 'POST 방식으로 모든 피트니스센터 목록 조회'
+      tags:
+        - fitnesscenter
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: fitness center object to be posted
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                center_name:
+                  type: string
+                center_address:
+                  type: string
+                center_longitude:
+                  type: number
+                center_latitude:
+                  type: number
+      responses:
+        '201':
+          description: '`SUCCESS Created`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/fitnessCenter'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /v1/fitnesscenters/{fitnesscenterId}:
+    get:
+      summary: 'Author:기호,특정 피트니스 센터 정보 조회'
+      description: 'Author:기호, GET 방식으로 특정 피트니스 센터 정보 조회'
+      tags:
+        - fitnesscenter
+      parameters:
+        - $ref: '#/components/parameters/fitnesscenterId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/fitnessCenter'
+        '400':
+          description: '`ClientErrorBadRequest`'
+
+  /v2/fitnesspart:
+    get:
+      tags:
+        - fitnesspart
+      summary: Author:기호,모든 운동부위 목록 조회
+      description: Author:기호, Response  `array of fitnessparts written by user`
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/fitnessPart'
+        '400':
+          description: '`ClientErrorBadRequest`'
+
   /v1/fitnesspart:
     get:
       tags:
@@ -2077,6 +2421,118 @@ paths:
                       $ref: '#/components/schemas/fitnessPart'
         '400':
           description: '`ClientErrorBadRequest`'
+
+  /v2/appointments:
+    get:
+      summary: 'Author:기호,사용자와 관련된 약속 데이터 전체조회'
+      description: 'Author:기호, Get 방식으로 사용자와 관련된 모든 약속 조회'
+      tags:
+        - appointments
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 전체 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/appointment'
+        '400':
+          description: '`ClientErrorBadRequest`'
+    post:
+      summary: '사용자 약속 등록'
+      description: 'Post 방식으로 특정 약속 등록'
+      tags:
+        - appointments
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 약속을 등록합니다.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                fitness_center:
+                  type: object
+                  properties:
+                    center_name:
+                      type: string
+                    center_address:
+                      type: string
+                    center_longitude:
+                      type: number
+                    center_latitude:
+                      type: number
+                appointment_date:
+                  type: string
+                  format: date
+                match_start_id:
+                  type: string
+                  format: ObjectId
+                  description: references User
+                match_join_id:
+                  type: string
+                  format: ObjectId
+                  description: references User
+      responses:
+        '201':
+          description: '`SuccessCreated`특정 약속 정보'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/appointment'
+        '404':
+          description: '`ClientErrorNotFound`'
+  /v2/appointments/{appointmentId}:
+    get:
+      summary: 'Author:기호,특정 약속 데이터 조회'
+      description: 'Author:기호, Get 방식으로 특정 약속 조회'
+      tags:
+        - appointments
+      parameters:
+        - $ref: '#/components/parameters/appointmentId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 특정 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/appointment'
+        '404':
+          description: '`ClientErrorNotFound`'
 
   /v1/appointments:
     get:
@@ -2189,6 +2645,184 @@ paths:
                     $ref: '#/components/schemas/appointment'
         '404':
           description: '`ClientErrorNotFound`'
+
+  /v2/chats:
+    get:
+      summary: 'Author:규민, 사용자와 관련된 채팅목록 전체조회'
+      description: 'Get 방식으로 사용자와 관련된 모든 약속 조회'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 활성화된 전체 채팅방 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+    post:
+      summary: '채팅방 생성'
+      description: 'Post 방식으로 토큰 소유자와 상대방의 채팅방 생성'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 채팅방을 생성합니다.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                chat_join_id:
+                  type: string
+                  format: ObjectId
+                  description: references User
+      responses:
+        '201':
+          description: '`SuccessCreated`특정 약속 정보'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /v2/chats/{chatroomId}:
+    get:
+      summary: 'Author:규민, 특정 채팅방 조회'
+      description: 'Get 방식으로 특정 채팅방 조회'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/chatroomId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 특정 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+    delete:
+      summary: '특정 채팅방 삭제'
+      description: 'Delete 방식으로 특정 채팅방 삭제'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/chatroomId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 특정 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+
+  /v2/chats/info:
+    get:
+      summary: 'Author:규민, 사용자와 관련된 채팅목록 사용자 상세정보 포함 전체조회'
+      description: 'Get 방식으로 사용자와 관련된 모든 약속 조회'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 활성화된 전체 채팅방 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /v2/chats/info/{chatroomId}:
+    get:
+      summary: 'Author:규민, 특정 채팅방 사용자 상세정보 포함 조회'
+      description: 'Get 방식으로 특정 채팅방 조회'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/chatroomId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 특정 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/chatroom'
+        '400':
+          description: '`ClientErrorBadRequest`'
 
   /v1/chats:
     get:
@@ -2368,6 +3002,152 @@ paths:
         '400':
           description: '`ClientErrorBadRequest`'
 
+  /v2/report/{postId}:
+    post:
+      summary: 'Author:기호, 모집글 신고'
+      description: 'Author:기호, Post 방식으로 특정 모집글 신고, PostId를 통해 모집글 신고, request body 없음'
+      tags:
+        - report
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/postId'
+      requestBody:
+        description: POST 방식으로 모집글을 신고합니다.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+      responses:
+        '201':
+          description: '`SuccessCreated` 모집글 신고 완료'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/reportedPost'
+        '404':
+          description: '`ClientErrorNotFound`'
+  /v2/report/user:
+    post:
+      summary: 'Author:기호, 사용자 신고'
+      description: 'Author:기호,Post 방식으로 사용자를 신고합니다.'
+      tags:
+        - report
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 사용자를 신고합니다.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reportedUserId:
+                  type: string
+                  format: ObjectId
+                  description: 신고 당한 User
+                reported_content:
+                  type: string
+                  format: String
+                  description: 신고 내용
+      responses:
+        '201':
+          description: '`SuccessCreated` 사용자 신고 등록 완료'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/reportedUser'
+        '404':
+          description: '`ClientErrorNotFound`'
+  /v2/report/users:
+    get:
+      summary: 'Author:기호, 신고된 사용자 내역 조회'
+      description: 'Author:기호, GET 방식으로 모든 사용자를 신고 내역 조회합니다.'
+      tags:
+        - report
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: GET 방식으로 모든 사용자를 신고 내역 조회합니다
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+      responses:
+        '201':
+          description: '`SuccessCreated` 사용자 신고 등록 완료, 결과는 리스트 형태'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/reportedUser'
+        '404':
+          description: '`ClientErrorNotFound`'
+  /v2/report/posts:
+    get:
+      summary: 'Author:기호, 신고된 모집글 내역 조회'
+      description: 'Author:기호, GET 방식으로 모든 신고된 모집글 내역 조회합니다.'
+      tags:
+        - report
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: GET 방식으로 모든 모집글 신고 내역 조회합니다
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+      responses:
+        '201':
+          description: '`SuccessCreated` 사용자 신고 등록 완료, 결과는 리스트 형태'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/reportedPost'
+        '404':
+          description: '`ClientErrorNotFound`'
+
   /v1/report/{postId}:
     post:
       summary: 'Author:기호, 모집글 신고'
@@ -2511,6 +3291,49 @@ paths:
                     type: string
                   data:
                     $ref: '#/components/schemas/reportedPost'
+        '404':
+          description: '`ClientErrorNotFound`'
+
+  /v2/trace:
+    post:
+      summary: 'Author:규민, 사용자 위치 정보'
+      description: 'Author:규민, POST 방식으로 특정 사용자 위치 정보 등록'
+      tags:
+        - matching
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: POST 방식으로 특정 사용자 정보 등록
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_longitude:
+                  type: number
+                  format: double
+                  description: 사용자 경도
+                user_latitude:
+                  type: number
+                  format: double
+                  description: 사용자 위도
+      responses:
+        '201':
+          description: '`SuccessCreated` 사용자 위치 정보 등록 완료'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/userTrace'
         '404':
           description: '`ClientErrorNotFound`'
 

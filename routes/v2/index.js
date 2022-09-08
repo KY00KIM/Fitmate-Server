@@ -15,13 +15,14 @@ const visitor = require('./visitor');
 const { swaggerUi, specs } = require("../../docs/swagger");
 const banner = require('./banner');
 const path = require('path');
+const { verifyUser } = require("../middleware/auth");
 const { uploadProfileImage } = require('../../config/aws_s3');
 
 
 v2Router.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
 v2Router.use("/banner", banner);
 v2Router.use("/post", post);
-v2Router.use("/fitnesscenters", fitnesscenter);
+v2Router.use("/fitnesscenters",verifyUser, fitnesscenter);
 v2Router.use("/users", user);
 v2Router.use("/appointments", appointment);
 v2Router.use("/reviews", review);
