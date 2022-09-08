@@ -279,6 +279,38 @@ components:
         updatedAt:
           type: string
           format: date
+    fitnessCenterReview:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        center_id:
+          type: string
+          format: ObjectId
+          description: references fitness center
+        review_send_id:
+          type: string
+          format: ObjectId
+          description: references user
+        center_rating:
+          type: integer
+        center_review:
+          type: string
+          default: '최근에 리뉴얼되어서 러닝머신이 많이 늘었어요!'
+        center_review_by_select:
+          type: array
+          item:
+            type: string
+            format: Object_id
+            default: '6319e6e529188e0099d9ec14'
+            description: references fitness part
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
     userTrace:
       type: object
       properties:

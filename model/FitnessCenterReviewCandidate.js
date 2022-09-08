@@ -12,6 +12,6 @@ const FitnessCenterReviewCandidateSchema = mongoose.Schema({
 });
 
 
-const FitnessCenterReviewCandidate = mongoose.model('.', FitnessCenterReviewCandidateSchema);
+const FitnessCenterReviewCandidate = mongoose.model('FitnessCenterReviewCandidate', FitnessCenterReviewCandidateSchema);
 
 module.exports = { FitnessCenterReviewCandidate };
