@@ -336,7 +336,15 @@ components:
         updatedAt:
           type: string
           format: date
-
+    userCount:
+      type: object
+      properties:
+        centerId:
+          type: string
+          format: ObjectId
+        counts:
+          type: number
+          format: integer
     reportedPost:
       type: object
       properties:
