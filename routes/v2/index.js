@@ -25,7 +25,7 @@ v2Router.use("/post", post);
 v2Router.use("/fitnesscenters",verifyUser, fitnesscenter);
 v2Router.use("/users", user);
 v2Router.use("/appointments", appointment);
-v2Router.use("/reviews", review);
+v2Router.use("/reviews",verifyUser, review);
 v2Router.use("/matching", match);
 v2Router.use("/posts", post);
 v2Router.use("/fitnesspart", fitnesspart);
