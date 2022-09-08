@@ -118,7 +118,12 @@ const fitnesscenterController = {
         const second_longitude = parseInt(req.query.second_longitude);
         const first_latitude = parseInt(req.query.first_latitude);
         const second_latitude = parseInt(req.query.second_latitude);
-
+        if(first_latitude > second_latitude || first_longitude > second_longitude){
+          return ResponseManager.getDefaultResponseHandler(res)['onError'](
+              {first_latitude, second_latitude, first_longitude, second_longitude},
+              'first is bigger than second', STATUS_CODE.ClientErrorBadRequest
+          );
+        }
         const result = await FitnessCenter.aggregatePaginate({$and: [
             {"fitness_longitude": {"gte":first_longitude}},
             {"fitness_longitude": {"lte":second_longitude}},
@@ -126,36 +131,33 @@ const fitnesscenterController = {
             {"fitness_latitude": {"lte":second_latitude}}
           ]}, options);
 
-        let data = {'centers': result.docs};
-        data.userCount= [];
-
+        result.userCount = [];
         result.docs.forEach((fitnessCenter) => {
           const searchResult = aggregate.find(o => o._id == fitnessCenter._id);
           if(searchResult){
-            data.userCount.push({'centerId':searchResult['_id'], 'counts':searchResult['userCount']});
+            result.userCount.push({'centerId':searchResult['_id'], 'counts':searchResult['userCount']});
           }else{
-            data.userCount.push({'centerId': fitnessCenter._id, 'counts': 0})
+            result.userCount.push({'centerId': fitnessCenter._id, 'counts': 0})
           }
         });
-        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](data, 'SuccessOK', STATUS_CODE.SuccessOK);
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
       }else{
         const result = await FitnessCenter.aggregatePaginate(aggregate, options);
-        let data = {'centers': result.docs};
-        data.userCount= [];
 
+        result.userCount = [];
         result.docs.forEach((fitnessCenter) => {
           const searchResult = aggregate.find(o => o._id == fitnessCenter._id);
           if(searchResult){
-            data.userCount.push({'centerId':searchResult['_id'], 'counts':searchResult['userCount']});
+            result.userCount.push({'centerId':searchResult['_id'], 'counts':searchResult['userCount']});
           }else{
-            data.userCount.push({'centerId': fitnessCenter._id, 'counts': 0})
+            result.userCount.push({'centerId': fitnessCenter._id, 'counts': 0})
           }
         });
-        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](data, 'SuccessOK', STATUS_CODE.SuccessOK);
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
        }
     }catch (error) {
       console.log(error);
-      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'Fitness Center Error', STATUS_CODE.ClientErrorBadRequest);
     }
   },
   countUnMatchedPostsbyFitenessCenter: async (req, res) => {
@@ -178,6 +180,34 @@ const fitnesscenterController = {
       } = req;
       const result = await FitnessCenter.deleteMany({center_name:{$regex:keyWord}});
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+    }catch(error){
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
+  searchFitnessCenter: async (req, res) => {
+    try{
+      let { page, limit = 10 } = req.query;
+      if (page) {
+        page = parseInt(req.query.page);
+      }
+      else {
+        page = 1;
+        // Should Change
+        limit = 10;
+      };
+
+      const options = {
+        page: page,
+        limit: limit
+      };
+      const keyWord = req.query.keyWord;
+      if(keyWord){
+        await FitnessCenter.paginate({$text: {$search: keyWord}}, options, (err, result)=>{
+          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
+        });
+      }else{
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess']([], 'NO KEYWORD!', STATUS_CODE.SuccessNoContent);
+      }
     }catch(error){
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
