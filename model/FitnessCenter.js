@@ -36,6 +36,8 @@ const fitnessCenterSchema = mongoose.Schema({
 });
 
 fitnessCenterSchema.plugin(aggregatePaginate);
+fitnessCenterSchema.plugin(mongoosePaginate);
+fitnessCenterSchema.index({'$**': 'text'});
 const FitnessCenter = mongoose.model('FitnessCenter', fitnessCenterSchema);
 
 module.exports = { FitnessCenter };

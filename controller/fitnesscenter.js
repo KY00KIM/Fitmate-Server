@@ -130,7 +130,6 @@ const fitnesscenterController = {
             {"fitness_latitude": {"gte":first_latitude}},
             {"fitness_latitude": {"lte":second_latitude}}
           ]}, options);
-        console.log(result);
 
         result.userCount = [];
         result.docs.forEach((fitnessCenter) => {
@@ -187,9 +186,28 @@ const fitnesscenterController = {
   },
   searchFitnessCenter: async (req, res) => {
     try{
-      const keyWord = req.params.keyword;
+      let { page, limit = 10 } = req.query;
+      if (page) {
+        page = parseInt(req.query.page);
+      }
+      else {
+        page = 1;
+        // Should Change
+        limit = 10;
+      };
 
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+      const options = {
+        page: page,
+        limit: limit
+      };
+      const keyWord = req.query.keyWord;
+      if(keyWord){
+        await FitnessCenter.paginate({$text: {$search: keyWord}}, options, (err, result)=>{
+          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
+        });
+      }else{
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess']([], 'NO KEYWORD!', STATUS_CODE.SuccessNoContent);
+      }
     }catch(error){
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
