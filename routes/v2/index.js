@@ -15,7 +15,7 @@ const visitor = require('./visitor');
 const { swaggerUi, specs } = require("../../docs/swagger");
 const banner = require('./banner');
 const path = require('path');
-const { verifyUser } = require("../middleware/auth");
+const { verifyUser } = require("../../middleware/auth");
 const { uploadProfileImage } = require('../../config/aws_s3');
 
 
