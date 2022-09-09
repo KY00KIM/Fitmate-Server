@@ -77,6 +77,29 @@ const appointmentController = {
       });
 
       let rule = new schedule.RecurrenceRule();
+
+      // 약속 알림
+      rule.year = moment(appointment_date).year();
+      rule.month = moment(appointment_date).month() + 1;
+      rule.date = moment(appointment_date).date();
+      rule.hour = moment(appointment_date).hour();
+      rule.minute = moment(appointment_date).minute() + 1;
+      rule.second = moment(appointment_date).second();
+
+      schedule.scheduleJob('APPOINTMENT' + appointment._id, rule, () => pushNotificationUser(match_start_id, 'FitMate 약속 알림!', `${match_join_user.user_nickname}님과 운동 약속이 잡혔습니다!`));
+      schedule.scheduleJob('APPOINTMENT' + appointment._id, rule, () => pushNotificationUser(match_join_user, 'FitMate 약속 알림!', `${match_start_user.user_nickname}님과 운동 약속이 잡혔습니다!`));
+
+      // DB에 저장
+      await PushSchedule.create({
+        pushType: "APPOINTMENT",
+        appointmentId: appointment._id,
+        match_start_id: match_start_id,
+        match_join_id: match_join_id,
+        rule: moment(appointment_date),
+        is_deleted: false
+      });
+
+
       const review_date = moment(appointment_date).add(2, 'hours');
 
       // Review 요청 예약
@@ -86,10 +109,9 @@ const appointmentController = {
       rule.hour = moment(review_date).hour();
       rule.minute = moment(review_date).minute();
       rule.second = moment(review_date).second();
-      console.log(rule);
 
-      schedule.scheduleJob(rule, () => pushNotificationUser(match_start_id, 'FitMate 리뷰 알림!', `${match_join_user.user_nickname}님과의 운동은 어떠셨나요?`));
-      schedule.scheduleJob(rule, () => pushNotificationUser(match_join_user, 'FitMate 리뷰 알림!', `${match_start_user.user_nickname}님과의 운동은 어떠셨나요?`));
+      schedule.scheduleJob('REVIEW' + appointment._id, rule, () => pushNotificationUser(match_start_id, 'FitMate 리뷰 알림!', `${match_join_user.user_nickname}님과의 운동은 어떠셨나요?`));
+      schedule.scheduleJob('REVIEW' + appointment._id, rule, () => pushNotificationUser(match_join_user, 'FitMate 리뷰 알림!', `${match_start_user.user_nickname}님과의 운동은 어떠셨나요?`));
 
       // DB에 저장
       await PushSchedule.create({
@@ -97,7 +119,8 @@ const appointmentController = {
         appointmentId: appointment._id,
         match_start_id: match_start_id,
         match_join_id: match_join_id,
-        rule: review_date
+        rule: review_date,
+        is_deleted: false
       });
 
       const gps_date = moment(appointment_date).add(5, 'minutes');
@@ -114,8 +137,8 @@ const appointmentController = {
         "Type": "GPS"
       }
 
-      schedule.scheduleJob(rule, () => pushDataUser(match_start_id, data));
-      schedule.scheduleJob(rule, () => pushDataUser(match_join_id, data));
+      schedule.scheduleJob('GPS'+ appointment._id, rule, () => pushDataUser(match_start_id, data));
+      schedule.scheduleJob('GPS'+ appointment._id, rule, () => pushDataUser(match_join_id, data));
 
       // DB에 저장
       await PushSchedule.create({
@@ -141,13 +164,12 @@ const appointmentController = {
    */
   deleteAppointment: async (req, res) => {
     try {
-      const {
-        body: { fitness_center, match_start_id, match_join_id, appointment_date },
-      } = req;
-      const fitness_center_id = await fitnesscenterController.getFitnessCenterId(fitness_center);
-
-
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+      const appointmentId = req.params.appointmentId;
+      const result = await Appointment.findByIdAndUpdate(appointmentId, {is_deleted: true}, { new: true, runValidators: true});
+      const schedules = schedule.scheduledJobs;
+      schedule.cancelJob(schedules['APPOINTMENT' + appointmentId]);
+      schedule.cancelJob(schedules['REVIEW' + appointmentId]);
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessDeleted', STATUS_CODE.SuccessOK);
 
     } catch (error) {
       console.error(error);

@@ -444,6 +444,35 @@ components:
         updatedAt:
           type: string
           format: date
+    pushSchedule:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        pushType:
+          type: string
+          description: required true
+        appointmentId:
+          type: string
+          format: ObjectId
+        match_start_id:
+          type: string
+          format: ObjectId
+        match_join_id:
+          type: string
+          format: ObjectId
+        rule:
+          type: string
+          format: date
+        is_deleted:
+          type: boolean
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
 
   parameters:
     Device:

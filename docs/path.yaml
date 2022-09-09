@@ -2063,11 +2063,168 @@ paths:
                     type: boolean
                   message:
                     type: string
-                  refresh:
-                    type: string
                   data:
                     type: string
                     default: 'notification: TEST,Type: TEST'
+  /v2/push/:
+    get:
+      summary: 'Author:기호,사용자의 알림 요청'
+      description: 'Author:기호, GET 방식으로 특정 사용자의 푸시 테스트'
+      tags:
+        - push
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SuccessOK` 특정 사용자의 채팅 답변 알림 푸시'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/pushSchedule'
+                    example:
+                      {
+                        "_id": "62dcb55d2a9c7be7cf2985bd",
+                        "pushType": "REVIEW",
+                        "match_start_id": {
+                          "_id": "62c6699c4b8212e4674dbe15",
+                          "user_nickname": "한강코딩하는사람",
+                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
+                          "id": "62c6699c4b8212e4674dbe15"
+                        },
+                        "match_join_id": {
+                          "_id": "62c6697a4b8212e4674dbe14",
+                          "user_nickname": "잠자고싶은사람",
+                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
+                          "id": "62c6697a4b8212e4674dbe14"
+                        },
+                        "appointmentId": "62dcb55d2a9c7be7cf2985bb",
+                        "rule": "2022-08-30T16:50:00.000Z",
+                        "createdAt": "2022-07-24T02:58:37.223Z",
+                        "updatedAt": "2022-09-09T05:06:09.714Z",
+                        "is_deleted": false,
+                        "id": "62dcb55d2a9c7be7cf2985bd"
+                      }
+                  data2:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/pushSchedule'
+                    example:
+                      {
+                        "_id": "631ad5429e7f8637b19da489",
+                        "pushType": "NOTICE",
+                        "match_start_id": {
+                          "_id": "62c6699c4b8212e4674dbe15",
+                          "user_nickname": "한강코딩하는사람",
+                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
+                          "id": "62c6699c4b8212e4674dbe15"
+                        },
+                        "rule": "2022-09-09T16:50:00.000Z",
+                        "notification_body":"9월 19일 3시부터 4시까지 서버 점검 있습니다.",
+                        "createdAt": "2022-07-24T02:58:37.223Z",
+                        "updatedAt": "2022-09-09T05:06:09.714Z",
+                        "is_deleted": false,
+                        "match_join_id": {
+                          "_id": "62c6699c4b8212e4674dbe15",
+                          "user_nickname": "한강코딩하는사람",
+                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
+                          "id": "62c6699c4b8212e4674dbe15"
+                        },
+                        "id": "631ad5429e7f8637b19da489"
+                      }
+                  data3:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/pushSchedule'
+                    example:
+                      {
+                        "_id": "631ad7d39e7f8637b19da48a",
+                        "pushType": "APPOINTMENT",
+                        "match_start_id": {
+                          "_id": "62c6699c4b8212e4674dbe15",
+                          "user_nickname": "한강코딩하는사람",
+                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
+                          "id": "62c6699c4b8212e4674dbe15"
+                        },
+                        "match_join_id": {
+                          "_id": "62c6697a4b8212e4674dbe14",
+                          "user_nickname": "잠자고싶은사람",
+                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
+                          "id": "62c6697a4b8212e4674dbe14"
+                        },
+                        "appointmentId": "62dcb55d2a9c7be7cf2985bb",
+                        "rule": "2022-08-30T16:50:00.000Z",
+                        "createdAt": "2022-07-24T02:58:37.223Z",
+                        "updatedAt": "2022-09-09T05:06:09.714Z",
+                        "is_deleted": false,
+                        "id": "631ad7d39e7f8637b19da48a"
+                      }
+                  data4:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/pushSchedule'
+                    example:
+                      {
+                        "_id": "631ad7d39e7f8637b19da48a",
+                        "pushType": "EXERCISE",
+                        "match_start_id": {
+                          "_id": "62c6699c4b8212e4674dbe15",
+                          "user_nickname": "한강코딩하는사람",
+                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
+                          "id": "62c6699c4b8212e4674dbe15"
+                        },
+                        "match_join_id": {
+                          "_id": "62c6699c4b8212e4674dbe15",
+                          "user_nickname": "한강코딩하는사람",
+                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
+                          "id": "62c6699c4b8212e4674dbe15"
+                        },
+                        "appointmentId": "62dcb55d2a9c7be7cf2985bb",
+                        "rule": "2022-08-30T16:50:00.000Z",
+                        "createdAt": "2022-07-24T02:58:37.223Z",
+                        "updatedAt": "2022-09-09T05:06:09.714Z",
+                        "is_deleted": false,
+                        "id": "631ad7d39e7f8637b19da48a"
+                      }
+
+
+  /v2/push/{pushId}:
+    delete:
+      summary: 'Author:기호, 알림 삭제 api - 23page 알림 삭제용 api'
+      description: 'Author:기호, delete 방식으로 사용자의 특정 알림 삭제'
+      tags:
+        - push
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - in: path
+          name: pushId
+          required: true
+          schema:
+            type: string
+          description: push 알림 ID
+      responses:
+        '200':
+          description: '`SuccessOK` 사용자의 특정 알림 삭제'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: string
+                    default: '1 deleted'
 
   /v1/push/chat/{userId}:
     post:
@@ -2688,8 +2845,6 @@ paths:
                     type: boolean
                   message:
                     type: string
-                  refresh:
-                    type: string
                   data:
                     type: array
                     items:
@@ -2745,15 +2900,13 @@ paths:
                     type: boolean
                   message:
                     type: string
-                  refresh:
-                    type: string
                   data:
                     $ref: '#/components/schemas/appointment'
         '404':
           description: '`ClientErrorNotFound`'
   /v2/appointments/{appointmentId}:
     get:
-      summary: 'Author:기호,특정 약속 데이터 조회'
+      summary: 'Author:기호,특정 약속 삭제'
       description: 'Author:기호, Get 방식으로 특정 약속 조회'
       tags:
         - appointments
@@ -2772,7 +2925,30 @@ paths:
                     type: boolean
                   message:
                     type: string
-                  refresh:
+                  data:
+                    type: object
+                    $ref: '#/components/schemas/appointment'
+        '404':
+          description: '`ClientErrorNotFound`'
+    delete:
+      summary: 'Author:기호,특정 약속 데이터 삭제'
+      description: 'Author:기호, Delete 방식으로 특정 약속 삭제'
+      tags:
+        - appointments
+      parameters:
+        - $ref: '#/components/parameters/appointmentId'
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 특정 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
                     type: string
                   data:
                     type: object

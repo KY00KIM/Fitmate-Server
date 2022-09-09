@@ -4,20 +4,20 @@ const postController = require('../../../controller/post');
 const { uploadImg } = require('../../../middleware/multer');
 const { verifyUser } = require("../../../middleware/auth");
 
-postRouter.get('/',verifyUser, postController.getAllPosts);
+postRouter.get('/', postController.getAllPosts);
 
-postRouter.get('/user/:userId',verifyUser, postController.getMyPost);
+postRouter.get('/user/:userId', postController.getMyPost);
 
-postRouter.post('/image/:postId',verifyUser, uploadImg('post_image').single('image'), postController.uploadPostImg);
+postRouter.post('/image/:postId', uploadImg('post_image').single('image'), postController.uploadPostImg);
 
-postRouter.get('/:postId',verifyUser, postController.getOnePost);
+postRouter.get('/:postId', postController.getOnePost);
 
-postRouter.post('/',verifyUser, postController.writePost);
+postRouter.post('/', postController.writePost);
 
-postRouter.patch('/:postId',verifyUser, postController.updatePost);
+postRouter.patch('/:postId', postController.updatePost);
 
-postRouter.delete('/:postId',verifyUser, postController.deletePost);
+postRouter.delete('/:postId', postController.deletePost);
 
-postRouter.get('/develop/test',verifyUser, postController.makeUserUrl);
+postRouter.get('/develop/test', postController.makeUserUrl);
 
 module.exports = postRouter;

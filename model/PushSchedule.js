@@ -9,7 +9,8 @@ const PushScheduleSchema = mongoose.Schema({
   },
   match_start_id: {
     type: ObjectId,
-    ref: 'User'
+    ref: 'User',
+    required: true
   },
   match_join_id: {
     type: ObjectId,
@@ -19,10 +20,19 @@ const PushScheduleSchema = mongoose.Schema({
     type: ObjectId,
     ref: 'Appointment'
   },
+  notification_body:{
+    type: String,
+    default: ""
+  },
   rule: {
     type: Date,
     required: true
   },
+  is_deleted:{
+    type: Boolean,
+    required: true,
+    default: false
+  }
 }, {
   versionKey: false,
   timestamps: true,
