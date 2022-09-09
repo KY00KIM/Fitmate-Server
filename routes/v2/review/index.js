@@ -4,9 +4,9 @@ const reviewController = require('../../../controller/review');
 const { verifyUser } = require("../../../middleware/auth");
 
 
-reviewRouter.get('/candidates',verifyUser, reviewController.getReviewCandidates);
+reviewRouter.get('/candidates', reviewController.getReviewCandidates);
 
-reviewRouter.post('/candidates',verifyUser, reviewController.writeReviewCandidate);
+reviewRouter.post('/candidates', reviewController.writeReviewCandidate);
 
 reviewRouter.get('/fitnesscenter/candidates', reviewController.getFitnessCenterReviewCandidates);
 
@@ -18,10 +18,10 @@ reviewRouter.get('/fitnesscenter/:fitnesscenterId', reviewController.getFitnessC
 
 reviewRouter.post('/fitnesscenter/:fitnesscenterId', reviewController.writeFitnessCenterReview);
 
-reviewRouter.post('/', verifyUser,reviewController.writeReview);
+reviewRouter.post('/',reviewController.writeReview);
 
-reviewRouter.get('/:review_recv_id',verifyUser, reviewController.getOneReview);
+reviewRouter.get('/:review_recv_id', reviewController.getOneReview);
 
-reviewRouter.delete('/:review_id',verifyUser, reviewController.deleteOneReview);
+reviewRouter.delete('/:review_id', reviewController.deleteOneReview);
 
 module.exports = reviewRouter;

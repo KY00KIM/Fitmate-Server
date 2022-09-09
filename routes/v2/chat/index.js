@@ -4,15 +4,15 @@ const chatController = require('../../../controller/chat');
 const { verifyUser } = require("../../../middleware/auth");
 
 
-chatRouter.get('/',verifyUser, chatController.getAllChatroom);
-chatRouter.get('/info',verifyUser, chatController.getAllPopulatedChatroom);
+chatRouter.get('/', chatController.getAllChatroom);
+chatRouter.get('/info', chatController.getAllPopulatedChatroom);
 
-chatRouter.post('/',verifyUser, chatController.createOneChatroom);
-chatRouter.delete('/:chatroomId',verifyUser, chatController.deleteOneChatroom);
+chatRouter.post('/', chatController.createOneChatroom);
+chatRouter.delete('/:chatroomId', chatController.deleteOneChatroom);
 
-chatRouter.get('/:chatroomId',verifyUser, chatController.getOneChatroom);
+chatRouter.get('/:chatroomId', chatController.getOneChatroom);
 
-chatRouter.get('/info/:chatroomId',verifyUser, chatController.getOnePopulatedChatroom);
+chatRouter.get('/info/:chatroomId', chatController.getOnePopulatedChatroom);
 
 
 module.exports = chatRouter;

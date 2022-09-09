@@ -1,13 +1,17 @@
 const express = require('express');
 const pushRouter = express.Router();
-const { pushChat, pushPopup, pushTest } = require('../../../controller/push');
+const { pushChat, pushPopup, pushTest, getUserPush, deletePush } = require('../../../controller/push');
 const { verifyUser } = require("../../../middleware/auth");
 
-pushRouter.post('/chat/:userId',verifyUser, pushChat);
+pushRouter.get('/', getUserPush);
 
-pushRouter.post('/popup',verifyUser, pushPopup);
+pushRouter.delete('/:pushId', deletePush);
 
-pushRouter.post('/test',verifyUser, pushTest);
+pushRouter.post('/chat/:userId', pushChat);
+
+pushRouter.post('/popup', pushPopup);
+
+pushRouter.post('/test', pushTest);
 
 
 module.exports = pushRouter;
