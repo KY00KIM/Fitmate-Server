@@ -175,10 +175,15 @@ const fitnesscenterController = {
   },
   deleteFitnessCenterByKeyWord: async (req, res) => {
     try{
-      const {
-        params: { keyWord },
-      } = req;
-      const result = await FitnessCenter.deleteMany({center_name:{$regex:keyWord}});
+      const result = await FitnessCenter.find();
+      for(const center of result){
+        if(center.fitness_latitude > center.fitness_longitude){
+          await FitnessCenter.findByIdAndUpdate(center._id, {
+            fitness_latitude:center.fitness_longitude,
+            fitness_longitude:center.fitness_latitude,
+          })
+        }
+      }
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     }catch(error){
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);

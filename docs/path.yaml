@@ -739,9 +739,27 @@ paths:
       tags:
         - posts
       summary: Author:기호, 모든 매칭글 목록 조회 - Pagination 구현(page=2)
-      description: Author:규민,Response  `array of posts written by user`
+      description: Author:기호, Response  `array of posts written by user`
       parameters:
         - $ref: '#/components/parameters/authToken'
+        - name: page
+          in: query
+          description: page to get
+          schema:
+            type: number
+            format: integer
+        - name: limit
+          in: query
+          description: page to get
+          schema:
+            type: number
+            format: integer
+        - name: sort
+          in: query
+          description: 최신순일 경우 그냥, 위치순일 경우 distance
+          schema:
+            type: string
+            format: string
       responses:
         '200':
           description: '`SUCCESS OK`'
@@ -757,10 +775,33 @@ paths:
                   refresh:
                     type: string
                   data:
-                    type: array
-                    items:
-                      type: object
-                      $ref: '#/components/schemas/post'
+                    type: object
+                    properties:
+                      totalDocs:
+                        type: number
+                      limit:
+                        type: number
+                      totalPages:
+                        type: number
+                      page:
+                        type: number
+                      pagingCounter:
+                        type: number
+                      hasPrevPage:
+                        type: boolean
+                        default: null
+                      hasNextPage:
+                        type: boolean
+                      prevPage:
+                        type: number
+                      nextPage:
+                        type: number
+                      docs:
+                        type: array
+                        items:
+                          type: object
+                          $ref: '#/components/schemas/post'
+
         '400':
           description: '`ClientErrorBadRequest`'
     post:
