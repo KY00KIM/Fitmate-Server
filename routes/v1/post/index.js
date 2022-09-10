@@ -18,6 +18,4 @@ postRouter.patch('/:postId', postController.updatePost);
 
 postRouter.delete('/:postId', postController.deletePost);
 
-postRouter.get('/develop/test', postController.makeUserUrl);
-
 module.exports = postRouter;

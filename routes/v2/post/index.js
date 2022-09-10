@@ -4,7 +4,7 @@ const postController = require('../../../controller/post');
 const { uploadImg } = require('../../../middleware/multer');
 const { verifyUser } = require("../../../middleware/auth");
 
-postRouter.get('/', postController.getAllPosts);
+postRouter.get('/', postController.getAllPostsV2);
 
 postRouter.get('/user/:userId', postController.getMyPost);
 
@@ -17,7 +17,5 @@ postRouter.post('/', postController.writePost);
 postRouter.patch('/:postId', postController.updatePost);
 
 postRouter.delete('/:postId', postController.deletePost);
-
-postRouter.get('/develop/test', postController.makeUserUrl);
 
 module.exports = postRouter;
