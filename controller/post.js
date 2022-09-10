@@ -25,7 +25,7 @@ const postController = {
       else {
         page = 1;
         // Should Change
-        limit = 100;
+        limit = 10;
       };
 
       const options = {
@@ -47,7 +47,7 @@ const postController = {
         sort: { createdAt: -1 },
       };
       await Post.paginate({is_deleted: false, user_id: { $ne: req.user.id }}, options, (err, result)=>{
-        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result.docs, 'SuccessOK', STATUS_CODE.SuccessOK);
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
       });
     } catch (error) {
       console.error(error);
@@ -167,13 +167,66 @@ const postController = {
       return (e)
     }
   },
-  makeUserUrl: async (req, res) => {
-    try{
-      const posts = await Post.find().populate('promise_location');
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
-   
-    }catch(err){
-      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+  /**
+   * @path {GET} http://localhost:8000/v1/posts/
+   * @description 사용자와 연관된 모든 매칭글을 조회하는 GET Method
+   */
+  getAllPostsV2: async (req, res) => {
+    try {
+      let { page, limit = 10 } = req.query;
+
+      if (req.query.page) {
+        page = parseInt(req.query.page);
+      }
+      else {
+        page = 1;
+        // Should Change
+        limit = 10;
+      };
+      let options = {
+        page: page,
+        limit: limit,
+        populate:
+            [
+              {
+                path : 'user_id',
+                select : {user_nickname : 1, user_profile_img : 1}
+              },
+              {
+                path : 'promise_location',
+              }
+            ],
+        collation: {
+          locale: 'en',
+        },
+        sort: { createdAt: -1 },
+      };
+      if(req.query.sort == 'distance'){
+        options = {
+          page: page,
+          limit: limit,
+          populate:
+              [
+                {
+                  path : 'user_id',
+                  select : {user_nickname : 1, user_profile_img : 1}
+                },
+                {
+                  path : 'promise_location',
+                }
+              ],
+          collation: {
+            locale: 'en',
+          },
+          sort: { createdAt: -1 },
+        };
+      }
+      await Post.paginate({is_deleted: false, user_id: { $ne: req.user.id }}, options, (err, result)=>{
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
+      });
+    } catch (error) {
+      console.error(error);
+      ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
   },
 }
