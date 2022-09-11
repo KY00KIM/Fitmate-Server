@@ -2915,9 +2915,16 @@ paths:
                   message:
                     type: string
                   data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/appointment'
+                    type: object
+                    properties:
+                      appointments:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/appointment'
+                      reviews:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/review'
         '400':
           description: '`ClientErrorBadRequest`'
     post:
