@@ -26,8 +26,7 @@ const reviewSchema = mongoose.Schema({
   }],
   appointment_id:{
     type: ObjectId,
-    ref: 'Appointment',
-    required: true
+    ref: 'Appointment'
   },
   is_deleted: {
     type: Boolean,

@@ -20,9 +20,7 @@ const appointmentController = {
     try {
       let user_id = req.user.id;
       const appointments = await Appointment.find(
-        { $or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }], is_deleted: false })
-          .populate('match_start_id', 'user_nickname user_profile_img')
-          .populate('match_join_id', 'user_nickname user_profile_img');
+        { $or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }], is_deleted: false });
 
       appointments.forEach((appointment) => {
         appointment.appointment_date = timeConvert.addNineHours(appointment.appointment_date);
@@ -46,8 +44,8 @@ const appointmentController = {
         params: { appointmentId },
       } = req;
       const appointment = await Appointment.findById(appointmentId)
-          .populate('match_start_id', 'user_nickname user_profile_img')
-          .populate('match_join_id', 'user_nickname user_profile_img');
+          .populate('match_start_id')
+          .populate('match_join_id');
       appointment.appointment_date = timeConvert.addNineHours(appointment.appointment_date);
       appointment.createdAt = timeConvert.addNineHours(appointment.createdAt);
       appointment.updatedAt = timeConvert.addNineHours(appointment.updatedAt);
