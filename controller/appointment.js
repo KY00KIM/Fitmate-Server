@@ -20,7 +20,7 @@ const appointmentController = {
     try {
       let user_id = req.user.id;
       const appointments = await Appointment.find(
-        { $or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }], is_deleted: false });
+        { $and:[{$or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }]}, {'is_deleted': false}] });
 
       appointments.forEach((appointment) => {
         appointment.appointment_date = timeConvert.addNineHours(appointment.appointment_date);
@@ -167,7 +167,7 @@ const appointmentController = {
   deleteAppointment: async (req, res) => {
     try {
       const appointmentId = req.params.appointmentId;
-      const result = await Appointment.findByIdAndUpdate(appointmentId, {is_deleted: true}, { new: true, runValidators: true});
+      const result = await Appointment.findByIdAndUpdate(appointmentId, {'is_deleted': true}, { new: true, runValidators: true});
       const schedules = schedule.scheduledJobs;
       schedule.cancelJob(schedules['APPOINTMENT' + appointmentId]);
       schedule.cancelJob(schedules['REVIEW' + appointmentId]);
@@ -180,7 +180,7 @@ const appointmentController = {
   },
   deleteManyAppointmentByUser: async (user_id) => {
     try {
-      const result = await Appointment.updateMany({ $or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }] }, { is_deleted: true });
+      const result = await Appointment.updateMany({ $or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }] }, { 'is_deleted': true });
       return result
     } catch (e) {
       console.log(e)
@@ -189,26 +189,32 @@ const appointmentController = {
   },
   calendarAppointment: async  (req, res) => {
     try{
-      const user_id = req.user.id;
-      let appointments = await Appointment.find(
-          { $or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }], is_deleted: false })
+      // const user_id = req.user.id;
+      const user_id = '62f888603f805af3eef5a1d7';
+      let docs = {}
+      docs.appointments = await Appointment.find(
+          {
+            $and:[
+              {$or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }]},
+              {is_deleted:false}
+          ]})
           .populate('match_start_id', 'user_nickname user_profile_img')
           .populate('match_join_id', 'user_nickname user_profile_img')
           .populate('center_id');
-
-      for(let appointment of appointments){
-        if(appointment.isReviewed){
-          const reviews = await Review.findOne({appointment_id: appointment._id});
-          console.log(reviews);
+           // console.log('appointments: ',appointments);
+      docs.reviews = [];
+      for(let result of docs.appointments){
+        if(result.isReviewed){
+          const reviews = await Review.findOne({appointment_id: result._id});
+          console.log('appointment.user_review:',result);
+          docs.reviews.push(reviews);
+          console.log('appointment.user_review:',result);
+          result.appointment_date = timeConvert.addNineHours(result.appointment_date);
+          result.createdAt = timeConvert.addNineHours(result.createdAt);
+          result.updatedAt = timeConvert.addNineHours(result.updatedAt);
         }
       }
-      appointments.forEach((appointment) => {
-        appointment.appointment_date = timeConvert.addNineHours(appointment.appointment_date);
-        appointment.createdAt = timeConvert.addNineHours(appointment.createdAt);
-        appointment.updatedAt = timeConvert.addNineHours(appointment.updatedAt);
-      });
-
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessDeleted', STATUS_CODE.SuccessOK);
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](docs, 'SuccessOK', STATUS_CODE.SuccessOK);
     }catch(error){
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
