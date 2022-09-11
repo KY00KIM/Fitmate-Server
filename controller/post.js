@@ -7,6 +7,7 @@ const fitnesscenterController = require('./fitnesscenter');
 const matchController = require('./match');
 const reviewController = require('./review');
 const { replaceS3toCloudFront } = require('../config/aws_s3');
+const mongoose = require('mongoose');
 const { originAgentCluster } = require('helmet');
 // cloudwatch
 
@@ -47,7 +48,7 @@ const postController = {
         sort: { createdAt: -1 },
       };
       await Post.paginate({is_deleted: false, user_id: { $ne: req.user.id }}, options, (err, result)=>{
-        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result.docs, 'SuccessOK', STATUS_CODE.SuccessOK);
       });
     } catch (error) {
       console.error(error);
@@ -229,6 +230,14 @@ const postController = {
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
   },
+  // testAPI: async(req, res)=>{
+  //   try{
+  //     var Client = require('mongodb').MongoClient;
+  //     mongoose.c
+  //   }catch(error){
+  //
+  //   }
+  // }
 }
 
 module.exports = postController;
