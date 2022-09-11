@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const {generateAccessToken, generateRefreshToken, verifyAccessToken} = require('../utils/util');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
-const { redisCli } = require('../utils/redis');
 const { User } = require("../model/User");
 require("dotenv").config();
 
