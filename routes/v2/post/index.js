@@ -4,6 +4,8 @@ const postController = require('../../../controller/post');
 const { uploadImg } = require('../../../middleware/multer');
 const { verifyUser } = require("../../../middleware/auth");
 
+// postRouter.get('/test', postController);
+
 postRouter.get('/', postController.getAllPostsV2);
 
 postRouter.get('/user/:userId', postController.getMyPost);
