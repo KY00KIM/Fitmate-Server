@@ -2540,7 +2540,35 @@ paths:
                       docs:
                         type: array
                         items:
-                          $ref: '#/components/schemas/fitnessCenter'
+                          properties:
+                            _id:
+                              type: string
+                              format: ObjectId
+                            center_name:
+                                type: string
+                            center_address:
+                              type: string
+                            center_location:
+                              type: string
+                              format: ObjectId
+                            fitness_longitude:
+                              type: number
+                              format: double
+                            fitness_latitude:
+                              type: number
+                              format: double
+                            createdAt:
+                              type: string
+                              format: date
+                            updatedAt:
+                              type: string
+                              format: date
+                            kakao_url:
+                              type: string
+                              format: ObjectId
+                            reviews:
+                              type: array
+                              $ref: '#/components/schemas/fitnessCenterReview'
                       totalDocs:
                         type: number
                       limit:

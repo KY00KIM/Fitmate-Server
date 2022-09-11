@@ -1,7 +1,7 @@
 const { Appointment } = require('../model/Appointment');
 const { User } = require('../model/User');
 const { PushSchedule } = require('../model/PushSchedule');
-
+const { Review } = require('../model/Review');
 const ResponseManager = require('../config/response');
 const schedule = require('node-schedule');
 const STATUS_CODE = require('../config/http_status_code');
@@ -20,7 +20,9 @@ const appointmentController = {
     try {
       let user_id = req.user.id;
       const appointments = await Appointment.find(
-        { $or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }], is_deleted: false });
+        { $or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }], is_deleted: false })
+          .populate('match_start_id', 'user_nickname user_profile_img')
+          .populate('match_join_id', 'user_nickname user_profile_img');
 
       appointments.forEach((appointment) => {
         appointment.appointment_date = timeConvert.addNineHours(appointment.appointment_date);
@@ -43,7 +45,9 @@ const appointmentController = {
       const {
         params: { appointmentId },
       } = req;
-      const appointment = await Appointment.findById(appointmentId).populate('match_start_id').populate('match_join_id');
+      const appointment = await Appointment.findById(appointmentId)
+          .populate('match_start_id', 'user_nickname user_profile_img')
+          .populate('match_join_id', 'user_nickname user_profile_img');
       appointment.appointment_date = timeConvert.addNineHours(appointment.appointment_date);
       appointment.createdAt = timeConvert.addNineHours(appointment.createdAt);
       appointment.updatedAt = timeConvert.addNineHours(appointment.updatedAt);
@@ -183,6 +187,32 @@ const appointmentController = {
     } catch (e) {
       console.log(e)
       return (e)
+    }
+  },
+  calendarAppointment: async  (req, res) => {
+    try{
+      const user_id = req.user.id;
+      let appointments = await Appointment.find(
+          { $or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }], is_deleted: false })
+          .populate('match_start_id', 'user_nickname user_profile_img')
+          .populate('match_join_id', 'user_nickname user_profile_img')
+          .populate('center_id');
+
+      for(let appointment of appointments){
+        if(appointment.isReviewed){
+          const reviews = await Review.findOne({appointment_id: appointment._id});
+          console.log(reviews);
+        }
+      }
+      appointments.forEach((appointment) => {
+        appointment.appointment_date = timeConvert.addNineHours(appointment.appointment_date);
+        appointment.createdAt = timeConvert.addNineHours(appointment.createdAt);
+        appointment.updatedAt = timeConvert.addNineHours(appointment.updatedAt);
+      });
+
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessDeleted', STATUS_CODE.SuccessOK);
+    }catch(error){
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
   }
 };

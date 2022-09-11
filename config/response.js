@@ -10,7 +10,6 @@ const SlackNotify = require('slack-notify');
 const MY_SLACK_WEBHOOK_URL = process.env.MY_SLACK_WEBHOOK_URL;
 const slack = SlackNotify(MY_SLACK_WEBHOOK_URL);
 const {generateAccessToken} = require('../utils/util');
-const {redisCli} = require('../utils/redis');
 
 const BasicResponse ={
     "success" : false,

@@ -45,8 +45,6 @@ const reviewController = {
   writeReview: async (req, res) => {
     try {
 
-      console.log("Fine");
-
       const {
         body: { review_recv_id, user_rating, review_body, review_candidates, appointmentId },
       } = req;
@@ -56,10 +54,11 @@ const reviewController = {
         review_recv_id: review_recv_id,
         user_rating: user_rating,
         review_body: review_body,
-        review_candidates: review_candidates
+        review_candidates: review_candidates,
+        appointment_id: appointmentId
       });
 
-      await Appointment.updateOne({ _id: appointmentId }, { $set: { isReviewed: true } });
+      await Appointment.findByIdAndUpdate(appointmentId, { isReviewed: true });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
 

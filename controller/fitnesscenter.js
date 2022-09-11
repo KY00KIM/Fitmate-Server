@@ -1,5 +1,6 @@
 const { FitnessCenter } = require('../model/FitnessCenter');
 const { User } = require('../model/User');
+const { FitnessCenterReview } = require('../model/FitnessCenterReview');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const locationController = require('./location')
@@ -124,7 +125,7 @@ const fitnesscenterController = {
               'first is bigger than second', STATUS_CODE.ClientErrorBadRequest
           );
         }
-        const result = await FitnessCenter.aggregatePaginate({$and: [
+        let result = await FitnessCenter.aggregatePaginate({$and: [
             {"fitness_longitude": {"gte":first_longitude}},
             {"fitness_longitude": {"lte":second_longitude}},
             {"fitness_latitude": {"gte":first_latitude}},
@@ -132,17 +133,21 @@ const fitnesscenterController = {
           ]}, options);
 
         result.userCount = [];
-        result.docs.forEach((fitnessCenter) => {
+        for(let i = 0; i < result.docs.length; ++i){
+          let fitnessCenter = result.docs[i];
+          const reviews = await FitnessCenterReview.find({center_id: fitnessCenter._id});
+          result.docs[i].reviews = reviews;
           const searchResult = aggregate.find(o => o._id == fitnessCenter._id);
           if(searchResult){
             result.userCount.push({'centerId':searchResult['_id'], 'counts':searchResult['userCount']});
           }else{
             result.userCount.push({'centerId': fitnessCenter._id, 'counts': 0})
           }
-        });
+        };
+
         ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
       }else{
-        const result = await FitnessCenter.aggregatePaginate(aggregate, options);
+        let result = await FitnessCenter.aggregatePaginate(aggregate, options);
 
         result.userCount = [];
         result.docs.forEach((fitnessCenter) => {

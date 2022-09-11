@@ -6,6 +6,8 @@ const { verifyUser } = require("../../../middleware/auth");
 
 appointmentRouter.get('/', appointmentController.getAllAppointment);
 
+appointmentRouter.get('/calendar', appointmentController.calendarAppointment);
+
 appointmentRouter.get('/:appointmentId', appointmentController.getOneAppointment);
 
 appointmentRouter.post('/', appointmentController.writeAppointment);
