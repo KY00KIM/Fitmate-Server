@@ -205,82 +205,29 @@ const postController = {
         sort: { createdAt: -1 },
       };
       if(req.query.sort == 'distance'){
-        const user = await User.findById(req.user.id);
-        const PostUserLocation = await Post.aggregate([
-          {
-            '$lookup': {
-              'from': 'users',
-              'localField': 'user_id',
-              'foreignField': '_id',
-              'as': 'user_object'
-            }
-          }, {
-            '$lookup': {
-              'from': 'fitnesscenters',
-              'localField': 'promise_location',
-              'foreignField': '_id',
-              'as': 'fitnesscenter_object'
-            }
-          }, {}, {
-            '$project': {
-              '_id': 1,
-              'post_title': 1,
-              'post_img': 1,
-              'user_object': {
-                '$arrayElemAt': [
-                  '$user_object', 0
-                ]
-              },
-              'fitnesscenter_object': {
-                '$arrayElemAt': [
-                  '$fitnesscenter_object', 0
-                ]
-              }
-            }
-          }, {
-            '$project': {
-              '_id': 1,
-              'post_title': 1,
-              'post_img': 1,
-              'user_id': '$user_object._id',
-              'user_nickname': '$user_object.user_nickname',
-              'user': {
-                'location': {
-                  'type': 'Point',
-                  'geometry': [
-                    '$user_object.user_longitude', '$user_object.user_latitude'
-                  ]
-                }
-              },
-              'fitnesscenter': {
-                'location': {
-                  'type': 'Point',
-                  'geometry': [
-                    '$fitnesscenter_object.fitness_longitude', '$fitnesscenter_object.fitness_latitude'
-                  ]
-                }
-              }
-            }
-          }
-        ]);
+        // const user = await User.findById(req.user.id);
         // const PostUserLocation = mongoose.model('FitMate',
         //     new Schema({ url: String, text: String, id: Number}),
         //     'PostUserLocation');
-        console.log(user.user_longitude, user.user_latitude);
-        const result = await Post.find({
-          fitnesscenter:{
-            location:
-                { $near :
-                      {
-                        $geometry: { type: "Point",  coordinates: [ user.user_longitude, user.user_latitude ] },
-                        $minDistance: 1000,
-                        $maxDistance: 5000
-                      }
-                }
-          }
-        });
+        // console.log(user.user_longitude, user.user_latitude);
+        // const result = await PostUserLocation.find({
+        //   fitnesscenter:{
+        //     location:
+        //         { $near :
+        //               {
+        //                 $geometry: { type: "Point",  coordinates: [ user.user_longitude, user.user_latitude ] },
+        //                 $minDistance: 1000,
+        //                 $maxDistance: 5000
+        //               }
+        //         }
+        //   }
+        // });
 
-        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
+        // ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
+        await Post.paginate({is_deleted: false, user_id: { $ne: req.user.id }}, options, (err, result)=>{
+          result.docs.sort(() => Math.random() - 0.5);
+          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
+        });
       }else{
         await Post.paginate({is_deleted: false, user_id: { $ne: req.user.id }}, options, (err, result)=>{
           ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);

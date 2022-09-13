@@ -159,6 +159,109 @@ const appointmentController = {
     }
   },
 
+  /**
+   * @path {POST} http://fitmate.co.kr/v1/appointments
+   * @description 약속글을 생성하는 POST Method
+   */
+  writeAppointmentV2: async (req, res) => {
+    try {
+      const {
+        body: { fitness_center_id, match_start_id, match_join_id, appointment_date },
+      } = req;
+
+      const match_start_user = await User.findById(match_start_id);
+      const match_join_user = await User.findById(match_join_id);
+
+      const appointment = await Appointment.create({
+        "center_id": fitness_center_id,
+        "match_start_id": match_start_id,
+        "match_join_id": match_join_id,
+        "appointment_date": appointment_date,
+        "isReviewed": false,
+      });
+
+      let rule = new schedule.RecurrenceRule();
+
+      // 약속 알림
+      rule.year = moment(appointment_date).year();
+      rule.month = moment(appointment_date).month() + 1;
+      rule.date = moment(appointment_date).date();
+      rule.hour = moment(appointment_date).hour();
+      rule.minute = moment(appointment_date).minute() + 1;
+      rule.second = moment(appointment_date).second();
+
+      schedule.scheduleJob('APPOINTMENT' + appointment._id, rule, () => pushNotificationUser(match_start_id, 'FitMate 약속 알림!', `${match_join_user.user_nickname}님과 운동 약속이 잡혔습니다!`));
+      schedule.scheduleJob('APPOINTMENT' + appointment._id, rule, () => pushNotificationUser(match_join_user, 'FitMate 약속 알림!', `${match_start_user.user_nickname}님과 운동 약속이 잡혔습니다!`));
+
+      // DB에 저장
+      await PushSchedule.create({
+        pushType: "APPOINTMENT",
+        appointmentId: appointment._id,
+        match_start_id: match_start_id,
+        match_join_id: match_join_id,
+        rule: moment(appointment_date),
+        is_deleted: false
+      });
+
+
+      const review_date = moment(appointment_date).add(2, 'hours');
+
+      // Review 요청 예약
+      rule.year = moment(review_date).year();
+      rule.month = moment(review_date).month() + 1;
+      rule.date = moment(review_date).date();
+      rule.hour = moment(review_date).hour();
+      rule.minute = moment(review_date).minute();
+      rule.second = moment(review_date).second();
+
+      schedule.scheduleJob('REVIEW' + appointment._id, rule, () => pushNotificationUser(match_start_id, 'FitMate 리뷰 알림!', `${match_join_user.user_nickname}님과의 운동은 어떠셨나요?`));
+      schedule.scheduleJob('REVIEW' + appointment._id, rule, () => pushNotificationUser(match_join_user, 'FitMate 리뷰 알림!', `${match_start_user.user_nickname}님과의 운동은 어떠셨나요?`));
+
+      // DB에 저장
+      await PushSchedule.create({
+        pushType: "REVIEW",
+        appointmentId: appointment._id,
+        match_start_id: match_start_id,
+        match_join_id: match_join_id,
+        rule: review_date,
+        is_deleted: false
+      });
+
+      const gps_date = moment(appointment_date).add(5, 'minutes');
+      // GPS 요청 정보 예약
+      rule.year = moment(gps_date).year();
+      rule.month = moment(gps_date).month() + 1;
+      rule.date = moment(gps_date).date();
+      rule.hour = moment(gps_date).hour();
+      rule.minute = moment(gps_date).minute();
+      rule.second = moment(gps_date).second();
+
+      const data = {
+        "appointmentId": appointment._id,
+        "Type": "GPS"
+      }
+
+      schedule.scheduleJob('GPS'+ appointment._id, rule, () => pushDataUser(match_start_id, data));
+      schedule.scheduleJob('GPS'+ appointment._id, rule, () => pushDataUser(match_join_id, data));
+
+      // DB에 저장
+      await PushSchedule.create({
+        pushType: "GPS",
+        appointmentId: appointment._id,
+        match_start_id: match_start_id,
+        match_join_id: match_join_id,
+        rule: gps_date
+      });
+
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](appointment, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+
+    } catch (error) {
+      console.error(error);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+    }
+  },
+
+
 
   /**
    * @path {DELETE} http://fitmate.co.kr/v1/appointments/:appointmentId

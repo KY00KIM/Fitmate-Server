@@ -2942,17 +2942,10 @@ paths:
             schema:
               type: object
               properties:
-                fitness_center:
-                  type: object
-                  properties:
-                    center_name:
-                      type: string
-                    center_address:
-                      type: string
-                    center_longitude:
-                      type: number
-                    center_latitude:
-                      type: number
+                fitness_center_id:
+                  type: string
+                  format: ObjectId
+                  description: references FitnessCenter
                 appointment_date:
                   type: string
                   format: date
