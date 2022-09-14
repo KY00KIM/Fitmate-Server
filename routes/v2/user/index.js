@@ -14,7 +14,7 @@ userRouter.patch('/:userId',verifyUser, userController.updateUserInfo);
 
 userRouter.post('/oauth/kakao', customTokenController);
 
-userRouter.post('/oauth',verifyUser,  userController.assignUser);
+userRouter.post('/oauth',verifyUser,  userController.assignUserV2);
 
 userRouter.post('/image',verifyUser,  uploadImg('profile_image').single('image'), userController.uploadUserImg);
 
