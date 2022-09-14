@@ -238,14 +238,31 @@ const postController = {
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     }
   },
-  // testAPI: async(req, res)=>{
-  //   try{
-  //     var Client = require('mongodb').MongoClient;
-  //     mongoose.c
-  //   }catch(error){
-  //
-  //   }
-  // }
+  /**
+   * @path {POST} http://localhost:8000/v1/posts
+   * @description 특정 매칭글을 등록하는 POST Method
+   */
+  writePostV2: async (req, res) => {
+    try {
+      const {
+        body: { user_id, location_id, post_fitness_part, post_title, promise_location_id, promise_date, post_img, post_main_text },
+      } = req;
+      const post = await Post.create({
+        user_id,
+        location_id,
+        post_fitness_part,
+        post_title,
+        promise_location: promise_location_id,
+        promise_date,
+        post_img,
+        post_main_text
+      });
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](post, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+    } catch (error) {
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
+
 }
 
 module.exports = postController;

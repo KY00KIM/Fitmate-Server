@@ -14,7 +14,7 @@ postRouter.post('/image/:postId', uploadImg('post_image').single('image'), postC
 
 postRouter.get('/:postId', postController.getOnePost);
 
-postRouter.post('/', postController.writePost);
+postRouter.post('/', postController.writePostV2);
 
 postRouter.patch('/:postId', postController.updatePost);
 
