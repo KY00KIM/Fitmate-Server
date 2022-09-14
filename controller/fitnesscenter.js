@@ -14,7 +14,7 @@ const fitnesscenterController = {
   */
   getAllFitnessCenter: async (req, res) => {
     try {
-      const fitnesscenters = await FitnessCenter.find({});
+      const fitnesscenters = await FitnessCenter.find({}).lean();
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitnesscenters, 'SuccessOK', STATUS_CODE.SuccessOK);
 
     } catch (error) {
@@ -29,7 +29,7 @@ const fitnesscenterController = {
   getOneFitnessCenter: async (req, res) => {
     try {
       const { fitnesscenterId } = req.params;
-      const fitnesscenter = await FitnessCenter.findById(fitnesscenterId);
+      const fitnesscenter = await FitnessCenter.findById(fitnesscenterId).lean();
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitnesscenter, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error);
@@ -39,7 +39,7 @@ const fitnesscenterController = {
   getFitnessCenterByAddress: async (req, res) => {
     try{
       const address = req.body.address;
-      const fitness_centers = await FitnessCenter.find({"center_address":address});
+      const fitness_centers = await FitnessCenter.find({"center_address":address}).lean();
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitness_centers, 'SuccessOK', STATUS_CODE.SuccessOK);
     }catch(error){
       console.log(error);
@@ -161,7 +161,6 @@ const fitnesscenterController = {
         ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
        }
     }catch (error) {
-      console.log(error);
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'Fitness Center Error', STATUS_CODE.ClientErrorBadRequest);
     }
   },
@@ -211,8 +210,14 @@ const fitnesscenterController = {
         limit: limit
       };
       const keyWord = req.query.keyWord;
+
       if(keyWord){
-        await FitnessCenter.paginate({$text: {$search: keyWord}}, options, (err, result)=>{
+        if(keyWord.length < 2){
+          ResponseManager.getDefaultResponseHandler(res)['onError'](keyWord, '두 글자 이상 검색해주세요!', STATUS_CODE.ClientErrorBadRequest);
+          return;
+        }
+        let tokens = keyWord.split(' ');
+        await FitnessCenter.paginate({$text: {$search: tokens.join('')}}, options, (err, result)=>{
           ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
         });
       }else{

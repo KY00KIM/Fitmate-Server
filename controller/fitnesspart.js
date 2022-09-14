@@ -9,9 +9,7 @@ const fitnesspartController = {
     */
     getAllFitnessPart : async (req, res) =>{
         try {
-            console.log('fitnesspart');
-            const fitnesspart = await FitnessPart.find({});
-            console.log(fitnesspart);
+            const fitnesspart = await FitnessPart.find({}).lean();
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](fitnesspart, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
           } catch (error) {
             console.log(error);

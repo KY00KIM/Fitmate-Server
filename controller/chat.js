@@ -6,7 +6,7 @@ const chatController = {
     getAllChatroom: async (req, res) => {
         try {
             let user_id = req.user.id;
-            const ChatroomList = await Chatroom.find({ $or: [{ 'chat_start_id': user_id }, { 'chat_join_id': user_id }], is_deleted: false }).sort({createdAt: -1});
+            const ChatroomList = await Chatroom.find({ $or: [{ 'chat_start_id': user_id }, { 'chat_join_id': user_id }], is_deleted: false }).sort({createdAt: -1}).lean();
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](ChatroomList, 'SuccessOK', STATUS_CODE.SuccessOK);
         } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -15,7 +15,7 @@ const chatController = {
     getOneChatroom: async (req, res) => {
         try {
             const { chatroomId } = req.params;
-            const chatroom = await Chatroom.findById(chatroomId);
+            const chatroom = await Chatroom.findById(chatroomId).lean();
             return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](chatroom, 'SuccessOK', STATUS_CODE.SuccessOK);
         } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -33,7 +33,7 @@ const chatController = {
     deleteOneChatroom: async (req, res) => {
         try {
             const { chatroomId } = req.params;
-            const chatroom = await Chatroom.findByIdAndUpdate(chatroomId, { is_deleted: true }, { new: true, runValidators: true });
+            const chatroom = await Chatroom.findByIdAndUpdate(chatroomId, { is_deleted: true }, { new: true, runValidators: true }).lean();
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](chatroom, 'SuccessOK', STATUS_CODE.SuccessOK);
         } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -42,7 +42,7 @@ const chatController = {
     getAllPopulatedChatroom: async (req, res) => {
         try {
             let user_id = req.user.id;
-            const ChatroomList = await Chatroom.find({ $or: [{ 'chat_start_id': user_id }, { 'chat_join_id': user_id }], is_deleted: false }).populate('chat_start_id').populate('chat_join_id');
+            const ChatroomList = await Chatroom.find({ $or: [{ 'chat_start_id': user_id }, { 'chat_join_id': user_id }], is_deleted: false }).populate('chat_start_id').populate('chat_join_id').lean();
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](ChatroomList, 'SuccessOK', STATUS_CODE.SuccessOK);
         } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -51,7 +51,7 @@ const chatController = {
     getOnePopulatedChatroom: async (req, res) => {
         try {
             const { chatroomId } = req.params;
-            const chatroom = await Chatroom.findById(chatroomId).populate('chat_start_id').populate('chat_join_id');
+            const chatroom = await Chatroom.findById(chatroomId).populate('chat_start_id').populate('chat_join_id').lean();
             return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](chatroom, 'SuccessOK', STATUS_CODE.SuccessOK);
         } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -61,7 +61,7 @@ const chatController = {
     deleteManyChatroomByUser: async (user_id) => {
         try {
             const result = await Chatroom.updateMany({ $or: [{ 'chat_start_id': user_id }, { 'chat_join_id': user_id }] }, { is_deleted: true });
-            return result
+            return result;
         } catch (e) {
             console.log(e)
             return e
