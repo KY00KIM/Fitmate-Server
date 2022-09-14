@@ -114,6 +114,41 @@ const userController = {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
+  assignUserV2: async (req, res) => {
+    try {
+      const { user_nickname, user_gender, user_weekday, user_schedule_time, user_address, user_latitude, user_longitude, fitness_center_id, device_token, user_introduce } = req.body;
+      const locationId = await locationController.parseAddress(user_address);
+      const user = await User.create({
+        // BODY for test
+        user_name: req.user.social.name || "",
+        user_email: req.user.social.email || "",
+        user_address: user_address,
+        user_nickname: user_nickname,
+        user_profile_img: req.user.social.picture,
+        user_schedule_time: user_schedule_time,
+        user_weekday: user_weekday || null,
+        user_gender: user_gender,
+        user_introduce: user_introduce,
+        fitness_center_id: fitness_center_id,
+        user_latitude: user_latitude,
+        user_longitude: user_longitude,
+        location_id: locationId,
+        social: {
+          user_id: req.user.social.uid || req.user.social.user_id,
+          user_name: req.user.social.name || "",
+          device_token: [device_token],
+          provider: req.user.social.firebase.sign_in_provider,
+          firebase_info: JSON.parse(JSON.stringify(req.user.social))
+        }
+      });
+      user.user_profile_img = replaceS3toCloudFront(user.user_profile_img);
+      return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+    } catch (error) {
+      console.log(error);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
+
   loginUser: async (req, res) => {
     try {
       const uid = req.user.social.uid

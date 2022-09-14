@@ -164,19 +164,9 @@ paths:
                 user_latitude:
                   type: number
                   description: double in degrees
-                fitness_center:
-                  type: object
-                  properties:
-                    center_name:
-                      type: string
-                    center_address:
-                      type: string
-                    fitness_longitude:
-                      type: number
-                      description: double in degrees
-                    fitness_latitude:
-                      type: number
-                      description: double in degrees
+                fitness_center_id:
+                  type: string
+                  format: ObjectId
                 device_token:
                   type: string
       responses:
@@ -835,17 +825,9 @@ paths:
                     description: references fitness part
                 post_title:
                   type: string
-                promise_location:
-                  type: object
-                  properties:
-                    center_name:
-                      type: string
-                    center_address:
-                      type: string
-                    center_longitude:
-                      type: number
-                    center_latitude:
-                      type: number
+                promise_location_id:
+                  type: string
+                  format: ObjectId
                 promise_date:
                   type: string
                   format: date
