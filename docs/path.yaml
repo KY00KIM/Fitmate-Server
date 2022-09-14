@@ -1231,7 +1231,7 @@ paths:
           description: ClientErrorBadRequest
     delete:
       tags:
-        - posts
+        -
       summary: postId로 매칭글 삭제
       description: Delete a post by postId
       parameters:
