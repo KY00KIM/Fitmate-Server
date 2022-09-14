@@ -2594,10 +2594,14 @@ paths:
                   type: string
                 center_address:
                   type: string
-                center_longitude:
+                fitness_longitude:
                   type: number
-                center_latitude:
+                  format: double
+                fitness_latitude:
                   type: number
+                  format: double
+                kakao_url:
+                  type: string
       responses:
         '201':
           description: '`SUCCESS Created`'
@@ -2897,16 +2901,9 @@ paths:
                   message:
                     type: string
                   data:
-                    type: object
-                    properties:
-                      appointments:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/appointment'
-                      reviews:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/review'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/appointment'
         '400':
           description: '`ClientErrorBadRequest`'
     post:
@@ -3006,6 +3003,39 @@ paths:
                     $ref: '#/components/schemas/appointment'
         '404':
           description: '`ClientErrorNotFound`'
+  /v2/appointments/calendar:
+    get:
+      summary: 'Author:기호,달력 전용 약속+리뷰 조회'
+      description: 'Author:기호, Get 방식으로 달력 전용 약속+리뷰 조회'
+      tags:
+        - appointments
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: 전체 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      appointments:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/appointment'
+                      reviews:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/review'
+        '400':
+          description: '`ClientErrorBadRequest`'
 
   /v1/appointments:
     get:
