@@ -10,7 +10,7 @@ appointmentRouter.get('/calendar', appointmentController.calendarAppointment);
 
 appointmentRouter.get('/:appointmentId', appointmentController.getOneAppointment);
 
-appointmentRouter.post('/', appointmentController.writeAppointment);
+appointmentRouter.post('/', appointmentController.writeAppointmentV2);
 
 appointmentRouter.delete('/:appointmentId', appointmentController.deleteAppointment);
 
