@@ -2594,10 +2594,14 @@ paths:
                   type: string
                 center_address:
                   type: string
-                center_longitude:
+                fitness_longitude:
                   type: number
-                center_latitude:
+                  format: double
+                fitness_latitude:
                   type: number
+                  format: double
+                kakao_url:
+                  type: string
       responses:
         '201':
           description: '`SUCCESS Created`'
