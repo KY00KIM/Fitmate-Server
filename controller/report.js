@@ -33,7 +33,7 @@ const reportController = {
             });
             slack.send({
                 channel: '#reports',
-                text: `Report_user: ${JSON.stringify(user)} \nReported_post: ${JSON.stringify(post)}`,
+                text: `Report_user: ${JSON.stringify(user)} \n\n\n\nReported_post: ${JSON.stringify(post)}`,
                 username:'FitMate'
             });
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessCreated', STATUS_CODE.SuccessCreated);
@@ -64,7 +64,7 @@ const reportController = {
             });
             slack.send({
                 channel: '#reports',
-                text: `Report_user: ${JSON.stringify(user1)} \nReported_user: ${JSON.stringify(user2)} \nReported_content: ${req.body.reported_content}`,
+                text: `Report_user: ${JSON.stringify(user1)} \n\n\n\nReported_user: ${JSON.stringify(user2)}  \n\n\n\nReported_content: ${req.body.reported_content}`,
                 username:'FitMate'
             });
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessCreated', STATUS_CODE.SuccessCreated);
