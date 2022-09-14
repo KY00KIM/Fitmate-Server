@@ -26,7 +26,7 @@ const userController = {
   */
   getAllUsers: async (req, res) => {
     try {
-      const users = await User.find({});
+      const users = await User.find({}).lean();
       //logger.info(`${req.decoded.id}`);
       users.forEach((user) => {
         user.user_profile_img = replaceS3toCloudFront(user.user_profile_img)
@@ -47,7 +47,7 @@ const userController = {
   getOneUser: async (req, res) => {
     try {
       const { userId } = req.params
-      const user = await User.findById(userId);
+      const user = await User.findById(userId).lean();
       user.user_profile_img = replaceS3toCloudFront(user.user_profile_img)
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
     } catch (error) {
@@ -65,7 +65,7 @@ const userController = {
     try {
       const { userId } = req.params;
       //찾아서 업데이트
-      const user = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true });
+      const user = await User.findByIdAndUpdate(userId, req.body, { new: true, runValidators: true }).lean();
       user.user_profile_img = replaceS3toCloudFront(user.user_profile_img)
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
@@ -151,8 +151,8 @@ const userController = {
 
   loginUser: async (req, res) => {
     try {
-      const uid = req.user.social.uid
-      const user_id = await checkUserValid(uid)
+      const uid = req.user.social.uid;
+      const user_id = await checkUserValid(uid);
       if (user_id) {
         const device_token = req.header('Device');
         const deviceRes = await checkDeviceToken(user_id, device_token);

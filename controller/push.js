@@ -8,14 +8,14 @@ const { User } = require("../model/User");
 const { PushSchedule } = require('../model/PushSchedule');
 
 async function pushNotificationUser(userId, TITLE, BODY){
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).lean();
     user.social.device_token.forEach((deviceToken) => {
         pushNotification(deviceToken, TITLE, BODY);
     });
 };
 
 async function pushDataUser(userId, Data){
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).lean();
     user.social.device_token.forEach((deviceToken) => {
         pushData(deviceToken, Data);
     });
@@ -59,7 +59,10 @@ async function registerPush(date = Date.now()){
 
         const pushes = await PushSchedule.find({
             rule: {$gte: new Date(date)}
-        }).populate('match_start_id', '_id user_nickname').populate('match_join_id', '_id user_nickname');
+        })
+            .populate('match_start_id', '_id user_nickname')
+            .populate('match_join_id', '_id user_nickname')
+            .lean();
 
         pushes.forEach((push)=>{  
             let rule = new schedule.RecurrenceRule();
@@ -119,7 +122,7 @@ async function pushPopup(req, res){
             "notification": notification,
             "Type": "NOTICE"
         };
-        const users = await User.find();
+        const users = await User.find().lean();
         for(const user of users){
             for(const deviceToken of user.social.device_token){
                 await pushData(deviceToken, data);
@@ -146,7 +149,7 @@ async function pushTest(req, res){
             body: { userId },
         } = req;
     
-        const user = await User.findById(userId);  
+        const user = await User.findById(userId).lean();
             
         const data = {
             "notification": "TEST",
@@ -169,7 +172,8 @@ async function getUserPush(req, res){
             {is_deleted:false}, {pushType: {$ne:"GPS"}},{$or:[{match_start_id: req.user.id}, {match_join_id: req.user.id}]}
             ]})
             .populate('match_start_id', 'user_nickname user_profile_img')
-            .populate('match_join_id', 'user_nickname user_profile_img');
+            .populate('match_join_id', 'user_nickname user_profile_img')
+            .lean();
         ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'Clear Success', STATUS_CODE.SuccessOK);
       } catch (error) {
         ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -178,7 +182,8 @@ async function getUserPush(req, res){
 
 async function deletePush(req, res){
     try{
-        const result = await PushSchedule.findByIdAndUpdate(req.params.pushId, {is_deleted: true});
+        const result = await PushSchedule.findByIdAndUpdate(req.params.pushId, {is_deleted: true})
+            .lean();
         ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'Delete Success', STATUS_CODE.SuccessOK);
     }catch(error){
         ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);

@@ -67,8 +67,8 @@ const appointmentController = {
       } = req;
       const fitness_center_id = await fitnesscenterController.getFitnessCenterId(fitness_center);
 
-      const match_start_user = await User.findById(match_start_id);
-      const match_join_user = await User.findById(match_join_id);
+      const match_start_user = await User.findById(match_start_id).lean();
+      const match_join_user = await User.findById(match_join_id).lean();
 
       const appointment = await Appointment.create({
         "center_id": fitness_center_id,
@@ -169,8 +169,8 @@ const appointmentController = {
         body: { fitness_center_id, match_start_id, match_join_id, appointment_date },
       } = req;
 
-      const match_start_user = await User.findById(match_start_id);
-      const match_join_user = await User.findById(match_join_id);
+      const match_start_user = await User.findById(match_start_id).lean();
+      const match_join_user = await User.findById(match_join_id).lean();
 
       const appointment = await Appointment.create({
         "center_id": fitness_center_id,
@@ -270,7 +270,7 @@ const appointmentController = {
   deleteAppointment: async (req, res) => {
     try {
       const appointmentId = req.params.appointmentId;
-      const result = await Appointment.findByIdAndUpdate(appointmentId, {'is_deleted': true}, { new: true, runValidators: true});
+      const result = await Appointment.findByIdAndUpdate(appointmentId, {'is_deleted': true}, { new: true, runValidators: true}).lean();
       const schedules = schedule.scheduledJobs;
       schedule.cancelJob(schedules['APPOINTMENT' + appointmentId]);
       schedule.cancelJob(schedules['REVIEW' + appointmentId]);
@@ -284,7 +284,7 @@ const appointmentController = {
   deleteManyAppointmentByUser: async (user_id) => {
     try {
       const result = await Appointment.updateMany({ $or: [{ 'match_start_id': user_id }, { 'match_join_id': user_id }] }, { 'is_deleted': true });
-      return result
+      return result;
     } catch (e) {
       console.log(e)
       return (e)
@@ -292,8 +292,7 @@ const appointmentController = {
   },
   calendarAppointment: async  (req, res) => {
     try{
-      // const user_id = req.user.id;
-      const user_id = '62f888603f805af3eef5a1d7';
+      const user_id = req.user.id;
       let docs = {}
       docs.appointments = await Appointment.find(
           {
@@ -309,9 +308,7 @@ const appointmentController = {
       for(let result of docs.appointments){
         if(result.isReviewed){
           const reviews = await Review.findOne({appointment_id: result._id});
-          console.log('appointment.user_review:',result);
           docs.reviews.push(reviews);
-          console.log('appointment.user_review:',result);
           result.appointment_date = timeConvert.addNineHours(result.appointment_date);
           result.createdAt = timeConvert.addNineHours(result.createdAt);
           result.updatedAt = timeConvert.addNineHours(result.updatedAt);

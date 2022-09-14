@@ -7,7 +7,7 @@ const bannerController = {
     getAllBanners: async (req, res) => {
         try {
             const today = moment().startOf('day');
-            const banners = await Banner.find({ is_deleted: false, expire_date: {$gte: today.toDate()} }).sort({ createdAt: -1 });
+            const banners = await Banner.find({ is_deleted: false, expire_date: {$gte: today.toDate()} }).sort({ createdAt: -1 }).lean();
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](banners, 'SuccessOK', STATUS_CODE.SuccessOK);
         } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -19,7 +19,6 @@ const bannerController = {
                 body: { center_url, fitness_center_id, expire_date},
             } = req;
 
-        const center_id = await fitnesscenterController.getFitnessCenterId(promise_location);
             const banner = await Banner.create({
                 center_url: center_url,
                 fitness_center_id: fitness_center_id,
@@ -42,7 +41,7 @@ const bannerController = {
     bannerClicked: async (req, res) =>{
         try{
             const { bannerId } = req.params;
-            const banner = await Banner.findByIdAndUpdate(bannerId, { $inc:{click_num: 1}} ,{ new: true, runValidators: true });
+            const banner = await Banner.findByIdAndUpdate(bannerId, { $inc:{click_num: 1}} ,{ new: true, runValidators: true }).lean();
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](banner, 'Clicked SuccessOK', STATUS_CODE.SuccessOK);
         }catch(error){
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'Invalid Banner', STATUS_CODE.ClientErrorBadRequest);
