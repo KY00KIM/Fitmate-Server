@@ -28,7 +28,7 @@ router.get('/users/valid/:nickname', async (req, res) => {
         ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ServerErrorInternal', STATUS_CODE.ServerErrorInternal);
     };
 });
-
+router.post('/v1/users/oauth/kakao', customTokenController);
 router.use('/v2', v2Router);
 router.use('/v1', verifyUser, v1Router);
 

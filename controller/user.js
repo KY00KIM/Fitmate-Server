@@ -1,5 +1,5 @@
 const { User } = require("../model/User");
-const {Post} = require("../model/Post");
+const { Post } = require("../model/Post");
 const postController = require('../controller/post')
 const chatController = require('../controller/chat')
 const reviewController = require('../controller/review')
@@ -11,11 +11,11 @@ const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const timeConvert = require('../config/timeConvert');
 const logger = require('../config/winston');
-const {generateRefreshToken, generateAccessToken} = require('../utils/util');
+const { generateRefreshToken, generateAccessToken } = require('../utils/util');
 const { replaceS3toCloudFront } = require('../config/aws_s3');
 const { app } = require("firebase-admin");
-const {ObjectId} = require("mongodb");
-const {Appointment} = require("../model/Appointment");
+const { ObjectId } = require("mongodb");
+const { Appointment } = require("../model/Appointment");
 
 
 
@@ -154,12 +154,13 @@ const userController = {
       const uid = req.user.social.uid;
       const user_id = await checkUserValid(uid);
       if (user_id) {
+        const user_object = req.user.social;
         const device_token = req.header('Device');
         const deviceRes = await checkDeviceToken(user_id, device_token);
-        return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ user_id, device_set: deviceRes }, 'SuccessOK', STATUS_CODE.SuccessOK);
+        return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ user_id, device_set: deviceRes, fir_user: user_object }, 'SuccessOK', STATUS_CODE.SuccessOK);
       }
 
-      return ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+      return ResponseManager.getDefaultResponseHandler(res)['onError'](req.user.social, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
     } catch (error) {
       console.log(error)
       return ResponseManager.getDefaultResponseHandler(res)['onError'](error, STATUS_CODE.ClientErrorBadRequest);
@@ -168,19 +169,19 @@ const userController = {
   loginUserbyJWT: async (req, res) => {
     try {
       const user_id = req.user.id;
-      if(!req.header('Device')){
-        return ResponseManager.getDefaultResponseHandler(res)['onError']("",'DeviceTokenNotFound', STATUS_CODE.ClientErrorNotFound);
-      }else {
+      if (!req.header('Device')) {
+        return ResponseManager.getDefaultResponseHandler(res)['onError']("", 'DeviceTokenNotFound', STATUS_CODE.ClientErrorNotFound);
+      } else {
         // 가독성
         const device_token = req.header('Device');
-        const deviceRes = await checkDeviceToken(user_id, device_token);    
+        const deviceRes = await checkDeviceToken(user_id, device_token);
         const user = await User.findById(user_id);
         ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessOK', STATUS_CODE.SuccessOK, user_id);
       }
 
     } catch (error) {
       console.log(error)
-      return ResponseManager.getDefaultResponseHandler(res)['onError'](error, "ClientErrorNotFound",STATUS_CODE.ClientErrorBadRequest);
+      return ResponseManager.getDefaultResponseHandler(res)['onError'](error, "ClientErrorNotFound", STATUS_CODE.ClientErrorBadRequest);
     }
   },
 
@@ -212,10 +213,10 @@ const userController = {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
-  refreshTokens: async(req, res)=>{
-    try{
+  refreshTokens: async (req, res) => {
+    try {
 
-    }catch(error){
+    } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'Token', STATUS_CODE.ClientErrorBadRequest);
     }
   }
@@ -227,8 +228,8 @@ const checkDeviceToken = async (user_id, device_token) => {
     // 디바이스 토큰 3개로 제한 
     const user = await User.findById(user_id);
     if (device_token && !user.social.device_token.includes(device_token)) {
-      await User.findByIdAndUpdate(user_id, {$pop:{"social.device_token": -1}}, { new: true, runValidators: true })
-      const updateduser = await User.findByIdAndUpdate(user_id, {$push: { "social.device_token": device_token } }, { new: true, runValidators: true })
+      await User.findByIdAndUpdate(user_id, { $pop: { "social.device_token": -1 } }, { new: true, runValidators: true })
+      const updateduser = await User.findByIdAndUpdate(user_id, { $push: { "social.device_token": device_token } }, { new: true, runValidators: true })
       console.log(updateduser);
       return true;
     }
