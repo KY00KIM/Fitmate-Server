@@ -8,6 +8,7 @@ const matchController = require('./match');
 const reviewController = require('./review');
 const { replaceS3toCloudFront } = require('../config/aws_s3');
 const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 const { originAgentCluster } = require('helmet');
 // cloudwatch
 
@@ -184,6 +185,7 @@ const postController = {
         // Should Change
         limit = 10;
       };
+
       let options = {
         page: page,
         limit: limit,
@@ -203,28 +205,34 @@ const postController = {
         sort: { createdAt: -1 },
       };
       if(req.query.sort == 'distance'){
-        options = {
-          page: page,
-          limit: limit,
-          populate:
-              [
-                {
-                  path : 'user_id',
-                  select : {user_nickname : 1, user_profile_img : 1}
-                },
-                {
-                  path : 'promise_location',
-                }
-              ],
-          collation: {
-            locale: 'en',
-          },
-          sort: { createdAt: -1 },
-        };
+        // const user = await User.findById(req.user.id);
+        // const PostUserLocation = mongoose.model('FitMate',
+        //     new Schema({ url: String, text: String, id: Number}),
+        //     'PostUserLocation');
+        // console.log(user.user_longitude, user.user_latitude);
+        // const result = await PostUserLocation.find({
+        //   fitnesscenter:{
+        //     location:
+        //         { $near :
+        //               {
+        //                 $geometry: { type: "Point",  coordinates: [ user.user_longitude, user.user_latitude ] },
+        //                 $minDistance: 1000,
+        //                 $maxDistance: 5000
+        //               }
+        //         }
+        //   }
+        // });
+
+        // ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
+        await Post.paginate({is_deleted: false, user_id: { $ne: req.user.id }}, options, (err, result)=>{
+          result.docs.sort(() => Math.random() - 0.5);
+          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
+        });
+      }else{
+        await Post.paginate({is_deleted: false, user_id: { $ne: req.user.id }}, options, (err, result)=>{
+          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
+        });
       }
-      await Post.paginate({is_deleted: false, user_id: { $ne: req.user.id }}, options, (err, result)=>{
-        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
-      });
     } catch (error) {
       console.error(error);
       ResponseManager.getDefaultResponseHandler(res)['onError']('ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
