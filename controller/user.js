@@ -160,7 +160,7 @@ const userController = {
         return ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ user_id, device_set: deviceRes, fir_user: user_object }, 'SuccessOK', STATUS_CODE.SuccessOK);
       }
 
-      return ResponseManager.getDefaultResponseHandler(res)['onError'](req.user.social, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+      return ResponseManager.getDefaultResponseHandler(res)['onError'](req.user.social, 404, STATUS_CODE.ClientErrorNotFound, { hi: 123 });
     } catch (error) {
       console.log(error)
       return ResponseManager.getDefaultResponseHandler(res)['onError'](error, STATUS_CODE.ClientErrorBadRequest);
