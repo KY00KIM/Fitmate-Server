@@ -217,7 +217,7 @@ const fitnesscenterController = {
           return;
         }
         let tokens = keyWord.split(' ');
-        await FitnessCenter.paginate({$text: {$search: tokens.join('')}}, options, (err, result)=>{
+        await FitnessCenter.paginate({$text: {$search: keyWord}}, options, (err, result)=>{
           ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
         });
       }else{
