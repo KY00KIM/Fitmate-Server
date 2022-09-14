@@ -13,14 +13,14 @@ const reportController = {
     */
     reportPost: async (req, res) => {
         try {
-            const post = await Post.findById(req.params.postId);
+            const post = await Post.findById(req.params.postId).lean();
             if(!post){
-                ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'NotFoundPost', STATUS_CODE.ClientErrorBadRequest);
+                ResponseManager.getDefaultResponseHandler(res)['onError'](post, 'NotFoundPost', STATUS_CODE.ClientErrorBadRequest);
                 return;
             }            
-            const user = await User.findById(req.user.id);
+            const user = await User.findById(req.user.id).lean();
             if(!user){ 
-                ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'NotFoundUser', STATUS_CODE.ClientErrorBadRequest);
+                ResponseManager.getDefaultResponseHandler(res)['onError'](user, 'NotFoundUser', STATUS_CODE.ClientErrorBadRequest);
                 return;
             }
             const result = await ReportedPost.create({
@@ -54,7 +54,7 @@ const reportController = {
     */
      getAllPostReport: async (req, res) => {
         try {
-            const reports = await ReportedPost.find();
+            const reports = await ReportedPost.find().lean();
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](reports, 'SuccessCreated', STATUS_CODE.SuccessCreated);
             } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -66,7 +66,7 @@ const reportController = {
     */
      getAllUserReport: async (req, res) => {
         try {
-            const reports = await ReportedUser.find();
+            const reports = await ReportedUser.find().lean();
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](reports, 'SuccessCreated', STATUS_CODE.SuccessCreated);
             } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);

@@ -565,6 +565,14 @@ components:
       required: true
       schema:
         type: string
+    bannerId:
+      name: bannerId
+      in: path
+      description: ID of banner
+      required: true
+      schema:
+        type: string
+        format: ObjectId
 
   securitySchemes:
     tokenAuth:

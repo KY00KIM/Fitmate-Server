@@ -13,7 +13,7 @@ const reviewController = {
    */
   getReviewCandidates: async (req, res) => {
     try {
-      const reviewCandidates = await ReviewCandidate.find({});
+      const reviewCandidates = await ReviewCandidate.find({}).lean();
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](reviewCandidates, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -58,7 +58,7 @@ const reviewController = {
         appointment_id: appointmentId
       });
 
-      await Appointment.findByIdAndUpdate(appointmentId, { isReviewed: true });
+      await Appointment.findByIdAndUpdate(appointmentId, { isReviewed: true }).lean();
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
 
@@ -75,7 +75,10 @@ const reviewController = {
       const {
         params: { review_recv_id },
       } = req;
-      const review = await Review.find({ "review_recv_id": review_recv_id }).populate('review_send_id').populate('review_candidates');
+      const review = await Review.find({ "review_recv_id": review_recv_id })
+          .populate('review_send_id')
+          .populate('review_candidates')
+          .lean();
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](review, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.error(error);
@@ -140,7 +143,8 @@ const reviewController = {
   getFitnessCenterReviewByUser: async (req, res) => {
     try{
       const reviews = await FitnessCenterReview.find({center_id:req.params.fitnesscenterId})
-          .populate('review_send_id', 'user_nickname user_profile_img');
+          .populate('review_send_id', 'user_nickname user_profile_img')
+          .lean();
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](reviews, 'SuccessOK', STATUS_CODE.SuccessOK);
     }catch(error){
 
@@ -155,7 +159,7 @@ const reviewController = {
       const findDuplicate = await FitnessCenterReview.find({
         center_id: req.params.fitnesscenterId,
         review_send_id:req.user.id
-      });
+      }).lean();
       if(findDuplicate.length != 0){
         ResponseManager.getDefaultResponseHandler(res)['onError'](findDuplicate, '이미 해당 피트니스 센터 리뷰를 등록했습니다.', STATUS_CODE.ClientErrorBadRequest);
       }else{
@@ -182,7 +186,7 @@ const reviewController = {
   },
   getFitnessCenterReviewCandidates: async (req, res) => {
     try{
-      const result = await FitnessCenterReviewCandidate.find();
+      const result = await FitnessCenterReviewCandidate.find().lean();
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
     }catch(error){
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);

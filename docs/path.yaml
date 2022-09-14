@@ -3989,9 +3989,22 @@ paths:
       description: 'Author:기호, GET 방식으로 로그인 없이 둘러보기 모집글 조회'
       tags:
         - visitor
+      parameters:
+        - name: page
+          in: query
+          description: page to get
+          schema:
+            type: number
+            format: integer
+        - name: limit
+          in: query
+          description: page to get
+          schema:
+            type: number
+            format: integer
       responses:
         '201':
-          description: '`SuccessCreated` 사용자 위치 정보 등록 완료'
+          description: '`SuccessOK`'
           content:
             application/json:
               schema:
@@ -4001,30 +4014,78 @@ paths:
                     type: boolean
                   message:
                     type: string
-                  refresh:
-                    type: string
                   data:
-                    $ref: '#/components/schemas/banner'
+                    type: object
+                    properties:
+                      totalDocs:
+                        type: number
+                      limit:
+                        type: number
+                      totalPages:
+                        type: number
+                      page:
+                        type: number
+                      pagingCounter:
+                        type: number
+                      hasPrevPage:
+                        type: boolean
+                        default: null
+                      hasNextPage:
+                        type: boolean
+                      prevPage:
+                        type: number
+                      nextPage:
+                        type: number
+                      docs:
+                        type: array
+                        items:
+                          type: object
+                          $ref: '#/components/schemas/post'
         '404':
           description: '`ClientErrorNotFound`'
   /v2/visitor/fitnesscenter:
     get:
       tags:
         - visitor
-      summary: Author:기호, 로그인 없이 둘어보기 피트니스 센터
+      summary: Author:기호, 로그인 없이 둘어보기 피트니스 센터 조회
       description: Author:기호, 로그인 없이 둘어보기 피트니스 센터를 조회합니다.
-      # parameters:
-      #   - $ref: '#/components/parameters/authToken'
-      #   - $ref: '#/components/parameters/postId'
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                image:
-                  type: string
-                  format: binary
+      parameters:
+        - name: page
+          in: query
+          description: page to get
+          schema:
+            type: number
+            format: integer
+        - name: limit
+          in: query
+          description: page to get
+          schema:
+            type: number
+            format: integer
+        - name: first_longitude
+          in: query
+          description: minimum longitude
+          schema:
+            type: number
+            format: double
+        - name: first_latitude
+          in: query
+          description: minimum latitude
+          schema:
+            type: number
+            format: double
+        - name: second_longitude
+          in: query
+          description: maximum longitude
+          schema:
+            type: number
+            format: double
+        - name: second_latitude
+          in: query
+          description: maximum latitude
+          schema:
+            type: number
+            format: double
       responses:
         '200':
           description: '`SUCCESS OK`'
@@ -4037,10 +4098,34 @@ paths:
                     type: boolean
                   message:
                     type: string
-                  refresh:
-                    type: string
                   data:
-                    type: string
-                    format: s3 URL
+                    type: object
+                    properties:
+                      totalDocs:
+                        type: number
+                      limit:
+                        type: number
+                      totalPages:
+                        type: number
+                      page:
+                        type: number
+                      pagingCounter:
+                        type: number
+                      hasPrevPage:
+                        type: boolean
+                        default: null
+                      hasNextPage:
+                        type: boolean
+                      prevPage:
+                        type: number
+                      nextPage:
+                        type: number
+                      docs:
+                        type: array
+                        items:
+                          type: object
+                          $ref: '#/components/schemas/fitnessCenter'
+                    '404':
+                      description: '`ClientErrorNotFound`'
         '400':
           description: '`ClientErrorBadRequest`'

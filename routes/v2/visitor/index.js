@@ -4,6 +4,6 @@ const visitorController = require('../../../controller/visitor');
 
 visitorRouter.get('/posts', visitorController.getPosts);
 
-visitorRouter.patch('/fitnesscenter', visitorController.getFitnessCenter);
+visitorRouter.get('/fitnesscenter', visitorController.getFitnessCenter);
 
 module.exports = visitorRouter;

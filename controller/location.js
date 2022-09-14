@@ -9,7 +9,7 @@ const locationController = {
   */
   getAllLocation: async (req, res) => {
     try {
-      const locations = await Location.find({});
+      const locations = await Location.find({}).lean();
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](locations, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error);
@@ -23,7 +23,7 @@ const locationController = {
   getOneLocation: async (req, res) => {
     try {
       const { locId } = req.params
-      const location = await Location.findById(locId);
+      const location = await Location.findById(locId).lean();
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](location, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error);
