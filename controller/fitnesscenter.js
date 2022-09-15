@@ -115,21 +115,23 @@ const fitnesscenterController = {
         { "$sort": { "userCount": -1 } }
       ]);
       if(req.query.first_longitude && req.query.first_latitude && req.query.second_longitude && req.query.second_latitude){
-        const first_longitude = parseInt(req.query.first_longitude);
-        const second_longitude = parseInt(req.query.second_longitude);
-        const first_latitude = parseInt(req.query.first_latitude);
-        const second_latitude = parseInt(req.query.second_latitude);
+        const first_longitude = parseFloat(req.query.first_longitude);
+        const second_longitude = parseFloat(req.query.second_longitude);
+        const first_latitude = parseFloat(req.query.first_latitude);
+        const second_latitude = parseFloat(req.query.second_latitude);
+        console.log(first_latitude, second_latitude, first_longitude, second_longitude);
         if(first_latitude > second_latitude || first_longitude > second_longitude){
           return ResponseManager.getDefaultResponseHandler(res)['onError'](
               {first_latitude, second_latitude, first_longitude, second_longitude},
               'first is bigger than second', STATUS_CODE.ClientErrorBadRequest
           );
         }
-        let result = await FitnessCenter.aggregatePaginate({$and: [
-            {"fitness_longitude": {"gte":first_longitude}},
-            {"fitness_longitude": {"lte":second_longitude}},
-            {"fitness_latitude": {"gte":first_latitude}},
-            {"fitness_latitude": {"lte":second_latitude}}
+        let result = await FitnessCenter.paginate(
+            {$and: [
+              {fitness_longitude: {$gt: first_longitude}},
+              {fitness_longitude: {$lt: second_longitude}},
+              {fitness_latitude: {$gt:first_latitude}},
+              {fitness_latitude: {$lt:second_latitude}}
           ]}, options);
 
         result.userCount = [];
