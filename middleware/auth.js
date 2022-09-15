@@ -22,7 +22,7 @@ const verifyUser = async (req, res, next) => {
             if (user) {
                 req.user.id = user._id;
                 return next();
-            } else if (req.originalUrl == "/v1/users/oauth" || "v2/users/oauth" || req.originalUrl == "/v1/users/login" || "/v2/users/login" || req.originalUrl == "/v1/users/oauth/kakao") {
+            } else if (req.originalUrl == "/v1/users/oauth" || "/v2/users/oauth" || req.originalUrl == "/v1/users/login" || "/v2/users/login" || req.originalUrl == "/v1/users/oauth/kakao") {
                 //회원가입을 위한 요청일 경우
                 return next();
             }
