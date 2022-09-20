@@ -6,6 +6,7 @@ const STATUS_CODE = require('../config/http_status_code');
 const locationController = require('./location')
 const {Post} = require("../model/Post");
 const {ObjectId} = require("mongodb");
+const {token} = require("morgan");
 
 const fitnesscenterController = {
   /**
@@ -181,15 +182,7 @@ const fitnesscenterController = {
   },
   deleteFitnessCenterByKeyWord: async (req, res) => {
     try{
-      const result = await FitnessCenter.find();
-      for(const center of result){
-        if(center.fitness_latitude > center.fitness_longitude){
-          await FitnessCenter.findByIdAndUpdate(center._id, {
-            fitness_latitude:center.fitness_longitude,
-            fitness_longitude:center.fitness_latitude,
-          })
-        }
-      }
+      const result = await FitnessCenter.deleteMany({center_name: {$regex: req.params.keyWord}});
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     }catch(error){
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -219,9 +212,19 @@ const fitnesscenterController = {
           return;
         }
         let tokens = keyWord.split(' ');
-        await FitnessCenter.paginate({$text: {$search: keyWord}}, options, (err, result)=>{
-          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
-        });
+        if(tokens.length > 1){
+          await FitnessCenter.paginate(
+              {$text: {$search: keyWord}},
+              options, (err, result)=>{
+                ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
+          });
+        }else{
+          await FitnessCenter.paginate(
+              {$text: {$search: keyWord}},
+              options, (err, result)=>{
+                ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
+              });
+        }
       }else{
         ResponseManager.getDefaultResponseHandler(res)['onSuccess']([], 'NO KEYWORD!', STATUS_CODE.SuccessNoContent);
       }

@@ -3,14 +3,14 @@ const v1Router = require('./v1');
 const v2Router = require('./v2');
 const path = require('path');
 const { replaceS3toCloudFront } = require('../config/aws_s3');
-const { verifyUser, customTokenController } = require("../middleware/auth");
+const { verifyUser, customTokenController, publicLanding } = require("../middleware/auth");
 const { UserTrace } = require('../model/UserTrace');
 const { Appointment } = require('../model/Appointment');
 const { User } = require('../model/User');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 
-router.get('/', (req, res) => {
+router.get('/',(req, res) => {
     res.sendFile(path.join(__dirname, '../public/landing-02-image-bg.html'));
 });
 

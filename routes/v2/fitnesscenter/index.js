@@ -3,7 +3,7 @@ const fitnesscenterRouter = express.Router();
 const fitnesscenterController = require('../../../controller/fitnesscenter');
 
 
-fitnesscenterRouter.get('/delete/:keyWord', fitnesscenterController.deleteFitnessCenterByKeyWord);
+fitnesscenterRouter.delete('/delete/:keyWord', fitnesscenterController.deleteFitnessCenterByKeyWord);
 
 fitnesscenterRouter.get('/search', fitnesscenterController.searchFitnessCenter);
 
