@@ -29,6 +29,16 @@ app.use(express.urlencoded({ extended: false }));
 // morgan 로그 설정 
 app.use(morgan(morganFormat, { stream: logger.stream }));
 
+// const cspOptions = {
+//     directives: {
+//         // 기본 옵션을 가져옵니다.
+//         ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+//
+//         // 구글 API 도메인과 인라인된 스크립트를 허용합니다.
+//         "script-src": ["'self'", "*.googleapis.com", "'unsafe-inline'"],
+//     }
+// }
+
 // 보안 설정
 app.use(helmet());
 
