@@ -8,6 +8,25 @@ require("dotenv").config();
 
 const exceptions = ["/v1/api-docs", "/"];
 
+const publicLanding = async (req, res, next) => {
+    res.setHeader(
+        "Content-Security-Policy-Report-Only",
+        "default-src 'self';\n" +
+        "script-src 'report-sample' 'self';\n" +
+        "style-src 'report-sample' 'self';\n" +
+        "object-src 'none';\n" +
+        "base-uri 'self';\n" +
+        "connect-src 'self';\n" +
+        "font-src 'self';\n" +
+        "frame-src 'self';\n" +
+        "img-src 'self';\n" +
+        "manifest-src 'self';\n" +
+        "media-src 'self';\n" +
+        "report-uri https://6327de1d61f1dae92c2ae104.endpoint.csper.io/?v=2;\n" +
+        "worker-src 'none';")
+    return next();
+};
+
 const verifyUser = async (req, res, next) => {
 
     try {
