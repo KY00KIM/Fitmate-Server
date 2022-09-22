@@ -1,6 +1,7 @@
 const { Chatroom } = require('../model/Chatroom');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
+const {Appointment} = require("../model/Appointment");
 
 const chatController = {
     getAllChatroom: async (req, res) => {
@@ -23,7 +24,7 @@ const chatController = {
     },
     createOneChatroom: async (req, res) => {
         try {
-            const { chat_join_id } = req.body
+            const { chat_join_id } = req.body;
             const chatroom = await Chatroom.create({ chat_start_id: req.user.id, chat_join_id });
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](chatroom, 'SuccessCreated', STATUS_CODE.SuccessCreated);
         } catch (error) {
@@ -47,6 +48,7 @@ const chatController = {
                 .populate('chat_join_id')
                 .sort({createdAt:-1})
                 .lean();
+
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](ChatroomList, 'SuccessOK', STATUS_CODE.SuccessOK);
         } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -55,7 +57,17 @@ const chatController = {
     getOnePopulatedChatroom: async (req, res) => {
         try {
             const { chatroomId } = req.params;
-            const chatroom = await Chatroom.findById(chatroomId).populate('chat_start_id').populate('chat_join_id').lean();
+            let chatroom = await Chatroom.findById(chatroomId)
+                .populate('chat_start_id')
+                .populate('chat_join_id');
+            chatroom = chatroom.toObject();
+            chatroom.appointment = await Appointment.findOne({
+                $and:[
+                    {$or: [
+                        {$and:[{match_start_id:chatroom.chat_start_id}, {match_join_id:chatroom.chat_join_id}]},
+                        {$and:[{match_start_id:chatroom.chat_join_id}, {match_join_id:chatroom.chat_start_id}]},
+                ]}, {is_deleted: false}]});
+
             return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](chatroom, 'SuccessOK', STATUS_CODE.SuccessOK);
         } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);

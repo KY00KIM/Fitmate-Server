@@ -3323,7 +3323,30 @@ paths:
                     type: string
                   data:
                     type: object
-                    $ref: '#/components/schemas/chatroom'
+                    properties:
+                      _id:
+                        type: string
+                        format: ObjectId
+                      chat_start_id:
+                        type: string
+                        format: ObjectId
+                        description: references User
+                      chat_join_id:
+                        type: string
+                        format: ObjectId
+                        description: references User
+                      is_deleted:
+                        type: boolean
+                        default: false
+                      createdAt:
+                        type: string
+                        format: date
+                      updatedAt:
+                        type: string
+                        format: date
+                      appointment:
+                        type: object
+                        $ref: '#/components/schemas/appointment'
         '400':
           description: '`ClientErrorBadRequest`'
 
