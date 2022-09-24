@@ -403,13 +403,15 @@ paths:
       parameters:
         - $ref: '#/components/parameters/authToken'
       requestBody:
+        description: user id to be blocked
+        required: true
         content:
           application/json:
             schema:
               type: object
-                properties:
-                  blocked_user_id:
-                    type: string
+              properties:
+                blocked_user_id:
+                  type: string
       responses:
         '200':
           description: '`SUCCESS OK`'
@@ -431,7 +433,6 @@ paths:
 
         '400':
           description: '`ClientErrorBadRequest`'
-              
 
   /v1/users/login:
     get:
@@ -1739,24 +1740,24 @@ paths:
                     items:
                       $ref: '#/components/schemas/fitnessCenterReview'
                     example:
-                     [
+                      [
                         {
-                          "_id": "6319f2af628ff8367843a827",
-                          "center_id": "6316e5165f3a825466effc69",
-                          "review_send_id": {
-                            "_id": "62d68b0843aefb57300fe342",
-                            "user_nickname": "CurlTestUser",
-                            "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022_08_24_12_09_46.png",
-                            "id": "62d68b0843aefb57300fe342"
-                          },
-                          "center_rating": 3,
-                          "center_review_by_select": [
-                            "6319e2d4821cfa1d84516cdb"
-                          ],
-                          "createdAt": "2022-09-08T13:48:31.685Z",
-                          "updatedAt": "2022-09-08T13:48:31.685Z",
-                          "id": "6319f2af628ff8367843a827"
-                        }
+                          '_id': '6319f2af628ff8367843a827',
+                          'center_id': '6316e5165f3a825466effc69',
+                          'review_send_id':
+                            {
+                              '_id': '62d68b0843aefb57300fe342',
+                              'user_nickname': 'CurlTestUser',
+                              'user_profile_img': 'https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022_08_24_12_09_46.png',
+                              'id': '62d68b0843aefb57300fe342',
+                            },
+                          'center_rating': 3,
+                          'center_review_by_select':
+                            ['6319e2d4821cfa1d84516cdb'],
+                          'createdAt': '2022-09-08T13:48:31.685Z',
+                          'updatedAt': '2022-09-08T13:48:31.685Z',
+                          'id': '6319f2af628ff8367843a827',
+                        },
                       ]
     post:
       summary: 'Author:기호, 피트니스 센터 선택 리뷰 등록'
@@ -1809,20 +1810,20 @@ paths:
                     $ref: '#/components/schemas/fitnessCenterReview'
                   example:
                     {
-                      "success": true,
-                      "message": "SuccessCreated",
-                      "data": {
-                        "center_id": "6316e5165f3a825466effc69",
-                        "review_send_id": "62d68b0843aefb57300fe342",
-                        "center_rating": 3,
-                        "center_review_by_select": [
-                          "6319e2d4821cfa1d84516cdb"
-                        ],
-                        "_id": "6319f2af628ff8367843a827",
-                        "createdAt": "2022-09-08T13:48:31.685Z",
-                        "updatedAt": "2022-09-08T13:48:31.685Z",
-                        "id": "6319f2af628ff8367843a827"
-                      }
+                      'success': true,
+                      'message': 'SuccessCreated',
+                      'data':
+                        {
+                          'center_id': '6316e5165f3a825466effc69',
+                          'review_send_id': '62d68b0843aefb57300fe342',
+                          'center_rating': 3,
+                          'center_review_by_select':
+                            ['6319e2d4821cfa1d84516cdb'],
+                          '_id': '6319f2af628ff8367843a827',
+                          'createdAt': '2022-09-08T13:48:31.685Z',
+                          'updatedAt': '2022-09-08T13:48:31.685Z',
+                          'id': '6319f2af628ff8367843a827',
+                        },
                     }
         '400':
           description: '`ClientErrorBadRequest`'
@@ -1854,23 +1855,25 @@ paths:
                     type: string
                   data:
                     type: array
-#                    items:
-#                      $ref: '#/components/schemas/fitnessCenterReview'
+                    #                    items:
+                    #                      $ref: '#/components/schemas/fitnessCenterReview'
                     example:
                       {
-                        "success": true,
-                        "message": "SuccessOK",
-                        "data": {
-                          "review_count": 2,
-                          "center_rating": 4.5,
-                          "center_review_count": {
-                            "6319e2c3821cfa1d84516cd9": 2,
-                            "6319e2d4821cfa1d84516cdb": 1,
-                            "6319e3db821cfa1d84516cdd": 1,
-                            "6319e3fc821cfa1d84516cdf": 1,
-                            "6319e6e529188e0099d9ec14": 2
-                          }
-                        }
+                        'success': true,
+                        'message': 'SuccessOK',
+                        'data':
+                          {
+                            'review_count': 2,
+                            'center_rating': 4.5,
+                            'center_review_count':
+                              {
+                                '6319e2c3821cfa1d84516cd9': 2,
+                                '6319e2d4821cfa1d84516cdb': 1,
+                                '6319e3db821cfa1d84516cdd': 1,
+                                '6319e3fc821cfa1d84516cdf': 1,
+                                '6319e6e529188e0099d9ec14': 2,
+                              },
+                          },
                       }
 
   /v1/reviews/candidates:
@@ -2153,26 +2156,28 @@ paths:
                       $ref: '#/components/schemas/pushSchedule'
                     example:
                       {
-                        "_id": "62dcb55d2a9c7be7cf2985bd",
-                        "pushType": "REVIEW",
-                        "match_start_id": {
-                          "_id": "62c6699c4b8212e4674dbe15",
-                          "user_nickname": "한강코딩하는사람",
-                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
-                          "id": "62c6699c4b8212e4674dbe15"
-                        },
-                        "match_join_id": {
-                          "_id": "62c6697a4b8212e4674dbe14",
-                          "user_nickname": "잠자고싶은사람",
-                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
-                          "id": "62c6697a4b8212e4674dbe14"
-                        },
-                        "appointmentId": "62dcb55d2a9c7be7cf2985bb",
-                        "rule": "2022-08-30T16:50:00.000Z",
-                        "createdAt": "2022-07-24T02:58:37.223Z",
-                        "updatedAt": "2022-09-09T05:06:09.714Z",
-                        "is_deleted": false,
-                        "id": "62dcb55d2a9c7be7cf2985bd"
+                        '_id': '62dcb55d2a9c7be7cf2985bd',
+                        'pushType': 'REVIEW',
+                        'match_start_id':
+                          {
+                            '_id': '62c6699c4b8212e4674dbe15',
+                            'user_nickname': '한강코딩하는사람',
+                            'user_profile_img': 'https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg',
+                            'id': '62c6699c4b8212e4674dbe15',
+                          },
+                        'match_join_id':
+                          {
+                            '_id': '62c6697a4b8212e4674dbe14',
+                            'user_nickname': '잠자고싶은사람',
+                            'user_profile_img': 'https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg',
+                            'id': '62c6697a4b8212e4674dbe14',
+                          },
+                        'appointmentId': '62dcb55d2a9c7be7cf2985bb',
+                        'rule': '2022-08-30T16:50:00.000Z',
+                        'createdAt': '2022-07-24T02:58:37.223Z',
+                        'updatedAt': '2022-09-09T05:06:09.714Z',
+                        'is_deleted': false,
+                        'id': '62dcb55d2a9c7be7cf2985bd',
                       }
                   data2:
                     type: array
@@ -2180,26 +2185,28 @@ paths:
                       $ref: '#/components/schemas/pushSchedule'
                     example:
                       {
-                        "_id": "631ad5429e7f8637b19da489",
-                        "pushType": "NOTICE",
-                        "match_start_id": {
-                          "_id": "62c6699c4b8212e4674dbe15",
-                          "user_nickname": "한강코딩하는사람",
-                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
-                          "id": "62c6699c4b8212e4674dbe15"
-                        },
-                        "rule": "2022-09-09T16:50:00.000Z",
-                        "notification_body":"9월 19일 3시부터 4시까지 서버 점검 있습니다.",
-                        "createdAt": "2022-07-24T02:58:37.223Z",
-                        "updatedAt": "2022-09-09T05:06:09.714Z",
-                        "is_deleted": false,
-                        "match_join_id": {
-                          "_id": "62c6699c4b8212e4674dbe15",
-                          "user_nickname": "한강코딩하는사람",
-                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
-                          "id": "62c6699c4b8212e4674dbe15"
-                        },
-                        "id": "631ad5429e7f8637b19da489"
+                        '_id': '631ad5429e7f8637b19da489',
+                        'pushType': 'NOTICE',
+                        'match_start_id':
+                          {
+                            '_id': '62c6699c4b8212e4674dbe15',
+                            'user_nickname': '한강코딩하는사람',
+                            'user_profile_img': 'https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg',
+                            'id': '62c6699c4b8212e4674dbe15',
+                          },
+                        'rule': '2022-09-09T16:50:00.000Z',
+                        'notification_body': '9월 19일 3시부터 4시까지 서버 점검 있습니다.',
+                        'createdAt': '2022-07-24T02:58:37.223Z',
+                        'updatedAt': '2022-09-09T05:06:09.714Z',
+                        'is_deleted': false,
+                        'match_join_id':
+                          {
+                            '_id': '62c6699c4b8212e4674dbe15',
+                            'user_nickname': '한강코딩하는사람',
+                            'user_profile_img': 'https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg',
+                            'id': '62c6699c4b8212e4674dbe15',
+                          },
+                        'id': '631ad5429e7f8637b19da489',
                       }
                   data3:
                     type: array
@@ -2207,26 +2214,28 @@ paths:
                       $ref: '#/components/schemas/pushSchedule'
                     example:
                       {
-                        "_id": "631ad7d39e7f8637b19da48a",
-                        "pushType": "APPOINTMENT",
-                        "match_start_id": {
-                          "_id": "62c6699c4b8212e4674dbe15",
-                          "user_nickname": "한강코딩하는사람",
-                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
-                          "id": "62c6699c4b8212e4674dbe15"
-                        },
-                        "match_join_id": {
-                          "_id": "62c6697a4b8212e4674dbe14",
-                          "user_nickname": "잠자고싶은사람",
-                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
-                          "id": "62c6697a4b8212e4674dbe14"
-                        },
-                        "appointmentId": "62dcb55d2a9c7be7cf2985bb",
-                        "rule": "2022-08-30T16:50:00.000Z",
-                        "createdAt": "2022-07-24T02:58:37.223Z",
-                        "updatedAt": "2022-09-09T05:06:09.714Z",
-                        "is_deleted": false,
-                        "id": "631ad7d39e7f8637b19da48a"
+                        '_id': '631ad7d39e7f8637b19da48a',
+                        'pushType': 'APPOINTMENT',
+                        'match_start_id':
+                          {
+                            '_id': '62c6699c4b8212e4674dbe15',
+                            'user_nickname': '한강코딩하는사람',
+                            'user_profile_img': 'https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg',
+                            'id': '62c6699c4b8212e4674dbe15',
+                          },
+                        'match_join_id':
+                          {
+                            '_id': '62c6697a4b8212e4674dbe14',
+                            'user_nickname': '잠자고싶은사람',
+                            'user_profile_img': 'https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg',
+                            'id': '62c6697a4b8212e4674dbe14',
+                          },
+                        'appointmentId': '62dcb55d2a9c7be7cf2985bb',
+                        'rule': '2022-08-30T16:50:00.000Z',
+                        'createdAt': '2022-07-24T02:58:37.223Z',
+                        'updatedAt': '2022-09-09T05:06:09.714Z',
+                        'is_deleted': false,
+                        'id': '631ad7d39e7f8637b19da48a',
                       }
                   data4:
                     type: array
@@ -2234,28 +2243,29 @@ paths:
                       $ref: '#/components/schemas/pushSchedule'
                     example:
                       {
-                        "_id": "631ad7d39e7f8637b19da48a",
-                        "pushType": "EXERCISE",
-                        "match_start_id": {
-                          "_id": "62c6699c4b8212e4674dbe15",
-                          "user_nickname": "한강코딩하는사람",
-                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
-                          "id": "62c6699c4b8212e4674dbe15"
-                        },
-                        "match_join_id": {
-                          "_id": "62c6699c4b8212e4674dbe15",
-                          "user_nickname": "한강코딩하는사람",
-                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg",
-                          "id": "62c6699c4b8212e4674dbe15"
-                        },
-                        "appointmentId": "62dcb55d2a9c7be7cf2985bb",
-                        "rule": "2022-08-30T16:50:00.000Z",
-                        "createdAt": "2022-07-24T02:58:37.223Z",
-                        "updatedAt": "2022-09-09T05:06:09.714Z",
-                        "is_deleted": false,
-                        "id": "631ad7d39e7f8637b19da48a"
+                        '_id': '631ad7d39e7f8637b19da48a',
+                        'pushType': 'EXERCISE',
+                        'match_start_id':
+                          {
+                            '_id': '62c6699c4b8212e4674dbe15',
+                            'user_nickname': '한강코딩하는사람',
+                            'user_profile_img': 'https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg',
+                            'id': '62c6699c4b8212e4674dbe15',
+                          },
+                        'match_join_id':
+                          {
+                            '_id': '62c6699c4b8212e4674dbe15',
+                            'user_nickname': '한강코딩하는사람',
+                            'user_profile_img': 'https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022-07-24+02%3A04%3A16.jpg',
+                            'id': '62c6699c4b8212e4674dbe15',
+                          },
+                        'appointmentId': '62dcb55d2a9c7be7cf2985bb',
+                        'rule': '2022-08-30T16:50:00.000Z',
+                        'createdAt': '2022-07-24T02:58:37.223Z',
+                        'updatedAt': '2022-09-09T05:06:09.714Z',
+                        'is_deleted': false,
+                        'id': '631ad7d39e7f8637b19da48a',
                       }
-
 
   /v2/push/{pushId}:
     delete:
@@ -2565,7 +2575,7 @@ paths:
                               type: string
                               format: ObjectId
                             center_name:
-                                type: string
+                              type: string
                             center_address:
                               type: string
                             center_location:
