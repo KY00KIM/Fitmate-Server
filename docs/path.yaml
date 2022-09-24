@@ -394,6 +394,44 @@ paths:
                     format: s3 URL
         '400':
           description: '`ClientErrorBadRequest`'
+  /v2/users/blockuser:
+    post:
+      tags:
+        - users
+      summary: Author:규민, 사용자 차단 사용자등록
+      description: Author:규민,토큰에 해당하는 사용자의 차단목록에 불량 사용자를 추가합니다.
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+                properties:
+                  blocked_user_id:
+                    type: string
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/user'
+
+        '400':
+          description: '`ClientErrorBadRequest`'
+              
 
   /v1/users/login:
     get:

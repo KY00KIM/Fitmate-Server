@@ -21,10 +21,10 @@ const userSchema = mongoose.Schema({
     type: String,
     default: "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022_08_24_12_09_46.png"
   },
-  user_original_profile_img:{
-    type:String,
+  user_original_profile_img: {
+    type: String,
     select: false,
-    default:"https://fitmate-s3-bucket.s3.ap-northeast-2.amazonaws.com/profile_image/62d68b0843aefb57300fe342_2022_08_24_12_09_46.png"
+    default: "https://fitmate-s3-bucket.s3.ap-northeast-2.amazonaws.com/profile_image/62d68b0843aefb57300fe342_2022_08_24_12_09_46.png"
   },
   // 운동 스케줄 (0 : 아침, 1 : 오후, 2 : 저녁)
   user_schedule_time: Number,
@@ -38,7 +38,7 @@ const userSchema = mongoose.Schema({
     sun: { type: Boolean, default: false }
   },
   user_introduce: {
-    type:String,
+    type: String,
     default: "안녕하세요! 같이 운동해요 :)"
   },
   user_fitness_part: [{
@@ -61,7 +61,7 @@ const userSchema = mongoose.Schema({
   fitness_center_id: {
     type: ObjectId,
     ref: 'FitnessCenter',
-    required:true,
+    required: true,
     default: '62c66fe24b8212e4674dbe2c'
   },
   user_longitude: {
@@ -76,6 +76,10 @@ const userSchema = mongoose.Schema({
     type: ObjectId,
     ref: 'Location',
   },
+  blocked_users: [{
+    type: ObjectId,
+    ref: 'User'
+  }],
   social: {
     user_id: String,
     user_name: String,
