@@ -219,8 +219,19 @@ const userController = {
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'Token', STATUS_CODE.ClientErrorBadRequest);
     }
-  }
+  },
 
+  addBlockedUser: async (req, res) => {
+    try {
+      const { blocked_user_id } = req.body;
+      const user_id = req.user.id;
+      const result = await User.findByIdAndUpdate(user_id, { $push: { blocked_users: blocked_user_id } }, { new: true });
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess']({ result }, 'SuccessOK', STATUS_CODE.SuccessOK);
+    } catch (error) {
+      console.log(error);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  }
 };
 
 const checkDeviceToken = async (user_id, device_token) => {

@@ -73,6 +73,11 @@ components:
           type: string
           format: ObjectId
           description: references Location
+        blocked_users:
+          type: array
+          items:
+            type: string
+            format: ObjectId
         social:
           type: object
           properties:
