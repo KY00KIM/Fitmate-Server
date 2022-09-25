@@ -40,8 +40,17 @@ const chatController = {
     createOneChatroom: async (req, res) => {
         try {
             const { chat_join_id } = req.body;
-            const chatroom = await Chatroom.create({ chat_start_id: req.user.id, chat_join_id });
-            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](chatroom, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+            const dupl = await Chatroom.find({$or:[{
+                $and:[{chat_start_id: req.user.id},{chat_join_id: chat_join_id}]
+                },{
+                $and:[{chat_start_id: chat_join_id},{chat_join_id: req.user.id}]
+                }]});
+            if(dupl.length == 0){
+                const chatroom = await Chatroom.create({ chat_start_id: req.user.id, chat_join_id });
+                ResponseManager.getDefaultResponseHandler(res)['onSuccess'](chatroom, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+            }else{
+                ResponseManager.getDefaultResponseHandler(res)['onSuccess']({}, '이미 존재하는 채팅방', STATUS_CODE.SuccessCreated);
+            }
         } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
         }
