@@ -134,12 +134,17 @@ const fitnesscenterController = {
               {fitness_latitude: {$gt:first_latitude}},
               {fitness_latitude: {$lt:second_latitude}}
           ]}, options);
-
         result.userCount = [];
         for(let i = 0; i < result.docs.length; ++i){
+          result.docs[i] = result.docs[i].toObject();
           let fitnessCenter = result.docs[i];
-          const reviews = await FitnessCenterReview.find({center_id: fitnessCenter._id});
-          result.docs[i].reviews = reviews;
+          let reviews = await FitnessCenterReview.find({center_id: fitnessCenter._id});
+
+          if(reviews){
+            result.docs[i].reviews = reviews;
+          }else{
+            result.docs[i].reviews = [];
+          }
           const searchResult = aggregate.find(o => o._id == fitnessCenter._id);
           if(searchResult){
             result.userCount.push({'centerId':searchResult['_id'], 'counts':searchResult['userCount']});
