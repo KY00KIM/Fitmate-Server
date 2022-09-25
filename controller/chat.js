@@ -1,4 +1,5 @@
 const { Chatroom } = require('../model/Chatroom');
+const {User} = require('../model/User');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const {Appointment} = require("../model/Appointment");
@@ -7,7 +8,21 @@ const chatController = {
     getAllChatroom: async (req, res) => {
         try {
             let user_id = req.user.id;
-            const ChatroomList = await Chatroom.find({ $or: [{ 'chat_start_id': user_id }, { 'chat_join_id': user_id }], is_deleted: false }).sort({createdAt: -1}).lean();
+            const user = await User.findById(user_id);
+            let blocked_list = [];
+            user.blocked_users.forEach((a) =>{
+                blocked_list.push(a.toString());
+            });
+            const ChatroomList = await Chatroom.find({
+                $and:[
+                    {chat_start_id: {$nin: blocked_list }},
+                    {chat_join_id: {$nin: blocked_list }},
+                    {$or: [{ 'chat_start_id': user_id }, { 'chat_join_id': user_id }]},
+                    {is_deleted: false }
+                ]}
+            )
+                .sort({createdAt: -1})
+                .lean();
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](ChatroomList, 'SuccessOK', STATUS_CODE.SuccessOK);
         } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -43,7 +58,20 @@ const chatController = {
     getAllPopulatedChatroom: async (req, res) => {
         try {
             let user_id = req.user.id;
-            const ChatroomList = await Chatroom.find({ $or: [{ 'chat_start_id': user_id }, { 'chat_join_id': user_id }], is_deleted: false })
+            const user = await User.findById(user_id);
+            let blocked_list = [];
+            user.blocked_users.forEach((a) =>{
+                blocked_list.push(a.toString());
+            });
+            const ChatroomList = await Chatroom.find(
+                {
+                    $and:[
+                        {chat_start_id: {$nin: blocked_list }},
+                        {chat_join_id: {$nin: blocked_list }},
+                        {$or: [{ 'chat_start_id': user_id }, { 'chat_join_id': user_id }]},
+                        {is_deleted: false }
+                    ]}
+            )
                 .populate('chat_start_id')
                 .populate('chat_join_id')
                 .sort({createdAt:-1})
@@ -52,7 +80,7 @@ const chatController = {
             ResponseManager.getDefaultResponseHandler(res)['onSuccess'](ChatroomList, 'SuccessOK', STATUS_CODE.SuccessOK);
         } catch (error) {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
-        }
+        } 
     },
     getOnePopulatedChatroom: async (req, res) => {
         try {

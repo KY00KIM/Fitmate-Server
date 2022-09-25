@@ -176,7 +176,11 @@ const postController = {
   getAllPostsV2: async (req, res) => {
     try {
       let { page, limit = 10 } = req.query;
-
+      let user = await User.findById(req.user.id);
+      let blocked_list = [];
+      user.blocked_users.forEach((a) =>{
+        blocked_list.push(a.toString());
+      });
       if (req.query.page) {
         page = parseInt(req.query.page);
       }
@@ -224,12 +228,23 @@ const postController = {
         // });
 
         // ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
-        await Post.paginate({is_deleted: false, user_id: { $ne: req.user.id }}, options, (err, result)=>{
+        await Post.paginate({
+          $and:[
+            {is_deleted: false},
+            {user_id:{ $ne: req.user.id }},
+            {user_id:{$nin: blocked_list }}
+          ]}, options, (err, result)=>{
           result.docs.sort(() => Math.random() - 0.5);
           ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
         });
       }else{
-        await Post.paginate({is_deleted: false, user_id: { $ne: req.user.id }}, options, (err, result)=>{
+        await Post.paginate({
+          $and:[
+            {is_deleted: false},
+            {user_id:{ $ne: req.user.id }},
+            {user_id:{$nin: blocked_list }}
+          ]}, options, (err, result)=>{
+          console.log(result);
           ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
         });
       }
