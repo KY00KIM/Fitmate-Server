@@ -2770,6 +2770,46 @@ paths:
                         format: integer
         '400':
           description: '`ClientErrorBadRequest`'
+  /v2/fitnesscenters/zoom:
+    get:
+      summary: 'Author:기호,피트니스 센터 줌 아웃 결과'
+      description: 'Author:기호, GET 방식으로 피트니스 센터 줌 아웃 결과'
+      tags:
+        - fitnesscenter
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      example:
+                        {
+                          "_id": "62c66fd24b8212e4674dbe2b",
+                          "count": 558,
+                          "location": [
+                            {
+                              "_id": "62c66fd24b8212e4674dbe2b",
+                              "location_name": "강남구",
+                              "location_latitude": 37.5161911303986,
+                              "location_longitude": 127.051960068024,
+                              "updatedAt": "2022-09-28T05:41:20.040Z"
+                            }
+                          ]
+                        }
+
+        '400':
+          description: '`ClientErrorBadRequest`'
 
   /v1/fitnesscenters:
     get:

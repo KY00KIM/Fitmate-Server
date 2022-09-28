@@ -44,6 +44,7 @@ const locationController = {
       let locations = await Location.find({ location_name: key });
       if (locations.length == 0) {
         let newLoc = await Location.create({ location_name: key });
+
         return newLoc._id
       }
       else {
@@ -57,7 +58,10 @@ const locationController = {
   updateOneLocation: async (req, res) => {
     try {
       const { locId } = req.params;
-      const location = await Location.findByIdAndUpdate(locId, {});
+      const location = await Location.findByIdAndUpdate(locId, {
+        location_longitude:req.body.location_longitude,
+        location_latitude: req.body.location_latitude
+      });
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](location, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       console.log(error);
