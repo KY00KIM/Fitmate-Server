@@ -5,7 +5,13 @@ const locationSchema = mongoose.Schema({
     type: String,
     required: true,
     unique: true
-  }
+  },
+  location_latitude:{
+    type: Double
+  },
+  location_longitude:{
+    type: Double
+  },
 }, {
   versionKey: false,
   timestamps: true,
