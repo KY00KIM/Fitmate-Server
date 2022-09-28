@@ -10,12 +10,15 @@ const userSchema = mongoose.Schema({
     select: false,
     default: ""
   },
-  user_email: String,
+  user_email: {
+    type:String
+  },
   // 데이터 파싱 필요
   user_address: String,
   user_nickname: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   user_profile_img: {
     type: String,

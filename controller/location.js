@@ -16,10 +16,6 @@ const locationController = {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
-  /**
-  * @path {GET} http://localhost:8000/v1/locations/:locId
-  * @description 모든 지역(구) 단위를 조회하는 GET Method
-  */
   getOneLocation: async (req, res) => {
     try {
       const { locId } = req.params
@@ -31,14 +27,9 @@ const locationController = {
     }
   },
 
-  /**
-  * @params address ' '공백문자로 구분된 주소 문자열
-  * @description 주소를 지역(구) 단위를 조회하여 ObjectId반환
-  */
   parseAddress: async (address) => {
     let words = address.split(' ');
-    console.log(address);
-    let key = "서울특별시";
+    let key = "강남구";
     if (words.length > 2) {
       key = words[1];
     } else {
@@ -53,6 +44,7 @@ const locationController = {
       let locations = await Location.find({ location_name: key });
       if (locations.length == 0) {
         let newLoc = await Location.create({ location_name: key });
+
         return newLoc._id
       }
       else {
@@ -62,7 +54,20 @@ const locationController = {
       console.log("error in address : " + e)
       return null
     }
-  }
+  },
+  updateOneLocation: async (req, res) => {
+    try {
+      const { locId } = req.params;
+      const location = await Location.findByIdAndUpdate(locId, {
+        location_longitude:req.body.location_longitude,
+        location_latitude: req.body.location_latitude
+      });
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](location, 'SuccessOK', STATUS_CODE.SuccessOK);
+    } catch (error) {
+      console.log(error);
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
 };
 
 module.exports = locationController;
