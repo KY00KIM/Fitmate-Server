@@ -28,7 +28,7 @@ v2Router.use("/reviews",verifyUser, review);
 v2Router.use("/matching",verifyUser, match);
 v2Router.use("/posts",verifyUser, post);
 v2Router.use("/fitnesspart",verifyUser, fitnesspart);
-v2Router.use("/locations", location);
+v2Router.use("/locations",verifyUser, location);
 v2Router.use("/push",verifyUser, push);
 v2Router.use("/chats",verifyUser, chat);
 v2Router.use("/report",verifyUser, report);
