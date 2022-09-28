@@ -264,6 +264,12 @@ components:
         location_name:
           type: string
           format: 구 단위
+        location_latitude:
+          type: number
+          format: double
+        location_longitude:
+          type: number
+          format: double
         createdAt:
           type: string
           format: date

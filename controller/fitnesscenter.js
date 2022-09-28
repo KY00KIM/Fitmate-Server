@@ -185,6 +185,23 @@ const fitnesscenterController = {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
+  zoomFitnessCenter: async(req, res) => {
+    try {
+      const result = await FitnessCenter.aggregate([
+        {$group : {_id:"$center_location", count:{$sum:1}}},
+        {$lookup: {
+            from: 'locations',
+            localField: '_id',
+            foreignField: '_id',
+            as: 'location'
+          }
+        }
+      ]);
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+    } catch (error) {
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
+    }
+  },
   deleteFitnessCenterByKeyWord: async (req, res) => {
     try{
       const result = await FitnessCenter.deleteMany({center_name: {$regex: req.params.keyWord}});
