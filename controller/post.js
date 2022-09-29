@@ -64,9 +64,6 @@ const postController = {
         params: { userId },
       } = req;
       const posts = await Post.find({$and: [{is_deleted: false}, {user_id: userId}]});
-      posts.forEach((post) => {
-        post.post_img = replaceS3toCloudFront(post.post_img)
-      })
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
@@ -307,14 +304,20 @@ const postController = {
       // await Post.paginate({
       //   $and:[
       //     {is_deleted: false},
-      //     {user_id: req.user.id }
+      //     {user_id:{ $eq: userId }},
       //   ]}, options, (err, result)=>{
       //   console.log(result);
       //   ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
       // });
 
-      const posts = await Post.find({"user_id": ObjectId(userId)})
-          .populate('promise_location');
+      const posts = await Post.find({
+          $and:[
+             {is_deleted: false},
+             {user_id:{ $eq: userId }},
+           ]})
+          .populate('promise_location')
+          .populate('location_id')
+          .populate('user_id');
       console.log(posts);
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
     } catch (error) {
