@@ -3263,6 +3263,16 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/chatroom'
+                    example:
+                      {
+                        "_id": "633073c9b8ce571f3f447b18",
+                        "chat_start_id": "62d68b0843aefb57300fe342",
+                        "chat_join_id": "62f33946774a6b79dce0ad91",
+                        "is_deleted": false,
+                        "createdAt": "2022-09-25T15:29:13.505Z",
+                        "updatedAt": "2022-09-25T15:29:13.505Z",
+                        "last_chat": "상대방과 채팅을 시작하세요!"
+                      }
         '400':
           description: '`ClientErrorBadRequest`'
     post:
@@ -3328,6 +3338,16 @@ paths:
                   data:
                     type: object
                     $ref: '#/components/schemas/chatroom'
+                    example:
+                      {
+                        "_id": "633073c9b8ce571f3f447b18",
+                        "chat_start_id": "62d68b0843aefb57300fe342",
+                        "chat_join_id": "62f33946774a6b79dce0ad91",
+                        "is_deleted": false,
+                        "createdAt": "2022-09-25T15:29:13.505Z",
+                        "updatedAt": "2022-09-25T15:29:13.505Z",
+                        "last_chat": "상대방과 채팅을 시작하세요!"
+                      }
         '400':
           description: '`ClientErrorBadRequest`'
     delete:
@@ -3384,6 +3404,136 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/chatroom'
+                    example:
+                      {
+                        "_id": "633073c9b8ce571f3f447b18",
+                        "chat_start_id": {
+                          "user_weekday": [
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false,
+                            false
+                          ],
+                          "social": {
+                            "user_id": "GUpwd4HhSfYUPWeOVUvqtWePZzr1",
+                            "user_name": "",
+                            "provider": "password",
+                            "device_token": [
+                              "123"
+                            ],
+                            "firebase_info": {
+                              "iss": "https://securetoken.google.com/fitmate-cf118",
+                              "aud": "fitmate-cf118",
+                              "auth_time": 1658225787,
+                              "user_id": "GUpwd4HhSfYUPWeOVUvqtWePZzr1",
+                              "sub": "GUpwd4HhSfYUPWeOVUvqtWePZzr1",
+                              "iat": 1658225787,
+                              "exp": 1658229387,
+                              "email": "curl-test1@example.com",
+                              "email_verified": false,
+                              "firebase": {
+                                "identities": {
+                                  "email": [
+                                    "curl-test1@example.com"
+                                  ]
+                                },
+                                "sign_in_provider": "password"
+                              },
+                              "uid": "GUpwd4HhSfYUPWeOVUvqtWePZzr1"
+                            }
+                          },
+                          "_id": "62d68b0843aefb57300fe342",
+                          "user_email": "curl-test1@example.com",
+                          "user_address": "서울특별시 강남구 송정동 상무대로 312",
+                          "user_nickname": "CurlTestUser",
+                          "user_profile_img": "https://d1cfu69a4bd45f.cloudfront.net/profile_image/62d68b0843aefb57300fe342_2022_08_24_12_09_46.png",
+                          "user_schedule_time": 0,
+                          "user_fitness_part": [ ],
+                          "user_age": 0,
+                          "user_gender": true,
+                          "user_loc_bound": 3,
+                          "user_longitude": 127.093931057182,
+                          "user_latitude": 37.544182743129674,
+                          "location_id": "62c66fd24b8212e4674dbe2b",
+                          "is_deleted": false,
+                          "createdAt": "2022-07-19T10:44:24.258Z",
+                          "updatedAt": "2022-09-24T07:44:56.411Z",
+                          "fitness_center_id": "6316f3445f3a825466f07bda",
+                          "user_introduce": "",
+                          "blocked_users": [
+                            "62c66aef4b8212e4674dbe16",
+                            "62d96c328415a0a173c48bf9"
+                          ]
+                        },
+                        "chat_join_id": {
+                          "user_weekday": {
+                            "mon": false,
+                            "tue": false,
+                            "wed": true,
+                            "thu": true,
+                            "fri": true,
+                            "sat": false,
+                            "sun": false
+                          },
+                          "social": {
+                            "user_id": "6UFyTjgbV8QOb3QU9QSi7KvRnwc2",
+                            "user_name": "김규민",
+                            "provider": "google.com",
+                            "device_token": [
+                              "eFGWQk9PSAigCdGQKA-QMi:APA91bFYPLAJSbGZiZZnoeHzztVSX2BSI49BQMtdNSLQSPK-L7XOwtmbs18Md88qEjMh3XGT2T1IoCE3xrZPWSGGLLrIrrQuuKai4OaWyY9GYEjgF7NriRBKuHJjpqKKqQsF6_iQdGHq"
+                            ],
+                            "firebase_info": {
+                              "name": "김규민",
+                              "picture": "https://lh3.googleusercontent.com/a/AItbvmlwS9vKNY5hRNSx1qOzZGvM6QdFGVab0N9g2xiK=s96-c",
+                              "iss": "https://securetoken.google.com/fitmate-cf118",
+                              "aud": "fitmate-cf118",
+                              "auth_time": 1660107040,
+                              "user_id": "6UFyTjgbV8QOb3QU9QSi7KvRnwc2",
+                              "sub": "6UFyTjgbV8QOb3QU9QSi7KvRnwc2",
+                              "iat": 1660107040,
+                              "exp": 1660110640,
+                              "firebase": {
+                                "identities": {
+                                  "google": {
+                                    "com": [
+                                      "109244404712357875620"
+                                    ]
+                                  }
+                                },
+                                "sign_in_provider": "google.com"
+                              },
+                              "uid": "6UFyTjgbV8QOb3QU9QSi7KvRnwc2"
+                            }
+                          },
+                          "blocked_users": [ ],
+                          "_id": "62f33946774a6b79dce0ad91",
+                          "user_name": "김규민",
+                          "user_email": "",
+                          "user_address": "서울특별시 동대문구",
+                          "user_nickname": "규민민",
+                          "user_profile_img": "https://lh3.googleusercontent.com/a/AItbvmlwS9vKNY5hRNSx1qOzZGvM6QdFGVab0N9g2xiK=s96-c",
+                          "user_schedule_time": 1,
+                          "user_fitness_part": [ ],
+                          "user_age": 0,
+                          "user_gender": true,
+                          "user_loc_bound": 3,
+                          "user_longitude": 127.0446984,
+                          "user_latitude": 37.5036491,
+                          "location_id": "62da6939d66ea33ebc0bc9fc",
+                          "is_deleted": false,
+                          "createdAt": "2022-08-10T04:51:18.397Z",
+                          "updatedAt": "2022-09-18T09:36:09.355Z",
+                          "fitness_center_id": "6316f3445f3a825466f07bda",
+                          "user_introduce": ""
+                        },
+                        "is_deleted": false,
+                        "createdAt": "2022-09-25T15:29:13.505Z",
+                        "updatedAt": "2022-09-25T15:29:13.505Z",
+                        "last_chat": "상대방과 채팅을 시작하세요!"
+                      }
         '400':
           description: '`ClientErrorBadRequest`'
   /v2/chats/info/{chatroomId}:
@@ -3435,6 +3585,71 @@ paths:
                       appointment:
                         type: object
                         $ref: '#/components/schemas/appointment'
+                      last_chat:
+                        type: string
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /v2/chats/chat/{chatroomId}:
+    patch:
+      summary: 'Author:기호, 특정 채팅방의 마지막 채팅 업데이트'
+      description: 'Patch 방식으로 특정 채팅방 조회'
+      tags:
+        - chats
+      parameters:
+        - $ref: '#/components/parameters/chatroomId'
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: 마지막 채팅을 body로 받습니다..
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                last_chat:
+                  type: string
+      responses:
+        '200':
+          description: 특정 약속 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        format: ObjectId
+                      chat_start_id:
+                        type: string
+                        format: ObjectId
+                        description: references User
+                      chat_join_id:
+                        type: string
+                        format: ObjectId
+                        description: references User
+                      is_deleted:
+                        type: boolean
+                        default: false
+                      createdAt:
+                        type: string
+                        format: date
+                      updatedAt:
+                        type: string
+                        format: date
+                      appointment:
+                        type: object
+                        $ref: '#/components/schemas/appointment'
+                      last_chat:
+                        type: string
         '400':
           description: '`ClientErrorBadRequest`'
 

@@ -373,6 +373,9 @@ components:
         is_deleted:
           type: boolean
           default: false
+        last_chat:
+          type: string
+          default: '상대방과 채팅을 시작하세요!'
         createdAt:
           type: string
           format: date

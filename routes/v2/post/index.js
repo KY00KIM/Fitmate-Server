@@ -8,7 +8,7 @@ const { verifyUser } = require("../../../middleware/auth");
 
 postRouter.get('/', postController.getAllPostsV2);
 
-postRouter.get('/user/:userId', postController.getMyPost);
+postRouter.get('/user/:userId', postController.getMyPostV2);
 
 postRouter.post('/image/:postId', uploadImg('post_image').single('image'), postController.uploadPostImg);
 
