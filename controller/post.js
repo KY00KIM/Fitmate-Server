@@ -10,6 +10,7 @@ const { replaceS3toCloudFront } = require('../config/aws_s3');
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 const { originAgentCluster } = require('helmet');
+const {ObjectId} = require("mongodb");
 // cloudwatch
 
 const postController = {
@@ -62,7 +63,7 @@ const postController = {
       const {
         params: { userId },
       } = req;
-      const posts = await Post.find({ is_deleted: false, user_id: userId });
+      const posts = await Post.find({$and: [{is_deleted: false}, {user_id: userId}]});
       posts.forEach((post) => {
         post.post_img = replaceS3toCloudFront(post.post_img)
       })
@@ -277,7 +278,49 @@ const postController = {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
     }
   },
+  getMyPostV2: async (req, res) => {
+    try {
+      const {
+        params: { userId },
+      } = req;
 
+      let page = 1;
+      let limit = 10;
+      let options = {
+        page: page,
+        limit: limit,
+        populate:
+            [
+              {
+                path : 'user_id',
+                select : {user_nickname : 1, user_profile_img : 1}
+              },
+              {
+                path : 'promise_location',
+              }
+            ],
+        collation: {
+          locale: 'en',
+        },
+        sort: { createdAt: -1 },
+      };
+      // await Post.paginate({
+      //   $and:[
+      //     {is_deleted: false},
+      //     {user_id: req.user.id }
+      //   ]}, options, (err, result)=>{
+      //   console.log(result);
+      //   ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
+      // });
+
+      const posts = await Post.find({"user_id": ObjectId(userId)})
+          .populate('promise_location');
+      console.log(posts);
+      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
+    } catch (error) {
+      ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorNotFound', STATUS_CODE.ClientErrorNotFound);
+    }
+  },
 }
 
 module.exports = postController;
