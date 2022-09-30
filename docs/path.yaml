@@ -4165,6 +4165,49 @@ paths:
                     $ref: '#/components/schemas/userTrace'
         '404':
           description: '`ClientErrorNotFound`'
+  /v2/trace/noauth:
+    post:
+      summary: 'Author:규민, 인증 없이 사용자 백그라운드 위치 정보'
+      description: 'Author:규민, 인증 없이 POST 방식으로 특정 사용자 위치 정보 등록'
+      tags:
+        - matching
+      requestBody:
+        description: POST 방식으로 특정 사용자 정보 등록
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_longitude:
+                  type: number
+                  format: double
+                  description: 사용자 경도
+                user_latitude:
+                  type: number
+                  format: double
+                  description: 사용자 위도
+                user_id:
+                  type: string
+                  format: ObjectId
+      responses:
+        '201':
+          description: '`SuccessCreated` 사용자 위치 정보 등록 완료'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/userTrace'
+        '404':
+          description: '`ClientErrorNotFound`'
 
   /v1/trace:
     post:
