@@ -11,11 +11,11 @@ const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const timeConvert = require('../config/timeConvert');
 const logger = require('../config/winston');
-const { generateRefreshToken, generateAccessToken } = require('../utils/util');
 const { replaceS3toCloudFront } = require('../config/aws_s3');
-const { app } = require("firebase-admin");
-const { ObjectId } = require("mongodb");
 const { Appointment } = require("../model/Appointment");
+const {Chatroom} = require("../model/Chatroom");
+const {Chat} = require("../model/Chats");
+const {ObjectID, ObjectId} = require("mongodb");
 
 
 
@@ -141,7 +141,21 @@ const userController = {
           firebase_info: JSON.parse(JSON.stringify(req.user.social))
         }
       });
-      user.user_profile_img = replaceS3toCloudFront(user.user_profile_img);
+      const dupl = await Chatroom.find({$or:[{
+          $and:[{chat_start_id: user._id},{chat_join_id: "6339147718df754a7873f48e"}]
+        },{
+          $and:[{chat_start_id: "6339147718df754a7873f48e"},{chat_join_id: user._id}]
+        }]});
+      if(dupl.length == 0){
+        const chatroom = await Chatroom.create({
+          chat_start_id: user._id,
+          chat_join_id: "6339147718df754a7873f48e"
+        });
+        const chat = await Chat.create({
+          chat_room_id:chatroom._id,
+          last_chat: "핏메이트에 오신 것을 환영합니다!"
+        });
+      }
       return ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
       console.log(error);
