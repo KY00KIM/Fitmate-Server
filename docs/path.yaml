@@ -4208,7 +4208,53 @@ paths:
                     $ref: '#/components/schemas/userTrace'
         '404':
           description: '`ClientErrorNotFound`'
+  /v2/trace/certificate:
+    post:
+      summary: 'Author:기호, 사용자 피트니스 센터 인증'
+      description: 'Author:기호, 사용자 피트니스 센터 인증'
+      tags:
+        - matching
+      requestBody:
+        description: POST 방식으로 특정 사용자 정보 등록
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_longitude:
+                  type: number
+                  format: double
+                  description: 사용자 경도
+                user_latitude:
+                  type: number
+                  format: double
+                  description: 사용자 위도
+                fitnesscenterId:
+                  type: string
+                  format: ObjectId
+      responses:
+        '201':
+          description: '`SuccessCreated` 사용자 위치 정보 등록 완료'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      is_certificated:
+                        type: boolean
 
+        '404':
+          description: '`ClientErrorNotFound`'
   /v1/trace:
     post:
       summary: 'Author:규민, 사용자 위치 정보'
