@@ -28,6 +28,11 @@ const fitnessCenterSchema = mongoose.Schema({
   kakao_url: {
     type: String,
     default: ""
+  },
+  is_advertised:{
+    type: Boolean,
+    default: false,
+    required: true
   }
 }, {
   versionKey: false,
