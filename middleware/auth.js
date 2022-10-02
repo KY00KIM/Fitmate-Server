@@ -39,7 +39,8 @@ const verifyUser = async (req, res, next) => {
             console.log(decodeToken);
             const user = await getUserValidByToken(decodeToken)
             if (user) {
-                req.user.id = user._id;
+                req.user.id = user['_id'];
+                if (req.user.id == undefined) req.user._id = user['_id'].toString();
                 return next();
             } else if (req.originalUrl == "/v1/users/oauth" || "/v2/users/oauth" || req.originalUrl == "/v1/users/login" || "/v2/users/login" || req.originalUrl == "/v1/users/oauth/kakao") {
                 //회원가입을 위한 요청일 경우
@@ -66,7 +67,7 @@ const getUserValidByToken = async (Token) => {
     const users = await User.find({ "social.user_id": userId });
     if (!users[0])
         return false;
-    if (users[0] && !users[0].is_deleted)
+    if (users[0] && !users[0]['is_deleted'])
         return users[0];
     return false;
 };
