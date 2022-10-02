@@ -4,7 +4,8 @@ const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const {User} = require("../model/User");
 const {FitnessCenterReview} = require("../model/FitnessCenterReview");
-
+const {Chatroom} = require("../model/Chatroom");
+const {Chat} = require("../model/Chats");
 const visitorController = {
     getPosts: async (req, res) => {
         try {
@@ -119,7 +120,29 @@ const visitorController = {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'Fitness Center Error', STATUS_CODE.ClientErrorBadRequest);
         }
     },
+    doTest: async (req, res)=>{
+        try{
+            const dupl = await Chatroom.find({$or:[{
+                    $and:[{chat_start_id: "633253c7f01cddedda88946f"},{chat_join_id: "6339147718df754a7873f48e"}]
+                },{
+                    $and:[{chat_start_id: "6339147718df754a7873f48e"},{chat_join_id: "633253c7f01cddedda88946f"}]
+                }]});
+            if(dupl.length == 0){
+                const chatroom = await Chatroom.create({
+                    chat_start_id: "633253c7f01cddedda88946f",
+                    chat_join_id: "6339147718df754a7873f48e"
+                });
+                const chat = await Chat.create({
+                    chat_room_id:chatroom._id,
+                    last_chat: "핏메이트에 오신 것을 환영합니다😀"
+                });
+            }
 
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](dupl, 'SuccessOK', STATUS_CODE.SuccessOK);
+        }catch(error){
+
+        }
+    }
 }
 
 module.exports = visitorController;
