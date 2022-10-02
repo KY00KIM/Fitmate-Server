@@ -249,6 +249,8 @@ components:
         fitness_latitude:
           type: number
           format: double in degree
+        is_advertised:
+          type: boolean
         createdAt:
           type: string
           format: date
