@@ -119,18 +119,7 @@ const visitorController = {
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'Fitness Center Error', STATUS_CODE.ClientErrorBadRequest);
         }
     },
-    getTest: async (req, res) =>{
-        try{
-            let centers = await FitnessCenter.find();
-            for(let i = 0; i < centers.length; ++i){
-                await FitnessCenter.findByIdAndUpdate(centers[i]._id, {"is_advertised": false});
-            };
 
-            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](centers, 'SuccessOK', STATUS_CODE.SuccessOK);
-        }catch (error){
-
-        }
-    }
 }
 
 module.exports = visitorController;
