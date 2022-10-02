@@ -7,5 +7,6 @@ traceRouter.post('/noauth', traceController.writeUserTraceNoAuth);
 
 traceRouter.post('/', verifyUser, traceController.writeUserTrace);
 
+traceRouter.post('/certificate', verifyUser, traceController.certificateUserTrace);
 
 module.exports = traceRouter;

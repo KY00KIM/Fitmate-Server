@@ -84,13 +84,20 @@ const userSchema = mongoose.Schema({
     ref: 'User'
   }],
   social: {
-    user_id: String,
+    user_id: {
+      type: String,
+      unique: true
+    },
     user_name: String,
     provider: String,
     device_token: [String],
     firebase_info: Object,
   },
   is_deleted: {
+    type: Boolean,
+    default: false
+  },
+  is_certificated:{
     type: Boolean,
     default: false
   }
