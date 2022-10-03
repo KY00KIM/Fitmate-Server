@@ -6,6 +6,6 @@ visitorRouter.get('/posts', visitorController.getPosts);
 
 visitorRouter.get('/fitnesscenter', visitorController.getFitnessCenter);
 
-// visitorRouter.get('/test', visitorController.doTest);
+visitorRouter.get('/test', visitorController.doTest);
 
 module.exports = visitorRouter;

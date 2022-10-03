@@ -100,7 +100,11 @@ const userSchema = mongoose.Schema({
   is_certificated:{
     type: Boolean,
     default: false
-  }
+  },
+  survey_candidates: [{
+    type: ObjectId,
+    ref: 'SurveyCandidates'
+  }],
 }, {
   versionKey: false,
   timestamps: true,
