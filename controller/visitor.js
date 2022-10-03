@@ -4,8 +4,8 @@ const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const {User} = require("../model/User");
 const {FitnessCenterReview} = require("../model/FitnessCenterReview");
-const {Chatroom} = require("../model/Chatroom");
-const {Chat} = require("../model/Chats");
+const {SurveyCandidates} = require("../model/SurveyCandidates");
+
 const visitorController = {
     getPosts: async (req, res) => {
         try {
@@ -122,23 +122,18 @@ const visitorController = {
     },
     doTest: async (req, res)=>{
         try{
-            const dupl = await Chatroom.find({$or:[{
-                    $and:[{chat_start_id: "633253c7f01cddedda88946f"},{chat_join_id: "6339147718df754a7873f48e"}]
-                },{
-                    $and:[{chat_start_id: "6339147718df754a7873f48e"},{chat_join_id: "633253c7f01cddedda88946f"}]
-                }]});
-            if(dupl.length == 0){
-                const chatroom = await Chatroom.create({
-                    chat_start_id: "633253c7f01cddedda88946f",
-                    chat_join_id: "6339147718df754a7873f48e"
-                });
-                const chat = await Chat.create({
-                    chat_room_id:chatroom._id,
-                    last_chat: "핏메이트에 오신 것을 환영합니다😀"
-                });
+            const candidates = await SurveyCandidates.find();
+            const users = await User.find();
+            for(let user_i = 0; user_i < users.length; ++user_i){
+                let pivot = Math.floor((Math.random() * (candidates.length-0+1)) + 0);
+                if(pivot == candidates.length){
+                    --pivot
+                }
+                await User.findByIdAndUpdate(users[user_i]._id, {
+                    survey_candidates:[candidates[pivot]._id]
+                })
             }
-
-            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](dupl, 'SuccessOK', STATUS_CODE.SuccessOK);
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](candidates, 'SuccessOK', STATUS_CODE.SuccessOK);
         }catch(error){
 
         }

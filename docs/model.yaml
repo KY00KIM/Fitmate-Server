@@ -105,6 +105,12 @@ components:
         is_certificated:
           type: boolean
           default: false
+        survey_candidates:
+          type: array
+          items:
+            type: string
+            format: ObjectId
+            description: references survey
         createdAt:
           type: string
           format: date
@@ -486,6 +492,22 @@ components:
           format: date
         is_deleted:
           type: boolean
+        createdAt:
+          type: string
+          format: date
+        updatedAt:
+          type: string
+          format: date
+
+    survey:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+        survey_content:
+          type: string
+          format: string
         createdAt:
           type: string
           format: date
