@@ -48,7 +48,6 @@ const userController = {
     try {
       const { userId } = req.params
       const user = await User.findById(userId).lean();
-      user.user_profile_img = replaceS3toCloudFront(user.user_profile_img)
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](user, 'SUCCESS_OK', STATUS_CODE.SUCCESS_OK);
     } catch (error) {
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
@@ -139,7 +138,8 @@ const userController = {
           device_token: [device_token],
           provider: req.user.social.firebase.sign_in_provider,
           firebase_info: JSON.parse(JSON.stringify(req.user.social))
-        }
+        },
+        survey_candidates: req.user.survey_candidates || ["633a75c0ad5ad46e4d0f81df"]
       });
       const dupl = await Chatroom.find({$or:[{
           $and:[{chat_start_id: user._id},{chat_join_id: "6339147718df754a7873f48e"}]

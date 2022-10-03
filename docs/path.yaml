@@ -169,6 +169,11 @@ paths:
                   format: ObjectId
                 device_token:
                   type: string
+                survey_candidates:
+                  type: array
+                  items:
+                    type: string
+                    format: ObjectId
       responses:
         '201':
           description: '`SUCCESS CREATED` returns created user document'
@@ -4570,6 +4575,112 @@ paths:
                         items:
                           type: object
                           $ref: '#/components/schemas/fitnessCenter'
+                    '404':
+                      description: '`ClientErrorNotFound`'
+        '400':
+          description: '`ClientErrorBadRequest`'
+
+  /v2/survey/candidates:
+    get:
+      summary: 'Author:기호, 모든 설문 후보 조회'
+      description: 'Author:기호, GET 방식으로 모든 설문 후보 조회'
+      tags:
+        - survey
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      responses:
+        '201':
+          description: '`SuccessOK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      $ref: '#/components/schemas/fitnessCenter'
+
+        '404':
+          description: '`ClientErrorNotFound`'
+    post:
+      tags:
+        - survey
+      summary: Author:기호, 설문조사 후보 생성
+      description: Author:기호, 설문조사 후보 생성.
+      parameters:
+        - $ref: '#/components/parameters/bannerId'
+      requestBody:
+        description: to Add candidate
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                survey_content:
+                  type: string
+      responses:
+        '200':
+          description: '`SuccessCreated`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  refresh:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/survey'
+        '404':
+          description: '`ClientErrorNotFound`'
+  /v2/survey:
+    post:
+      tags:
+        - survey
+      summary: Author:기호, 사용자 설문조사 변경용 API
+      description: Author:기호, 사용자의 설문조사를 변경합니다.
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: to Ad
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                survey_content:
+                  type: string
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    type: object
+                    properties:
+                      docs:
+                        type: array
+                        items:
+                          type: object
+                          $ref: '#/components/schemas/survey'
                     '404':
                       description: '`ClientErrorNotFound`'
         '400':

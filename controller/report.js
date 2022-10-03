@@ -27,10 +27,12 @@ const reportController = {
                 ResponseManager.getDefaultResponseHandler(res)['onError'](user, 'NotFoundUser', STATUS_CODE.ClientErrorBadRequest);
                 return;
             }
+            await Post.findByIdAndUpdate(req.params.postId, {is_deleted: true});
             const result = await ReportedPost.create({
                 'report_user': req.user.id,
                 'reported_post': req.params.postId
             });
+
             slack.send({
                 channel: '#reports',
                 text: `Report_user: ${JSON.stringify(user)} \n\n\n\nReported_post: ${JSON.stringify(post)}`,
@@ -57,6 +59,12 @@ const reportController = {
                 ResponseManager.getDefaultResponseHandler(res)['onError'](user2, 'NotFoundUser', STATUS_CODE.ClientErrorBadRequest);
                 return;
             }
+            await User.findByIdAndUpdate(req.user.id, {$push:{
+                    blocked_users:req.body.reported_user
+                }});
+            await User.findByIdAndUpdate(req.body.reported_user, {$push:{
+                    blocked_users:req.user.id
+                }});
             const result = await ReportedUser.create({
                 'report_user': req.user.id,
                 'reported_user': req.body.reported_user,

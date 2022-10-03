@@ -12,6 +12,7 @@ const chat = require('./chat');
 const report = require('./report');
 const trace = require('./trace');
 const visitor = require('./visitor');
+const survey = require('./survey');
 const { swaggerUi, specs } = require("../../docs/swagger");
 const banner = require('./banner');
 const path = require('path');
@@ -34,6 +35,7 @@ v2Router.use("/chats", verifyUser, chat);
 v2Router.use("/report", verifyUser, report);
 v2Router.use("/trace", trace);
 v2Router.use("/visitor", visitor);
+v2Router.use("/survey", survey);
 
 v2Router.get("/", async (req, res) => {
     console.log('Success Connected');
