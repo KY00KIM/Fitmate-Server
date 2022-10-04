@@ -46,11 +46,15 @@ const traceController = {
             } = req.body;
             const center = await FitnessCenter.findById(fitnesscenterId);
             const dist = MatchController.getDistanceFromLatLonInKm(user_longitude, user_latitude, center.fitness_longitude, center.fitness_latitude);
-            if (dist < 1){
+            if (dist <= 1){
                 await User.findByIdAndUpdate(req.user.id, {is_certificated: true});
                 ResponseManager.getDefaultResponseHandler(res)['onSuccess']({is_certificated:true}, 'SuccessOK', STATUS_CODE.SuccessOK);
             }else{
-                ResponseManager.getDefaultResponseHandler(res)['onSuccess']({is_certificated:false}, 'SuccessOK', STATUS_CODE.SuccessOK);
+                ResponseManager.getDefaultResponseHandler(res)['onSuccess']({
+                    "is_certificated":false,
+                    "distance": `${dist} Km`,
+                    "center": center
+                }, 'Distance overs 1Km', STATUS_CODE.SuccessOK);
             }
         }catch(error){
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
