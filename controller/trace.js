@@ -45,7 +45,7 @@ const traceController = {
                 user_latitude
             } = req.body;
             const center = await FitnessCenter.findById(fitnesscenterId);
-            const dist = MatchController.getDistanceFromLatLonInKm(user_longitude, user_latitude, center.fitness_longitude, center.fitness_latitude);
+            const dist = MatchController.getDistanceFromLatLonInKm(user_latitude, user_longitude, center.fitness_latitude, center.fitness_longitude);
             if (dist <= 1){
                 await User.findByIdAndUpdate(req.user.id, {is_certificated: true});
                 ResponseManager.getDefaultResponseHandler(res)['onSuccess']({is_certificated:true}, 'SuccessOK', STATUS_CODE.SuccessOK);
