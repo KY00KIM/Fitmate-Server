@@ -2958,6 +2958,7 @@ paths:
                   message:
                     type: string
                   data:
+                    type: object
                     $ref: '#/components/schemas/fitnesscenterInfo'
         '400':
           description: '`ClientErrorBadRequest`'
