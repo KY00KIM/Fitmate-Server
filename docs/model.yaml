@@ -582,31 +582,31 @@ components:
           type: boolean
         back:
           type: array
-          properties:
+          items:
             type: string
         shoulder:
           type: array
-          properties:
+          items:
             type: string
         core: 
           type: array
-          properties:
+          items:
             type: string
         arm: 
           type: array
-          properties:
+          items:
             type: string
         chest:
           type: array
-          properties:
+          items:
             type: string
         lower_body:
           type: array
-          properties:
+          items:
             type: string
         etc:
           type: array
-          properties:
+          items:
             type: string
         createdAt:
           type: string
