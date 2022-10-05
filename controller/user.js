@@ -130,7 +130,7 @@ const userController = {
         user_schedule_time: user_schedule_time,
         user_weekday: user_weekday || null,
         user_gender: user_gender,
-        user_introduce: user_introduce,
+        user_introduce: user_introduce || "안녕하세요! 같이 운동해요 :)",
         fitness_center_id: fitness_center_id,
         user_latitude: user_latitude,
         user_longitude: user_longitude,

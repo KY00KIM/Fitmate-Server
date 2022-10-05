@@ -5,7 +5,8 @@ const { Types: { ObjectId, Double } } = mongoose.Schema;
 const fitnessCenterInfoSchema = mongoose.Schema({
     center_id: {
         type: ObjectId,
-        ref: 'FitnessCenter'
+        ref: 'FitnessCenter',
+        unique: true
     },
     male_trainer:{
         type: Number,
@@ -32,6 +33,9 @@ const fitnessCenterInfoSchema = mongoose.Schema({
     },
     center_area:{
         type: Double
+    },
+    phone_num:{
+        type: String
     },
     pt_price:[{
         count:{

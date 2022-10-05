@@ -159,6 +159,17 @@ const chatController = {
         }catch (error){
             ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'updateChatError', STATUS_CODE.ClientErrorBadRequest);
         }
+    },
+    getTest: async (req, res) =>{
+        try{
+            const chats = await Chat.find()
+                .populate('chat_room_id');
+            for(let i = 0; i < chats.length; ++i){
+                console.dir(chats[i]);
+            }
+        }catch(error){
+
+        }
     }
 }
 

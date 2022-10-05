@@ -11,6 +11,10 @@ fitnesscenterRouter.get('/',verifyUser, fitnesscenterController.countUsersByFitn
 
 fitnesscenterRouter.post('/', fitnesscenterController.writeOneFitnessCenter);
 
+fitnesscenterRouter.get('/info/:fitnesscenterId', fitnesscenterController.getOneFitnessCenterInfo);
+
+fitnesscenterRouter.post('/info', fitnesscenterController.writeOneFitnessCenterInfo);
+
 fitnesscenterRouter.get('/:fitnesscenterId',verifyUser, fitnesscenterController.getOneFitnessCenter);
 
 fitnesscenterRouter.get('/users',verifyUser, fitnesscenterController.countUsersByFitnessCenter);

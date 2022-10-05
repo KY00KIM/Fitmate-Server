@@ -42,6 +42,7 @@ const userSchema = mongoose.Schema({
   },
   user_introduce: {
     type: String,
+    required: true,
     default: "안녕하세요! 같이 운동해요 :)"
   },
   user_fitness_part: [{
