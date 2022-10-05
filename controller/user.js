@@ -139,7 +139,7 @@ const userController = {
           provider: req.user.social.firebase.sign_in_provider,
           firebase_info: JSON.parse(JSON.stringify(req.user.social))
         },
-        survey_candidates: req.user.survey_candidates || ["633a75c0ad5ad46e4d0f81df"]
+        survey_candidates: req.body.survey_candidates || ["633a75c0ad5ad46e4d0f81df"]
       });
       const dupl = await Chatroom.find({$or:[{
           $and:[{chat_start_id: user._id},{chat_join_id: "6339147718df754a7873f48e"}]

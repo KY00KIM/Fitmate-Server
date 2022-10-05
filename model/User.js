@@ -65,7 +65,7 @@ const userSchema = mongoose.Schema({
     type: ObjectId,
     ref: 'FitnessCenter',
     required: true,
-    default: '62c66fe24b8212e4674dbe2c'
+    default: '631d65a35c8fcf2a7116f0d7'
   },
   user_longitude: {
     type: Double,
