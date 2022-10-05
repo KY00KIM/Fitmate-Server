@@ -316,7 +316,6 @@ const postController = {
              {user_id:{ $eq: userId }},
            ]})
           .populate('promise_location')
-          .populate('location_id')
           .populate('user_id');
       console.log(posts);
       ResponseManager.getDefaultResponseHandler(res)['onSuccess'](posts, 'SuccessOK', STATUS_CODE.SuccessOK);
