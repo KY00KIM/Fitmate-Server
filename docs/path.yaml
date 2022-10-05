@@ -2815,6 +2815,152 @@ paths:
 
         '400':
           description: '`ClientErrorBadRequest`'
+  /v2/fitnesscenters/info:
+    post:
+      summary: 'Author:기호, 피트니스 센터 상세 정보 등록'
+      description: 'Author:기호, POST 방식으로 피트니스 센터 상세 정보 등록'
+      tags:
+        - fitnesscenter
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+      requestBody:
+        description: fitness center info object to be posted
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                center_id:
+                  type: string
+                  format: ObjectId
+                  description: References Fitnesscenter
+                male_trainer:
+                  type: number
+                  format: integer
+                female_trainer:
+                  type: number
+                  format: integer
+                introduce:
+                  type: string
+                  format: string
+                golf_program:
+                  type: object
+                  properties:
+                    existed:
+                      type: boolean
+                spinning:
+                  type: object
+                  properties:
+                    existed:
+                      type: boolean
+                gx_program:
+                  type: object
+                  properties:
+                    existed:
+                      type: boolean
+                center_area:
+                  type: number
+                  format: integer
+                phone_num:
+                  type: string
+                  format: string
+                pt_price:
+                  type: object
+                  properties:
+                    count:
+                      type: number
+                      format: integer
+                    one_price:
+                      type: number
+                      format: integer
+                price_for_day:
+                  type: number
+                  format: integer
+                price_for_1month:
+                  type: number
+                  format: integer
+                price_for_6month:
+                  type: number
+                  format: integer
+                price_for_year:
+                  type: number
+                  format: integer
+                parking:
+                  type: boolean
+                toilet:
+                  type: boolean
+                shower:
+                  type: boolean
+                back:
+                  type: array
+                  properties:
+                    type: string
+                shoulder:
+                  type: array
+                  properties:
+                    type: string
+                core:
+                  type: array
+                  properties:
+                    type: string
+                arm:
+                  type: array
+                  properties:
+                    type: string
+                chest:
+                  type: array
+                  properties:
+                    type: string
+                lower_body:
+                  type: array
+                  properties:
+                    type: string
+                etc:
+                  type: array
+                  properties:
+                    type: string
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/fitnesscenterInfo'
+        '400':
+          description: '`ClientErrorBadRequest`'
+  /v2/fitnesscenters/info/{fitnesscenterId}:
+    get:
+      summary: 'Author:기호,피트니스 센터 상세 정보'
+      description: 'Author:기호, GET 방식으로 피트니스 센터 상세 정보 검색'
+      tags:
+        - fitnesscenter
+      parameters:
+        - $ref: '#/components/parameters/authToken'
+        - $ref: '#/components/parameters/fitnesscenterId'
+      responses:
+        '200':
+          description: '`SUCCESS OK`'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  data:
+                    $ref: '#/components/schemas/fitnesscenterInfo'
+        '400':
+          description: '`ClientErrorBadRequest`'
 
   /v1/fitnesscenters:
     get:
