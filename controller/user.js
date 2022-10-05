@@ -117,8 +117,8 @@ const userController = {
     try {
       const { user_nickname, user_gender, user_weekday, user_schedule_time, user_address, user_latitude, user_longitude, fitness_center_id, device_token, user_introduce, survey_candidates } = req.body;
       const locationId = await locationController.parseAddress(user_address);
-      console.log("---------------------------------------------------------------------");
-      console.log(survey_candidates);
+      console.log("-----------------------------------assignUser----------------------------------");
+      console.dir(req.body);
       console.log("---------------------------------------------------------------------");
       const user = await User.create({
         // BODY for test
