@@ -1050,7 +1050,7 @@ section {
 .bg-section {
 	position: relative;
 	overflow: hidden;
-	z-index: 1;
+	/*z-index: 1;*/
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-ms-background-size: cover;
@@ -1061,6 +1061,7 @@ section {
 	background-position: center center;
 	width: 100%;
 	height: 100%;
+	background-color: #4050B5;
 }
 
 .bg-overlay:before {
@@ -2253,8 +2254,8 @@ li a:hover,
 
 .slider .slide--holder img {
 	position: absolute;
-	right: 0;
-	bottom: -650px;
+	right: 100px;
+	bottom: -500px;
 }
 
 .slide--item .bg-ytvideo {
