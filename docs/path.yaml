@@ -2603,7 +2603,12 @@ paths:
                               format: ObjectId
                             reviews:
                               type: array
-                              $ref: '#/components/schemas/fitnessCenterReview'
+                              items:
+                                $ref: '#/components/schemas/fitnessCenterReview'
+                            posts:
+                              type: array
+                              items:
+                                $ref: '#/components/schemas/post'
                       totalDocs:
                         type: number
                       limit:

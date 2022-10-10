@@ -5,6 +5,7 @@ const {FitnessCenterInfo} = require('../model/FitnessCenterInfo');
 const {Golf} = require('../model/Golf');
 const {GXExercise} = require('../model/GXExercise');
 const {Spinning} = require('../model/Spinning');
+const {Post} = require('../model/Post');
 const ResponseManager = require('../config/response');
 const STATUS_CODE = require('../config/http_status_code');
 const locationController = require('./location')
@@ -138,9 +139,10 @@ const fitnesscenterController = {
         result.userCount = [];
         for(let i = 0; i < result.docs.length; ++i){
           result.docs[i] = result.docs[i].toObject();
+
+          // For CenterReviews
           let fitnessCenter = result.docs[i];
           let reviews = await FitnessCenterReview.find({center_id: fitnessCenter._id});
-
           if(reviews){
             result.docs[i].reviews = reviews;
           }else{
@@ -152,7 +154,10 @@ const fitnesscenterController = {
           }else{
             result.userCount.push({'centerId': fitnessCenter._id, 'counts': 0})
           }
-        };
+
+          // For Post Count
+          result.docs[i].posts = await Post.find({promise_location: fitnessCenter._id});
+        }
 
         ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
       }else{
