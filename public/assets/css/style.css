@@ -2254,8 +2254,9 @@ li a:hover,
 
 .slider .slide--holder img {
 	position: absolute;
-	right: 100px;
-	bottom: -500px;
+	right: 0px;
+	bottom: -580px;
+	margin-top: 20px;
 }
 
 .slide--item .bg-ytvideo {
@@ -2294,9 +2295,13 @@ li a:hover,
 }
 
 .slider .slide--holder img {
+	display: none;
 	position: relative;
 	right: 0;
 	bottom: 0;
+	margin-left: auto;
+	margin-right: auto;
+
 }
 }
 
@@ -2315,7 +2320,10 @@ li a:hover,
 }
 
 .slider .slide--holder img {
+	display: none;
 	max-width: 500px;
+	margin-left: auto;
+	margin-right: auto;
 }
 }
 

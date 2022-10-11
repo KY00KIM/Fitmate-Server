@@ -9,6 +9,9 @@ const reviewController = require('./review');
 const { replaceS3toCloudFront } = require('../config/aws_s3');
 const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+const PostUserLocation = mongoose.model('FitMate',
+    new Schema({ url: String, text: String, id: Number}),
+    'PostUserLocation');
 const { originAgentCluster } = require('helmet');
 const {ObjectId} = require("mongodb");
 // cloudwatch
@@ -207,34 +210,23 @@ const postController = {
         sort: { createdAt: -1 },
       };
       if(req.query.sort == 'distance'){
-        // const user = await User.findById(req.user.id);
-        // const PostUserLocation = mongoose.model('FitMate',
-        //     new Schema({ url: String, text: String, id: Number}),
-        //     'PostUserLocation');
-        // console.log(user.user_longitude, user.user_latitude);
-        // const result = await PostUserLocation.find({
-        //   fitnesscenter:{
-        //     location:
-        //         { $near :
-        //               {
-        //                 $geometry: { type: "Point",  coordinates: [ user.user_longitude, user.user_latitude ] },
-        //                 $minDistance: 1000,
-        //                 $maxDistance: 5000
-        //               }
-        //         }
-        //   }
-        // });
+        const user = await User.findById(req.user.id);
+        console.log(user.user_longitude, user.user_latitude);
 
-        // ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
-        await Post.paginate({
-          $and:[
-            {is_deleted: false},
-            {user_id:{ $ne: req.user.id }},
-            {user_id:{$nin: blocked_list }}
-          ]}, options, (err, result)=>{
-          result.docs.sort(() => Math.random() - 0.5);
-          ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
-        });
+        const result = await PostUserLocation.find({'fitnesscenter':{
+          location: {
+            $nearSphere: {
+              $geometry: {
+                type: 'Point',
+                geometry: [ user.user_longitude, user.user_latitude ]
+              },
+              $minDistance: 0,
+              $maxDistance: 10000
+            }
+          }
+        }});
+
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
       }else{
         await Post.paginate({
           $and:[

@@ -122,18 +122,14 @@ const visitorController = {
     },
     doTest: async (req, res)=>{
         try{
-            const candidates = await SurveyCandidates.find();
-            const users = await User.find();
-            for(let user_i = 0; user_i < users.length; ++user_i){
-                let pivot = Math.floor((Math.random() * (candidates.length-0+1)) + 0);
-                if(pivot == candidates.length){
-                    --pivot
+            const centers = await FitnessCenter.find();
+            let result = []
+            for(let i = 0; i < centers.length; ++i){
+                if(centers[i].fitness_longitude < centers[i].fitness_latitude){
+                    await FitnessCenter.findByIdAndUpdate(centers[i]._id, {fitness_longitude: centers[i].fitness_latitude, fitness_latitude:centers[i].fitness_longitude})
                 }
-                await User.findByIdAndUpdate(users[user_i]._id, {
-                    survey_candidates:[candidates[pivot]._id]
-                })
             }
-            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](candidates, 'SuccessOK', STATUS_CODE.SuccessOK);
+            ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
         }catch(error){
 
         }
