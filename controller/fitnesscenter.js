@@ -77,16 +77,23 @@ const fitnesscenterController = {
         const {
             center_name, center_address,fitness_longitude,fitness_latitude, kakao_url
         } = req.body;
-      const locId = await locationController.parseAddress(center_address);
-      const result = await FitnessCenter.create({
-        center_name: center_name,
-        center_address: center_address,
-        center_location: locId,
-        fitness_longitude: fitness_longitude,
-        fitness_latitude: fitness_latitude,
-        kakao_url: kakao_url
-      });
-      ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessCreated', STATUS_CODE.SuccessCreated);
+        if(fitness_longitude < fitness_latitude){
+          ResponseManager.getDefaultResponseHandler(res)['onError']({
+            fitness_longitude: fitness_longitude,
+            fitness_latitude: fitness_latitude
+          }, 'longitude latitude Error', STATUS_CODE.ClientErrorBadRequest);
+          return;
+        }
+        const locId = await locationController.parseAddress(center_address);
+        const result = await FitnessCenter.create({
+          center_name: center_name,
+          center_address: center_address,
+          center_location: locId,
+          fitness_longitude: fitness_longitude,
+          fitness_latitude: fitness_latitude,
+          kakao_url: kakao_url
+        });
+        ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessCreated', STATUS_CODE.SuccessCreated);
     } catch (error) {
       console.log(error);
       ResponseManager.getDefaultResponseHandler(res)['onError'](error, 'ClientErrorBadRequest', STATUS_CODE.ClientErrorBadRequest);
