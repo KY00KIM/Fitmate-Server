@@ -234,7 +234,8 @@ const postController = {
             {user_id:{ $ne: req.user.id }},
             {user_id:{$nin: blocked_list }}
           ]}, options, (err, result)=>{
-          result.sort(() => Math.random() - 0.5);
+          // result.sort(() => Math.random() - 0.5);
+          // console.log(result)
           ResponseManager.getDefaultResponseHandler(res)['onSuccess'](result, 'SuccessOK', STATUS_CODE.SuccessOK);
         });
       }
