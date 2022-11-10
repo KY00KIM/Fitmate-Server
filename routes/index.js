@@ -50,8 +50,13 @@ router.get('/logs', async (req, res) => {
 });
 router.get('/logs/today', async (req, res) => {
     try {
-
-        await glob(`config/logs/info/2022-${req.query.month}-${req.query.date}.log`, function (err, files) {
+        var today = new Date();
+        var month = today.getMonth();
+        var date = today.getDate();
+        if(date.toString().length < 2){
+            date = '0' + date;
+        }
+        await glob(`config/logs/info/2022-${month + 1}-${date}.log`, function (err, files) {
             if (err) {
                 console.log(err);
             }
@@ -60,7 +65,7 @@ router.get('/logs/today', async (req, res) => {
             files.forEach(file => {
                 console.log("file: ",file);
             });
-            res.sendFile(path.join(__dirname , '../',`config/logs/info/2022-${req.query.month}-${req.query.date}.log`))
+            res.sendFile(path.join(__dirname , '../',`config/logs/info/2022-${month + 1}-${date}.log`))
         });
 
     } catch (error) {
