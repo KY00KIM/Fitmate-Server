@@ -44,26 +44,26 @@ SW 마에스트로 13기 과정에서 팀 HYEDA에서 개발한 피트니스 메
 ## 회원가입
 
 <p float="left">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210206943-2e903b87-55c2-49fa-91f6-b090975f40d7.png](https://user-images.githubusercontent.com/55953815/210206943-2e903b87-55c2-49fa-91f6-b090975f40d7.png)">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207058-baac1741-5c60-4af2-91c3-fc6be5cc3235.png](https://user-images.githubusercontent.com/55953815/210207058-baac1741-5c60-4af2-91c3-fc6be5cc3235.png)">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207100-c21f7e78-c40b-4437-94c6-371e8c48453d.png](https://user-images.githubusercontent.com/55953815/210207100-c21f7e78-c40b-4437-94c6-371e8c48453d.png)">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207113-a129106c-d4c7-456e-a471-35c6a194ed79.png](https://user-images.githubusercontent.com/55953815/210207113-a129106c-d4c7-456e-a471-35c6a194ed79.png)”>
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210206943-2e903b87-55c2-49fa-91f6-b090975f40d7.png">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207058-baac1741-5c60-4af2-91c3-fc6be5cc3235.png">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207100-c21f7e78-c40b-4437-94c6-371e8c48453d.png">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207113-a129106c-d4c7-456e-a471-35c6a194ed79.png”>
 </p>
 
 ## 모집글
 
 <p float="left">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207126-9372acdb-1f83-44ed-a9a6-c2553c727342.png](https://user-images.githubusercontent.com/55953815/210207126-9372acdb-1f83-44ed-a9a6-c2553c727342.png)">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207139-b4f59db9-3d35-4a4d-ae59-16bdd31f30eb.png](https://user-images.githubusercontent.com/55953815/210207139-b4f59db9-3d35-4a4d-ae59-16bdd31f30eb.png)">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207126-9372acdb-1f83-44ed-a9a6-c2553c727342.png">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207139-b4f59db9-3d35-4a4d-ae59-16bdd31f30eb.png">
 
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207294-525bd5da-aeda-4b96-b910-13468914b60c.PNG](https://user-images.githubusercontent.com/55953815/210207294-525bd5da-aeda-4b96-b910-13468914b60c.PNG)">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207294-525bd5da-aeda-4b96-b910-13468914b60c.PNG">
 </p>
 
 ## 채팅
 
 <p float="left">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207311-ca93878d-e344-4bbf-b39a-4397e7a94796.png](https://user-images.githubusercontent.com/55953815/210207311-ca93878d-e344-4bbf-b39a-4397e7a94796.png)">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207332-b1f8dc00-aef9-4b21-8253-7be9aae48b78.jpeg](https://user-images.githubusercontent.com/55953815/210207332-b1f8dc00-aef9-4b21-8253-7be9aae48b78.jpeg)">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207311-ca93878d-e344-4bbf-b39a-4397e7a94796.png">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207332-b1f8dc00-aef9-4b21-8253-7be9aae48b78.jpeg">
 
 </p>
 
@@ -71,38 +71,38 @@ SW 마에스트로 13기 과정에서 팀 HYEDA에서 개발한 피트니스 메
 
 <p float="left">
 
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207347-fe269790-c501-442e-991b-b1614396b19d.png](https://user-images.githubusercontent.com/55953815/210207347-fe269790-c501-442e-991b-b1614396b19d.png)">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207367-e9b6e015-77a6-4e3c-b282-5b21588dbc93.png](https://user-images.githubusercontent.com/55953815/210207367-e9b6e015-77a6-4e3c-b282-5b21588dbc93.png)">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207388-d0465d69-0da3-4b81-a8f7-d4c5aa828c7b.png](https://user-images.githubusercontent.com/55953815/210207388-d0465d69-0da3-4b81-a8f7-d4c5aa828c7b.png)">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207347-fe269790-c501-442e-991b-b1614396b19d.png">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207367-e9b6e015-77a6-4e3c-b282-5b21588dbc93.png">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207388-d0465d69-0da3-4b81-a8f7-d4c5aa828c7b.png">
 </p>
 
 ## 알림
 
 <p float="left">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207417-7f0d6803-5974-427c-b009-85f593e640a9.png](https://user-images.githubusercontent.com/55953815/210207417-7f0d6803-5974-427c-b009-85f593e640a9.png)">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207417-7f0d6803-5974-427c-b009-85f593e640a9.png">
 </p>
 
 ## 주변 피트니스 센터
 
 <p float="left">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207433-c6a0a486-3aaa-43c3-9925-46d78ceb0529.PNG](https://user-images.githubusercontent.com/55953815/210207433-c6a0a486-3aaa-43c3-9925-46d78ceb0529.PNG)">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207444-795e7e17-35ee-4f55-967a-862c4e37afbb.PNG](https://user-images.githubusercontent.com/55953815/210207444-795e7e17-35ee-4f55-967a-862c4e37afbb.PNG)">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207433-c6a0a486-3aaa-43c3-9925-46d78ceb0529.PNG">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207444-795e7e17-35ee-4f55-967a-862c4e37afbb.PNG">
 </p>
 
 ## 메이트 리뷰
 
 <p float="left">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207489-6a6d386a-3a46-490c-8f5c-9ecfce84cb86.png](https://user-images.githubusercontent.com/55953815/210207489-6a6d386a-3a46-490c-8f5c-9ecfce84cb86.png)">
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207499-e3149445-032d-4750-a135-dabd860013f9.png](https://user-images.githubusercontent.com/55953815/210207499-e3149445-032d-4750-a135-dabd860013f9.png)">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207489-6a6d386a-3a46-490c-8f5c-9ecfce84cb86.png">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207499-e3149445-032d-4750-a135-dabd860013f9.png">
 </p>
 
 ## 피트니스 리뷰
 
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207458-98278514-7c91-4d09-b42f-dddb982d7b78.PNG](https://user-images.githubusercontent.com/55953815/210207458-98278514-7c91-4d09-b42f-dddb982d7b78.PNG)">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207458-98278514-7c91-4d09-b42f-dddb982d7b78.PNG">
 
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207469-2daa172e-51b4-448b-8314-ab77dcda691c.PNG](https://user-images.githubusercontent.com/55953815/210207469-2daa172e-51b4-448b-8314-ab77dcda691c.PNG)">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207469-2daa172e-51b4-448b-8314-ab77dcda691c.PNG">
 
-<img width=250 src="[https://user-images.githubusercontent.com/55953815/210207530-f9a7a321-3eb0-493d-8948-9ade79f8545f.png](https://user-images.githubusercontent.com/55953815/210207530-f9a7a321-3eb0-493d-8948-9ade79f8545f.png)">
+<img width=250 src="https://user-images.githubusercontent.com/55953815/210207530-f9a7a321-3eb0-493d-8948-9ade79f8545f.png">
 
 <br>
 
@@ -111,14 +111,14 @@ SW 마에스트로 13기 과정에서 팀 HYEDA에서 개발한 피트니스 메
 ## Landing Page
 
 <div style="text-align : center;">
-<img src=[https://user-images.githubusercontent.com/55953815/210207543-299e4b89-a2ac-4785-b282-bd61f6781edc.png](https://user-images.githubusercontent.com/55953815/210207543-299e4b89-a2ac-4785-b282-bd61f6781edc.png)>
+<img src=https://user-images.githubusercontent.com/55953815/210207543-299e4b89-a2ac-4785-b282-bd61f6781edc.png>
 </div>
 <br>
 
 ## 시각화
 
 <div style="text-align : center;">
-<img src=[https://user-images.githubusercontent.com/55953815/210207554-95d1aefb-bac8-4cd2-975e-e6b66bdb6e4c.png](https://user-images.githubusercontent.com/55953815/210207554-95d1aefb-bac8-4cd2-975e-e6b66bdb6e4c.png)>
+<img src=https://user-images.githubusercontent.com/55953815/210207554-95d1aefb-bac8-4cd2-975e-e6b66bdb6e4c.png>
 </div>
 
 <br>
@@ -142,7 +142,7 @@ SW 마에스트로 13기 과정에서 팀 HYEDA에서 개발한 피트니스 메
 - IDU Sports Center 제휴
 
 <div style="text-align : center;">
-<img width= 400 src=”[https://user-images.githubusercontent.com/55953815/210207567-9588bc62-4b46-427c-9b6c-beb92544ca94.png](https://user-images.githubusercontent.com/55953815/210207567-9588bc62-4b46-427c-9b6c-beb92544ca94.png)”>
+<img width= 400 src=”https://user-images.githubusercontent.com/55953815/210207567-9588bc62-4b46-427c-9b6c-beb92544ca94.png”>
 </div>
 
 <br>
