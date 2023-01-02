@@ -99,11 +99,8 @@ SW 마에스트로 13기 과정에서 팀 HYEDA에서 개발한 피트니스 메
 ## 피트니스 리뷰
 
 <img width=250 src="https://user-images.githubusercontent.com/55953815/210207458-98278514-7c91-4d09-b42f-dddb982d7b78.PNG">
-
 <img width=250 src="https://user-images.githubusercontent.com/55953815/210207469-2daa172e-51b4-448b-8314-ab77dcda691c.PNG">
-
 <img width=250 src="https://user-images.githubusercontent.com/55953815/210207530-f9a7a321-3eb0-493d-8948-9ade79f8545f.png">
-
 <br>
 
 # Web
